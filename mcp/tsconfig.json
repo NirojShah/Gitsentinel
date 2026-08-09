@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",                  /* Modern JavaScript output */
+    "module": "NodeNext",                 /* Node.js module resolution */
+    "moduleResolution": "NodeNext",      
+    "rootDir": "./src",                  /* Location of your .ts files */
+    "outDir": "./dist",                  /* Compiled output folder */
+    "strict": true,                      /* Enable all strict type-checking */
+    "esModuleInterop": true,             /* Compatibility with CommonJS modules */
+    "skipLibCheck": true,                /* Fast compilation by skipping type check of declarations */
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": ["src/**/*"]                 /* Tells TS to only compile files in src */
+}
