@@ -1,0 +1,8 @@
+/.vscode
+
+# MCP SERVER .ignore
+/mcp/node_modules
+/mcp/package-lock.json
+/mcp/src/env/.env.development
+/mcp/src/env/.env.production
+/mcp/src/env/.env.testing
