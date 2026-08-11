@@ -18,3 +18,5 @@
 /orchestrator-server/.claude/
 /orchestrator-server/.windsurf/
 /orchestrator-server/.agents/
+/orchestrator-server/skills-lock.json
+/orchestrator-server/prisma/schema/migrations/
