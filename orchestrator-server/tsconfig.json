@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",                  /* Modern JavaScript output */
+    "module": "NodeNext",                /* Node.js module resolution */
+    "moduleResolution": "NodeNext",      
+    "rootDir": "./",                     /* 💡 Changed to project root so root files like prisma.config.ts are included */
+    "outDir": "./dist",                  /* Compiled output folder */
+    "strict": true,                      /* Enable all strict type-checking */
+    "esModuleInterop": true,             /* Compatibility with CommonJS modules */
+    "skipLibCheck": true,                /* Fast compilation by skipping type check of declarations */
+    "forceConsistentCasingInFileNames": true,
+    "types": ["node"]                    /* 💡 Moved inside compilerOptions and changed to plural 'types' */
+  },
+  "include": [
+    "src/**/*", 
+    "prisma.config.ts"                  /* 💡 Explicitly tell TypeScript to type-check your prisma config file */
+  ]
+}
