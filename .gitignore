@@ -6,3 +6,15 @@
 /mcp/src/env/.env.development
 /mcp/src/env/.env.production
 /mcp/src/env/.env.testing
+
+
+# orchestrator-server .ignore
+
+/orchestrator-server/node_modules
+/orchestrator-server/package-lock.json
+/orchestrator-server/src/env/.env.development
+/orchestrator-server/src/env/.env.production
+/orchestrator-server/src/env/.env.testing
+/orchestrator-server/.claude/
+/orchestrator-server/.windsurf/
+/orchestrator-server/.agents/
