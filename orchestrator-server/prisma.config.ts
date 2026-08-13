@@ -13,8 +13,6 @@ configureEnv(curEnv)
 // otherwise fall back to the Prisma configuration lookup engine.
 const dbUrl = process.env.DB_URL;
 
-console.log({ dbUrl })
-
 export default defineConfig({
   schema: "prisma/schema",
   datasource: {
