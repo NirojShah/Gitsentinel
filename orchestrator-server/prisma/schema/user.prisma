@@ -1,13 +1,13 @@
 // prisma/schema/user.prisma
 
 model User {
-    id           String  @id @default(uuid()) // UUID string prevents ID scraping
-    email        String  @unique // Unique email for authentication
-    username     String  @unique // Unique system identifier
-    name         String? // Optional display name
-    passwordHash String // Encrypted password string
-    isActive     Boolean @default(true) // Easily deactivate accounts
-    isVerified   Boolean @default(false) // Track email confirmation status
+    id         String  @id @default(uuid()) // UUID string prevents ID scraping
+    email      String  @unique // Unique email for authentication
+    username   String  @unique // Unique system identifier
+    name       String? // Optional display name
+    password   String // Encrypted password string
+    isActive   Boolean @default(true) // Easily deactivate accounts
+    isVerified Boolean @default(false) // Track email confirmation status
 
     // Tracking Timestamps
     createdAt DateTime @default(now()) // Automatically set on creation
