@@ -51,6 +51,7 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
+  GitRepo: 'GitRepo',
   User: 'User'
 } as const
 
@@ -68,6 +69,20 @@ export const TransactionIsolationLevel = runtime.makeStrictEnum({
 } as const)
 
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
+
+
+export const GitRepoScalarFieldEnum = {
+  id: 'id',
+  provider: 'provider',
+  repoUrl: 'repoUrl',
+  accessToken: 'accessToken',
+  baseBranch: 'baseBranch',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  userId: 'userId'
+} as const
+
+export type GitRepoScalarFieldEnum = (typeof GitRepoScalarFieldEnum)[keyof typeof GitRepoScalarFieldEnum]
 
 
 export const UserScalarFieldEnum = {
