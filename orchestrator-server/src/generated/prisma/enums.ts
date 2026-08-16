@@ -9,7 +9,10 @@
 * 🟢 You can import this file directly.
 */
 
+export const GitProvider = {
+  GITHUB: 'GITHUB',
+  GITLAB: 'GITLAB',
+  BITBUCKET: 'BITBUCKET'
+} as const
 
-
-// This file is empty because there are no enums in the schema.
-export {}
+export type GitProvider = (typeof GitProvider)[keyof typeof GitProvider]

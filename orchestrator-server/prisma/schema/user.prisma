@@ -10,8 +10,9 @@ model User {
     isVerified Boolean @default(false) // Track email confirmation status
 
     // Tracking Timestamps
-    createdAt DateTime @default(now()) // Automatically set on creation
-    updatedAt DateTime @updatedAt // Automatically managed by Prisma on any update
+    createdAt DateTime  @default(now()) // Automatically set on creation
+    updatedAt DateTime  @updatedAt // Automatically managed by Prisma on any update
+    gitRepos  GitRepo[]
 
     @@map("users") // 🧠 Maps the model to a lowercase "users" table name inside PostgreSQL
 }
