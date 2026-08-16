@@ -397,6 +397,7 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 
 
 export const ModelName = {
+  GitRepo: 'GitRepo',
   User: 'User'
 } as const
 
@@ -413,10 +414,84 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user"
+    modelProps: "gitRepo" | "user"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
+    GitRepo: {
+      payload: Prisma.$GitRepoPayload<ExtArgs>
+      fields: Prisma.GitRepoFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.GitRepoFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GitRepoPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.GitRepoFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GitRepoPayload>
+        }
+        findFirst: {
+          args: Prisma.GitRepoFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GitRepoPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.GitRepoFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GitRepoPayload>
+        }
+        findMany: {
+          args: Prisma.GitRepoFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GitRepoPayload>[]
+        }
+        create: {
+          args: Prisma.GitRepoCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GitRepoPayload>
+        }
+        createMany: {
+          args: Prisma.GitRepoCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.GitRepoCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GitRepoPayload>[]
+        }
+        delete: {
+          args: Prisma.GitRepoDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GitRepoPayload>
+        }
+        update: {
+          args: Prisma.GitRepoUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GitRepoPayload>
+        }
+        deleteMany: {
+          args: Prisma.GitRepoDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.GitRepoUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.GitRepoUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GitRepoPayload>[]
+        }
+        upsert: {
+          args: Prisma.GitRepoUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GitRepoPayload>
+        }
+        aggregate: {
+          args: Prisma.GitRepoAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateGitRepo>
+        }
+        groupBy: {
+          args: Prisma.GitRepoGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.GitRepoGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.GitRepoCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.GitRepoCountAggregateOutputType> | number
+        }
+      }
+    }
     User: {
       payload: Prisma.$UserPayload<ExtArgs>
       fields: Prisma.UserFieldRefs
@@ -530,6 +605,20 @@ export const TransactionIsolationLevel = runtime.makeStrictEnum({
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
+export const GitRepoScalarFieldEnum = {
+  id: 'id',
+  provider: 'provider',
+  repoUrl: 'repoUrl',
+  accessToken: 'accessToken',
+  baseBranch: 'baseBranch',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  userId: 'userId'
+} as const
+
+export type GitRepoScalarFieldEnum = (typeof GitRepoScalarFieldEnum)[keyof typeof GitRepoScalarFieldEnum]
+
+
 export const UserScalarFieldEnum = {
   id: 'id',
   email: 'email',
@@ -590,9 +679,16 @@ export type ListStringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaMod
 
 
 /**
- * Reference to a field of type 'Boolean'
+ * Reference to a field of type 'GitProvider'
  */
-export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+export type EnumGitProviderFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'GitProvider'>
+    
+
+
+/**
+ * Reference to a field of type 'GitProvider[]'
+ */
+export type ListEnumGitProviderFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'GitProvider[]'>
     
 
 
@@ -607,6 +703,13 @@ export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel
  * Reference to a field of type 'DateTime[]'
  */
 export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Boolean'
+ */
+export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 
@@ -774,6 +877,7 @@ export interface PrismaClientOptionsWithAdapter extends PrismaClientBaseOptions 
  */
 export type PrismaClientOptions = PrismaClientOptionsWithAccelerateUrl | PrismaClientOptionsWithAdapter
 export type GlobalOmitConfig = {
+  gitRepo?: Prisma.GitRepoOmit
   user?: Prisma.UserOmit
 }
 
