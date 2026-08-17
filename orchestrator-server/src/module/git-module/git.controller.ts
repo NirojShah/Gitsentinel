@@ -1,6 +1,7 @@
 import { Response, Request } from "express";
 import GitrepoServiceImplementation from "./git.service.js";
 import type { GitRepoCreateInput, GitRepoUpdateInput } from "../../generated/prisma/models.js";
+import type AuthenticatedRequest from "../../constants/AuthenticatedRequest.type.js";
 
 class Gitcontroller {
 
@@ -8,7 +9,7 @@ class Gitcontroller {
 
     }
 
-    async createGitrepo(req: Request, res: Response): Promise<Response> {
+    async createGitrepo(req: AuthenticatedRequest, res: Response): Promise<Response> {
         const body = req.body as GitRepoCreateInput
         const userId = req.user.userId;
         const response = await this.gitService.createGitRepository(userId, body)
@@ -17,17 +18,17 @@ class Gitcontroller {
         })
     }
 
-    async getUserGitrepo(req: Request, res: Response): Promise<Response> {
-        const repoId = req.params.repoId;
+    async getUserGitrepo(req: AuthenticatedRequest, res: Response): Promise<Response> {
+        const repoId = req.params.repoId as string;
         const userId = req.user.userId;
-        const response = await this.gitService.findGitRepoByid(repoId, userId)
+        const response = await this.gitService.findGitRepoByid(repoId, userId);
 
         return res.status(response.statusCode).json({
             data: response.data
         })
     }
 
-    async getUsersGitrepoList(req: Request, res: Response): Promise<Response> {
+    async getUsersGitrepoList(req: AuthenticatedRequest, res: Response): Promise<Response> {
         const userId = req.user.userId;
         const response = await this.gitService.findAllGitReposByUserId(userId)
         return res.status(response.statusCode).json({
@@ -35,9 +36,9 @@ class Gitcontroller {
         })
     }
 
-    async updaeGitRepo(req: Request, res: Response): Promise<Response> {
+    async updaeGitRepo(req: AuthenticatedRequest, res: Response): Promise<Response> {
         const userId = req.user.userId;
-        const repoId = req.params.repoId;
+        const repoId = req.params.repoId as string;
         const repoBody = req.body as GitRepoUpdateInput;
         const response = await this.gitService.updateGitRepository(repoId, userId, repoBody)
 
