@@ -11,6 +11,7 @@ class GitrepoServiceImplementation {
 
     async createGitRepository(userId: string, gitRepoDetails: Prisma.GitRepoCreateInput): Promise<ResponseDto> {
         try {
+            console.log(userId)
             const repo = await this.gitRepo.createRepo(
                 userId,
                 gitRepoDetails
@@ -26,7 +27,7 @@ class GitrepoServiceImplementation {
                 throw error;
             }
 
-            throw new CustomError(StatusCode.INTERNAL_SERVER_ERROR, "Failed to create Git repository.");
+            throw new CustomError(StatusCode.INTERNAL_SERVER_ERROR, (error as Error).message);
         }
     }
 
