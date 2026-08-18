@@ -25,9 +25,13 @@ class GitrepoRepository {
         return await this.gitRepo.create({
             data: {
                 ...repo,
-                userid: userId
-            }
-        })
+                user: {
+                    connect: {
+                        id: userId,
+                    },
+                },
+            },
+        });
     }
 
     async getRepoById(id: string, userId: string) {
