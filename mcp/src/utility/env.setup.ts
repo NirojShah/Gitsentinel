@@ -1,4 +1,10 @@
 import { config } from "dotenv";
+import path, { dirname } from "node:path";
+import { fileURLToPath } from "node:url";
+
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const setupEnvironment = (current_environment: "dev" | "prod" | "test") => {
     let file = ".env.example"
@@ -18,8 +24,10 @@ const setupEnvironment = (current_environment: "dev" | "prod" | "test") => {
         }
     }
 
+    const absulutePath = path.resolve(__dirname, "..", "env", file)
+
     config({
-        path: `../env/${file}`,
+        path: absulutePath,
         quiet: true
     })
 }
