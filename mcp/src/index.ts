@@ -31,7 +31,7 @@ app.get("/health", (_req, res) => {
 const server = http.createServer(app);
 
 async function main(): Promise<void> {
-    const port = Number(process.env.PORT) || 5000;
+    const port = Number(process.env.MCP_SERVER_PORT) || 5000;
 
     const host = process.env.HOST || "127.0.0.1";
 
