@@ -20,3 +20,10 @@
 /orchestrator-server/.agents/
 /orchestrator-server/skills-lock.json
 /orchestrator-server/prisma/schema/migrations/
+
+
+
+# Gateway-server .gitnore
+
+
+/gateway/node_modules
