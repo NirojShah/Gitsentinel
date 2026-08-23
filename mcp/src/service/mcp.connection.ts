@@ -3,23 +3,19 @@ import { WebStandardStreamableHTTPServerTransport } from "@modelcontextprotocol/
 import MCPUtility from "./mcp.utility.js";
 import { createMcpServer } from "./mcp.server.js";
 
-
 export async function handleConnection(req: ExpressRequest, res: ExpressResponse): Promise<void> {
     try {
-        console.log(`MCP ${req.method} ${req.originalUrl}`,);
-
         const webRequest = MCPUtility.createWebRequest(req);
 
         // Create a NEW MCP server for this connection
-        const mcpServer =
-            createMcpServer();
+        const mcpServer = await createMcpServer();
 
         // Create a NEW transport
         const transport =
             new WebStandardStreamableHTTPServerTransport();
 
         // Connect this server to this transport
-        await mcpServer.connect(transport,);
+        await mcpServer.connect(transport);
 
         // Handle request
         const webResponse = await transport.handleRequest(webRequest,);
