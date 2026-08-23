@@ -17,7 +17,6 @@ class GitRepository implements GitRepositoryInterface {
 
     async getRepoById(repoId: string): Promise<GitRepositoryEntity | null> {
         try {
-            console.log("testing.")
 
             const query = `
             SELECT
@@ -58,14 +57,10 @@ class GitRepository implements GitRepositoryInterface {
             ) AS "exists"
         `;
 
-            console.log("Executing query...");
-
             const result = await this.dbClient.query<{ exists: boolean }>(
                 query,
                 [repoId]
             );
-
-            console.log("Query result:", result.rows);
 
             return result.rows[0].exists;
         } catch (err) {
