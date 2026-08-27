@@ -52,11 +52,22 @@ class ChatServiceImpl implements ChatService {
 
     }
 
-    updateChat(
-        id: string,
-        data: ChatModel.UpdateChat
-    ): Promise<ResponseDto> {
-        throw new Error("Method not implemented.");
+    async updateChat(id: string, data: ChatModel.UpdateChat): Promise<ResponseDto> {
+        const chatExists: boolean = await this.chatRepository.chatExistsById(id)
+
+        if (!chatExists) {
+            return {
+                statusCode: StatusCode.BAD_REQUEST,
+                message: "Not chat cound by the provied id"
+            }
+        }
+
+        const chat = await this.chatRepository.update(id, data)
+
+        return {
+            statusCode: StatusCode.OK,
+            data: chat
+        }
     }
 }
 
