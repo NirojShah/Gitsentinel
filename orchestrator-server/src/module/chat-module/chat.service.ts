@@ -27,14 +27,29 @@ class ChatServiceImpl implements ChatService {
 
         return {
             statusCode: StatusCode.CREATED,
-            message:"successfully chat created.",
+            message: "successfully chat created.",
             data: resp
         }
 
     }
 
-    findChatById(id: string): Promise<ResponseDto> {
-        throw new Error("Method not implemented.");
+    async findChatById(id: string): Promise<ResponseDto> {
+        const chatExists: boolean = await this.chatRepository.chatExistsById(id)
+
+        if (!chatExists) {
+            return {
+                statusCode: StatusCode.BAD_REQUEST,
+                message: "no chat found by the provied id."
+            }
+        }
+
+        const chat = await this.chatRepository.findById(id)
+
+        return {
+            statusCode: StatusCode.OK,
+            data: chat
+        }
+
     }
 
     updateChat(
