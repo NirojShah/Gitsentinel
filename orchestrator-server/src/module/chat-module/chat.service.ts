@@ -6,10 +6,8 @@ import ChatRepository from "./chat.repository.js";
 interface ChatService {
     createChat(data: ChatModel.CreateChat): Promise<ResponseDto>;
     findChatById(id: string): Promise<ResponseDto>;
-    updateChat(
-        id: string,
-        data: ChatModel.UpdateChat
-    ): Promise<ResponseDto>;
+    findChatByUserId(userId: string): Promise<ResponseDto>
+    updateChat(data: ChatModel.UpdateChat): Promise<ResponseDto>;
 }
 
 class ChatServiceImpl implements ChatService {
@@ -52,8 +50,17 @@ class ChatServiceImpl implements ChatService {
 
     }
 
-    async updateChat(id: string, data: ChatModel.UpdateChat): Promise<ResponseDto> {
-        const chatExists: boolean = await this.chatRepository.chatExistsById(id)
+    async findChatByUserId(userId: string): Promise<ResponseDto> {
+        const chats = await this.chatRepository.findChatByUserId(userId);
+        return {
+            statusCode: StatusCode.OK,
+            data: chats,
+            message: chats.length == 0 ? "No chat present" : ""
+        }
+    }
+
+    async updateChat(data: ChatModel.UpdateChat): Promise<ResponseDto> {
+        const chatExists: boolean = await this.chatRepository.chatExistsById(data.chatId)
 
         if (!chatExists) {
             return {
@@ -62,7 +69,7 @@ class ChatServiceImpl implements ChatService {
             }
         }
 
-        const chat = await this.chatRepository.update(id, data)
+        const chat = await this.chatRepository.update(data)
 
         return {
             statusCode: StatusCode.OK,
