@@ -5,7 +5,7 @@ import type { Prisma } from "../../generated/prisma/client.js";
 import type ChatModel from "./chat.model.js";
 
 class ChatRepository {
-    async save(data: ChatModel.createChat) {
+    async save(data: ChatModel.CreateChat) {
         return prisma.chat.create({
             data: {
                 chatName: data.chatName,
@@ -23,10 +23,10 @@ class ChatRepository {
         });
     }
 
-    async update(id: string, data: ChatModel.updateChat) {
+    async update(data: ChatModel.UpdateChat) {
         return prisma.chat.update({
             where: {
-                id,
+                id: data.chatId,
             },
             data,
         });
@@ -56,7 +56,7 @@ class ChatRepository {
         return false
     }
 
-    async chatExistsByData(data: ChatModel.createChat): Promise<boolean> {
+    async chatExistsByData(data: ChatModel.CreateChat): Promise<boolean> {
         const existingChat = await prisma.chat.findFirst({
             where: {
                 chatName: data.chatName,
@@ -72,6 +72,21 @@ class ChatRepository {
             return true
         }
         return false
+    }
+
+    async findChatByUserId(userId: string) {
+        return await prisma.chat.findMany({
+            where: {
+                user: {
+                    id: userId
+                }
+            },
+            select: {
+                chatName: true,
+                id: true,
+                userId: true
+            }
+        })
     }
 }
 
