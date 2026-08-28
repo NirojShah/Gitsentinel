@@ -11,7 +11,6 @@ class GitrepoServiceImplementation {
 
     async createGitRepository(userId: string, gitRepoDetails: Prisma.GitRepoCreateInput): Promise<ResponseDto> {
         try {
-            console.log(userId)
             const repo = await this.gitRepo.createRepo(
                 userId,
                 gitRepoDetails
