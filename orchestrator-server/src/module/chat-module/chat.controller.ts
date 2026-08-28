@@ -27,7 +27,21 @@ class ChatController {
     }
 
     async updateChat(req: AuthenticatedRequest, res: Response): Promise<Response> {
-        throw new Error("not implemented.")
+        const result = ChatModel.UpdateChatSchema.safeParse(req.body)
+
+        if (!result.success) {
+            throw new CustomError(
+                StatusCode.BAD_REQUEST,
+                result.error.message
+            )
+        }
+
+        const response = await this.chatService.updateChat(result.data)
+
+        return res.status(response.statusCode).json({
+            data: response.data,
+            message: response.message
+        })
     }
 
     async findChat(req: AuthenticatedRequest, res: Response): Promise<Response> {
