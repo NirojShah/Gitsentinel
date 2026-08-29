@@ -1,0 +1,74 @@
+@use 'variable' as *;
+
+.btn {
+  /* Reset default button browser styles */
+  appearance: none;
+  -webkit-appearance: none;
+  outline: none;
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: inherit;
+  font-weight: 500;
+  border-radius: 12px;
+  cursor: pointer;
+
+  /* Glass Effects */
+  backdrop-filter: $glass-blur;
+  -webkit-backdrop-filter: $glass-blur;
+  transition: all 0.25s ease;
+
+  /* Sizes */
+  &.btn-sm {
+    padding: 6px 14px;
+    font-size: 13px;
+  }
+
+  &.btn-md {
+    padding: 10px 20px;
+    font-size: 15px;
+  }
+
+  &.btn-lg {
+    padding: 14px 28px;
+    font-size: 17px;
+  }
+
+  /* Variants */
+  &.btn-primary {
+    background: linear-gradient(135deg, $primary, darken($primary, 15%));
+    color: $text-main;
+    border: $glass-border;
+    box-shadow: 0 4px 15px rgba(6, 182, 212, 0.3);
+
+    &:hover {
+      box-shadow: 0 6px 20px rgba(6, 182, 212, 0.5);
+      transform: translateY(-2px);
+    }
+  }
+
+  &.btn-secondary {
+    background: linear-gradient(135deg, $secondary, darken($secondary, 15%));
+    color: $text-main;
+    border: $glass-border;
+    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+
+    &:hover {
+      box-shadow: 0 6px 20px rgba(139, 92, 246, 0.5);
+      transform: translateY(-2px);
+    }
+  }
+
+  &.btn-normal {
+    background: $glass-bg;
+    color: $text-main;
+    border: $glass-border;
+    box-shadow: $glass-shadow;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.12);
+      transform: translateY(-2px);
+    }
+  }
+}
