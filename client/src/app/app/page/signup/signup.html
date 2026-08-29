@@ -1,0 +1,91 @@
+<div class="signup-wrapper">
+  <!-- Glowing Background Blobs -->
+  <div class="blob blob-purple"></div>
+  <div class="blob blob-cyan"></div>
+
+  <div class="glass-card">
+    <div class="header">
+      <h2>Create Account</h2>
+      <p>Join us today and get started in seconds</p>
+    </div>
+
+    <form (ngSubmit)="handleSignup()" class="signup-form">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="username">Username *</label>
+          <input
+            id="username"
+            type="text"
+            placeholder="johndoe"
+            [ngModel]="username()"
+            (ngModelChange)="username.set($event)"
+            name="username"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="name">Full Name (Optional)</label>
+          <input
+            id="name"
+            type="text"
+            placeholder="John Doe"
+            [ngModel]="name()"
+            (ngModelChange)="name.set($event)"
+            name="name"
+          />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email Address *</label>
+        <input
+          id="email"
+          type="email"
+          placeholder="name@example.com"
+          [ngModel]="email()"
+          (ngModelChange)="email.set($event)"
+          name="email"
+          required
+        />
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="password">Password *</label>
+          <input
+            id="password"
+            type="password"
+            placeholder="••••••••"
+            [ngModel]="password()"
+            (ngModelChange)="password.set($event)"
+            name="password"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="confirmPassword">Confirm Password *</label>
+          <input
+            id="confirmPassword"
+            type="password"
+            placeholder="••••••••"
+            [ngModel]="confirmPassword()"
+            (ngModelChange)="confirmPassword.set($event)"
+            name="confirmPassword"
+            required
+          />
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <app-button
+          title="Create Account"
+          type="primary"
+          size="lg"
+          (onClick)="handleSignup()"
+        ></app-button>
+      </div>
+    </form>
+  </div>
+</div>
