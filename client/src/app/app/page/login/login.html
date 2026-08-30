@@ -11,37 +11,21 @@
     <form (ngSubmit)="handleLogin()" class="login-form">
       <div class="form-group">
         <label for="email">Email</label>
-        <input
-          id="email"
-          type="email"
-          placeholder="name@example.com"
-          [ngModel]="email()"
-          (ngModelChange)="email.set($event)"
-          name="email"
-          required
-        />
+        <input id="email" type="email" placeholder="name@example.com" [ngModel]="email()"
+          (ngModelChange)="email.set($event)" name="email" required />
       </div>
 
       <div class="form-group">
         <label for="password">Password</label>
-        <input
-          id="password"
-          type="password"
-          placeholder="••••••••"
-          [ngModel]="password()"
-          (ngModelChange)="password.set($event)"
-          name="password"
-          required
-        />
+        <input id="password" type="password" placeholder="••••••••" [ngModel]="password()"
+          (ngModelChange)="password.set($event)" name="password" required />
       </div>
 
       <div class="form-actions">
-        <app-button
-          title="Sign In"
-          type="primary"
-          size="lg"
-          (onClick)="handleLogin()"
-        ></app-button>
+        <app-button title="Sign In" type="primary" size="lg"></app-button>
+      </div>
+      <div class="err-message">
+        {{message()}}
       </div>
     </form>
   </div>
