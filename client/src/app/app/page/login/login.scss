@@ -114,7 +114,7 @@
 
       .form-actions {
         margin-top: 10px;
-        
+
         app-button {
           width: 100%;
 
@@ -123,6 +123,10 @@
             width: 100%;
           }
         }
+      }
+
+      .err-message {
+        color: red;
       }
     }
   }
