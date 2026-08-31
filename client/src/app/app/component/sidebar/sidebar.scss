@@ -1,0 +1,149 @@
+@use 'variable' as *;
+
+.sidebar {
+  width: 280px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  box-sizing: border-box;
+
+  .sidebar-header {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 24px;
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      .logo-icon { font-size: 20px; }
+      h3 {
+        color: $text-main;
+        margin: 0;
+        font-size: 20px;
+        font-weight: 600;
+      }
+    }
+
+    app-button {
+      width: 100%;
+      ::ng-deep .btn { width: 100%; }
+    }
+  }
+
+  .sidebar-section {
+    margin-bottom: 24px;
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .section-title {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: $text-muted;
+      font-weight: 600;
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .icon-btn {
+      background: none;
+      border: none;
+      color: $text-muted;
+      cursor: pointer;
+      font-size: 14px;
+      padding: 0;
+
+      &:hover { color: $text-main; }
+    }
+
+    .history-list, .repo-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .history-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      background: transparent;
+      border: 1px solid transparent;
+      color: $text-muted;
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.2s ease;
+
+      &:hover, &.active {
+        background: rgba(255, 255, 255, 0.06);
+        border-color: rgba(255, 255, 255, 0.1);
+        color: $text-main;
+      }
+
+      .chat-info {
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+
+        .title {
+          font-size: 13px;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        .repo-badge {
+          font-size: 11px;
+          color: $primary;
+        }
+      }
+    }
+
+    .repo-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: $text-main;
+      padding: 6px 8px;
+    }
+  }
+
+  .sidebar-footer {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-top: 16px;
+    border-top: $glass-border;
+
+    .user-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, $primary, $secondary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-weight: 600;
+    }
+
+    .user-meta {
+      display: flex;
+      flex-direction: column;
+      
+      .name { font-size: 14px; color: $text-main; font-weight: 500; }
+      .status { font-size: 12px; color: $primary; }
+    }
+  }
+}
