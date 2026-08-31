@@ -1,0 +1,94 @@
+@use 'variable' as *;
+
+:host {
+  display: block;
+  height: 100vh;
+  background-color: $bg-dark;
+  overflow: hidden;
+}
+
+.dashboard-layout {
+  position: relative;
+  display: flex;
+  height: 100vh;
+  padding: 16px;
+  box-sizing: border-box;
+  user-select: none; /* Prevents text selection while dragging */
+
+  app-sidebar {
+    position: relative;
+    z-index: 1;
+    background: $glass-bg;
+    border: $glass-border;
+    backdrop-filter: $glass-blur;
+    -webkit-backdrop-filter: $glass-blur;
+    border-radius: 20px;
+    box-shadow: $glass-shadow;
+    flex-shrink: 0; /* Prevents sidebar from collapsing below set width */
+  }
+
+  /* Draggable Splitter Line */
+  .resizer {
+    width: 12px;
+    cursor: col-resize;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    margin: 0 2px;
+
+    &::after {
+      content: '';
+      width: 4px;
+      height: 40px;
+      border-radius: 2px;
+      background: rgba(255, 255, 255, 0.15);
+      transition: all 0.2s ease;
+    }
+
+    &:hover::after,
+    &:active::after {
+      background: $primary;
+      box-shadow: 0 0 10px $primary;
+      height: 60px;
+    }
+  }
+
+  app-chat-window {
+    position: relative;
+    z-index: 1;
+    background: $glass-bg;
+    border: $glass-border;
+    backdrop-filter: $glass-blur;
+    -webkit-backdrop-filter: $glass-blur;
+    border-radius: 20px;
+    box-shadow: $glass-shadow;
+    flex: 1; /* Takes remaining screen space automatically */
+    min-width: 0; /* Enables proper flex shrinkage */
+  }
+
+  .blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(140px);
+    opacity: 0.45;
+    z-index: 0;
+  }
+
+  .blob-purple {
+    width: 450px;
+    height: 450px;
+    background: $secondary;
+    top: -100px;
+    left: -100px;
+  }
+
+  .blob-cyan {
+    width: 400px;
+    height: 400px;
+    background: $primary;
+    bottom: -100px;
+    right: -100px;
+  }
+}
