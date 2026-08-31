@@ -1,0 +1,34 @@
+<!-- chat-window.html -->
+<main class="chat-container glass-panel">
+    <header class="chat-header">
+        <div class="repo-selector">
+            <label>Active Repo:</label>
+            <select [ngModel]="selectedRepo()" (ngModelChange)="repoChanged.emit($event)">
+                @for (repo of configuredRepos(); track repo) {
+                <option [value]="repo">{{ repo }}</option>
+                }
+            </select>
+        </div>
+    </header>
+
+    <div class="chat-messages">
+        @for (msg of messages(); track msg.id) {
+        <div class="message-wrapper" [class.user]="msg.sender === 'user'">
+            <div class="message-bubble" [class.ai-bubble]="msg.sender === 'assistant'">
+                <div class="message-header">
+                    <span class="sender-name">{{ msg.sender === 'user' ? 'You' : 'GitSentinel AI' }}</span>
+                </div>
+                <p class="message-text">{{ msg.text }}</p>
+            </div>
+        </div>
+        }
+    </div>
+
+    <footer class="chat-input-area">
+        <form (ngSubmit)="handleSend()" class="input-form">
+            <input type="text" placeholder="Ask GitSentinel to analyze PRs or inspect code..."
+                [ngModel]="inputMessage()" (ngModelChange)="inputMessage.set($event)" name="chatInput" />
+            <app-button title="Send" type="primary" size="md" (onClick)="handleSend()"></app-button>
+        </form>
+    </footer>
+</main>
