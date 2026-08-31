@@ -1,0 +1,49 @@
+<!-- sidebar.html -->
+<aside class="sidebar glass-panel">
+    <div class="sidebar-header">
+        <div class="brand">
+            <span class="logo-icon">🛡️</span>
+            <h3>GitSentinel</h3>
+        </div>
+        <app-button title="+ New Chat" type="primary" size="sm" (onClick)="newChatRequested.emit()"></app-button>
+    </div>
+
+    <div class="sidebar-section">
+        <span class="section-title">Chat History</span>
+        <div class="history-list">
+            @for (thread of chatHistory(); track thread.id) {
+            <button class="history-item" [class.active]="activeThreadId() === thread.id"
+                (click)="threadSelected.emit(thread.id)">
+                <span class="chat-icon">💬</span>
+                <div class="chat-info">
+                    <span class="title">{{ thread.title }}</span>
+                    <span class="repo-badge">{{ thread.repoName }}</span>
+                </div>
+            </button>
+            }
+        </div>
+    </div>
+
+    <div class="sidebar-section">
+        <div class="section-header">
+            <span class="section-title">Repositories</span>
+            <button class="icon-btn" (click)="openConfigRequested.emit()">⚙️</button>
+        </div>
+        <div class="repo-list">
+            @for (repo of configuredRepos(); track repo) {
+            <div class="repo-item">
+                <span class="repo-icon">📦</span>
+                <span class="repo-name">{{ repo }}</span>
+            </div>
+            }
+        </div>
+    </div>
+
+    <div class="sidebar-footer">
+        <div class="user-avatar">{{ userName()[0] }}</div>
+        <div class="user-meta">
+            <span class="name">{{ userName() }}</span>
+            <span class="status">Online</span>
+        </div>
+    </div>
+</aside>
