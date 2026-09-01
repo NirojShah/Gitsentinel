@@ -1,0 +1,10 @@
+<!-- repo-config-modal.html -->
+<div class="modal-overlay" (click)="closeModal.emit()">
+    <div class="glass-panel modal-card" (click)="$event.stopPropagation()">
+        <h3>Git Repository Settings</h3>
+        <p>Connect GitHub/GitLab repositories for automated indexing.</p>
+        <div class="modal-actions">
+            <app-button title="Close" type="normal" size="md" (onClick)="closeModal.emit()"></app-button>
+        </div>
+    </div>
+</div>
