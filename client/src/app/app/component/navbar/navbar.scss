@@ -1,0 +1,189 @@
+@use 'variable' as *;
+
+.glass-navbar {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 60px;
+  padding: 0 20px;
+  background: $glass-bg;
+  border: $glass-border;
+  backdrop-filter: $glass-blur;
+  -webkit-backdrop-filter: $glass-blur;
+  border-radius: 16px;
+  box-shadow: $glass-shadow;
+
+  /* Left Section */
+  .nav-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      .logo-icon {
+        font-size: 20px;
+      }
+
+      .brand-title {
+        color: $text-main;
+        font-weight: 600;
+        font-size: 18px;
+        letter-spacing: -0.3px;
+      }
+    }
+
+    .version-badge {
+      font-size: 11px;
+      color: $primary;
+      background: rgba($primary, 0.12);
+      border: 1px solid rgba($primary, 0.25);
+      padding: 2px 6px;
+      border-radius: 6px;
+    }
+  }
+
+  /* Center Section */
+  .nav-center {
+    .repo-pill {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      background: rgba(255, 255, 255, 0.04);
+      border: $glass-border;
+      border-radius: 20px;
+      font-size: 13px;
+
+      .status-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background-color: #10b981;
+        box-shadow: 0 0 8px #10b981;
+      }
+
+      .repo-label {
+        color: $text-muted;
+      }
+
+      .repo-name {
+        color: $text-main;
+        font-weight: 500;
+      }
+    }
+  }
+
+  /* Right Section */
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+
+    .icon-btn {
+      background: transparent;
+      border: none;
+      font-size: 16px;
+      cursor: pointer;
+      padding: 6px;
+      border-radius: 8px;
+      transition: background 0.2s ease;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.08);
+      }
+    }
+
+    /* Profile Dropdown */
+    .profile-container {
+      position: relative;
+
+      .profile-avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, $primary, $secondary);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: #fff;
+        font-weight: 600;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: transform 0.2s ease;
+
+        &:hover {
+          transform: scale(1.05);
+        }
+      }
+
+      .profile-menu {
+        position: absolute;
+        right: 0;
+        top: 48px;
+        width: 200px;
+        padding: 12px;
+        background: rgba(11, 15, 25, 0.95);
+        border: $glass-border;
+        border-radius: 14px;
+        box-shadow: $glass-shadow;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+
+        .user-info {
+          display: flex;
+          flex-direction: column;
+          padding: 4px 8px;
+
+          .user-name {
+            color: $text-main;
+            font-size: 14px;
+            font-weight: 600;
+          }
+
+          .user-role {
+            color: $text-muted;
+            font-size: 11px;
+          }
+        }
+
+        .menu-divider {
+          border: none;
+          border-top: $glass-border;
+          margin: 6px 0;
+        }
+
+        .menu-item {
+          background: transparent;
+          border: none;
+          color: $text-muted;
+          text-align: left;
+          padding: 8px 10px;
+          border-radius: 8px;
+          font-size: 13px;
+          cursor: pointer;
+          transition: all 0.2s ease;
+
+          &:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: $text-main;
+          }
+
+          &.logout {
+            color: #ef4444;
+
+            &:hover {
+              background: rgba(#ef4444, 0.15);
+            }
+          }
+        }
+      }
+    }
+  }
+}

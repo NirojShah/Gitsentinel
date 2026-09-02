@@ -1,0 +1,53 @@
+<nav class="glass-navbar">
+  <!-- Brand Logo & Title -->
+  <div class="nav-left">
+    <div class="brand">
+      <span class="logo-icon">🛡️</span>
+      <span class="brand-title">GitSentinel</span>
+    </div>
+    <span class="version-badge">v1.0</span>
+  </div>
+
+  <!-- Center Quick Context / Active Status -->
+  <div class="nav-center">
+    <div class="repo-pill">
+      <span class="status-dot"></span>
+      <span class="repo-label">Active:</span>
+      <span class="repo-name">{{ activeRepo() }}</span>
+    </div>
+  </div>
+
+  <!-- Right Actions & Profile -->
+  <div class="nav-right">
+    <app-button
+      title="+ New Chat"
+      type="primary"
+      size="sm"
+      (onClick)="newChatRequested.emit()"
+    ></app-button>
+
+    <button class="icon-btn" title="Git Settings" (click)="openConfigRequested.emit()">
+      ⚙️
+    </button>
+
+    <!-- User Profile Dropdown Trigger -->
+    <div class="profile-container">
+      <button class="profile-avatar" (click)="toggleProfileMenu()">
+        {{ userAvatar() }}
+      </button>
+
+      @if (isProfileMenuOpen()) {
+        <div class="profile-menu glass-panel">
+          <div class="user-info">
+            <span class="user-name">{{ userName() }}</span>
+            <span class="user-role">Full Stack Developer</span>
+          </div>
+          <hr class="menu-divider" />
+          <button class="menu-item">Account Settings</button>
+          <button class="menu-item">API Keys</button>
+          <button class="menu-item logout">Sign Out</button>
+        </div>
+      }
+    </div>
+  </div>
+</nav>
