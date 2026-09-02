@@ -92,3 +92,19 @@
     right: -100px;
   }
 }
+
+.dashboard-layout {
+  position: relative;
+  display: flex;
+  flex-direction: column; /* Stack Navbar on top of contents */
+  gap: 16px;
+  height: 100vh;
+  padding: 16px;
+  box-sizing: border-box;
+
+  .content-body {
+    display: flex;
+    flex: 1;
+    min-height: 0; /* Ensures proper scrolling inside chat */
+  }
+}

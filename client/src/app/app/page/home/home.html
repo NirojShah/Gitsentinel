@@ -2,28 +2,36 @@
   <div class="blob blob-purple"></div>
   <div class="blob blob-cyan"></div>
 
-  <!-- Dynamically Sized Sidebar -->
-  <app-sidebar
-    [style.width.px]="sidebarWidth()"
-    [chatHistory]="chatHistory()"
-    [configuredRepos]="configuredRepos()"
-    [activeThreadId]="activeThreadId()"
+  <!-- Top Navigation Bar -->
+  <app-navbar
+    [activeRepo]="selectedRepo()"
     (newChatRequested)="onNewChat()"
-    (threadSelected)="activeThreadId.set($event)"
     (openConfigRequested)="isModalOpen.set(true)"
-  ></app-sidebar>
+  ></app-navbar>
 
-  <!-- Draggable Resizer Splitter Bar -->
-  <div class="resizer" (mousedown)="startResizing($event)"></div>
+  <!-- Main Content Layout Below Navbar -->
+  <div class="content-body">
+    <app-sidebar
+      [style.width.px]="sidebarWidth()"
+      [chatHistory]="chatHistory()"
+      [configuredRepos]="configuredRepos()"
+      [activeThreadId]="activeThreadId()"
+      (newChatRequested)="onNewChat()"
+      (threadSelected)="activeThreadId.set($event)"
+      (openConfigRequested)="isModalOpen.set(true)"
+    ></app-sidebar>
 
-  <!-- Flexible Chat Window -->
-  <app-chat-window
-    [configuredRepos]="configuredRepos()"
-    [selectedRepo]="selectedRepo()"
-    [messages]="messages()"
-    (repoChanged)="selectedRepo.set($event)"
-    (messageSent)="onSendMessage($event)"
-  ></app-chat-window>
+    <div class="resizer" (mousedown)="startResizing($event)"></div>
+
+    <app-chat-window
+      [configuredRepos]="configuredRepos()"
+      [selectedRepo]="selectedRepo()"
+      [messages]="messages()"
+      (repoChanged)="selectedRepo.set($event)"
+      (messageSent)="onSendMessage($event)"
+      (openConfigRequested)="isModalOpen.set(true)"
+    ></app-chat-window>
+  </div>
 
   @if (isModalOpen()) {
     <app-repo-config-modal (closeModal)="isModalOpen.set(false)"></app-repo-config-modal>
