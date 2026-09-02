@@ -2,11 +2,12 @@ import { Component, signal } from '@angular/core';
 import { SidebarComponent, type ChatThread } from '../../component/sidebar/sidebar';
 import { ChatWindowComponent, type ChatMessage } from '../../component/chat-window/chat-window';
 import { RepoConfigModalComponent } from '../../component/repo-config/repo-config';
+import { NavbarComponent } from '../../component/navbar/navbar';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [SidebarComponent, ChatWindowComponent, RepoConfigModalComponent],
+  imports: [SidebarComponent, ChatWindowComponent, RepoConfigModalComponent, NavbarComponent],
   templateUrl: './home.html',
   styleUrl: './home.scss',
 })
