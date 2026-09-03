@@ -1,10 +1,91 @@
-<!-- repo-config-modal.html -->
-<div class="modal-overlay" (click)="closeModal.emit()">
-    <div class="glass-panel modal-card" (click)="$event.stopPropagation()">
-        <h3>Git Repository Settings</h3>
-        <p>Connect GitHub/GitLab repositories for automated indexing.</p>
-        <div class="modal-actions">
-            <app-button title="Close" type="normal" size="md" (onClick)="closeModal.emit()"></app-button>
-        </div>
-    </div>
+<div class="modal-backdrop" (click)="onBackdropClick($event)">
+  <div class="modal-card glass-panel">
+    <header class="modal-header">
+      <div class="header-title">
+        <span class="header-icon">⚙️</span>
+        <h3>Connect Repository</h3>
+      </div>
+      <button class="close-btn" (click)="handleClose()">✕</button>
+    </header>
+
+    <form [formGroup]="configForm" (ngSubmit)="onSubmit()" class="modal-body">
+      <!-- Git Provider Selection -->
+      <div class="form-group">
+        <label for="provider">Git Provider</label>
+        <select id="provider" formControlName="provider" class="form-control">
+          @for (provider of providers; track provider) {
+            <option [value]="provider">{{ provider }}</option>
+          }
+        </select>
+      </div>
+
+      <!-- Repository URL -->
+      <div class="form-group">
+        <label for="repoUrl">Repository URL</label>
+        <input
+          id="repoUrl"
+          type="url"
+          formControlName="repoUrl"
+          placeholder="https://github.com/username/repository"
+          class="form-control"
+          [class.invalid]="configForm.get('repoUrl')?.touched && configForm.get('repoUrl')?.invalid"
+        />
+        @if (configForm.get('repoUrl')?.touched && configForm.get('repoUrl')?.errors?.['required']) {
+          <span class="error-msg">Repository URL is required</span>
+        }
+        @if (configForm.get('repoUrl')?.touched && configForm.get('repoUrl')?.errors?.['pattern']) {
+          <span class="error-msg">Enter a valid URL (http/https)</span>
+        }
+      </div>
+
+      <!-- Personal Access Token -->
+      <div class="form-group">
+        <label for="accessToken">Access Token</label>
+        <input
+          id="accessToken"
+          type="password"
+          formControlName="accessToken"
+          placeholder="ghp_xxxxxxxxxxxxxxxxxxxx"
+          class="form-control"
+          [class.invalid]="configForm.get('accessToken')?.touched && configForm.get('accessToken')?.invalid"
+        />
+        @if (configForm.get('accessToken')?.touched && configForm.get('accessToken')?.invalid) {
+          <span class="error-msg">Access token is required</span>
+        }
+        <span class="hint">Requires read/write scope for repo content and PR creation.</span>
+      </div>
+
+      <!-- Base Branch -->
+      <div class="form-group">
+        <label for="baseBranch">Base Branch</label>
+        <input
+          id="baseBranch"
+          type="text"
+          formControlName="baseBranch"
+          placeholder="main"
+          class="form-control"
+          [class.invalid]="configForm.get('baseBranch')?.touched && configForm.get('baseBranch')?.invalid"
+        />
+        @if (configForm.get('baseBranch')?.touched && configForm.get('baseBranch')?.invalid) {
+          <span class="error-msg">Base branch is required</span>
+        }
+      </div>
+
+      <!-- Modal Footer Controls -->
+      <footer class="modal-footer">
+        <app-button
+          title="Cancel"
+          type="normal"
+          size="sm"
+          (onClick)="handleClose()"
+        ></app-button>
+        <app-button
+          [title]="isSubmitting() ? 'Saving...' : 'Save Configuration'"
+          type="primary"
+          size="sm"
+          (onClick)="onSubmit()"
+        ></app-button>
+      </footer>
+    </form>
+  </div>
 </div>
