@@ -41,8 +41,6 @@ export class GeminiAPI implements LLM_API {
     }
 }
 
-
-
 export class OpenAIAPI implements LLM_API {
     public readonly providerName = 'OpenAI';
     private client: OpenAI | null = null;
@@ -73,5 +71,18 @@ export class OpenAIAPI implements LLM_API {
         });
 
         return response.choices[0]?.message?.content || '';
+    }
+}
+
+
+export async function sendAIRequest(llmService: LLM_API, prompt: string): Promise<string> {
+    try {
+        await llmService.createConnection();
+        console.log(`Sending prompt to ${llmService.providerName}...`);
+        const response = await llmService.generateText(prompt);
+        return response;
+    } catch (error) {
+        console.error(`Error sending request to ${llmService.providerName}:`, error);
+        throw error;
     }
 }
