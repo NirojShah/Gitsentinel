@@ -2,12 +2,15 @@ import { GoogleGenAI } from '@google/genai';
 import OpenAI from 'openai';
 import 'dotenv/config';
 
+
+// Define a common interface for LLM API implementations
 export interface LLM_API {
     providerName: string;
     createConnection(): Promise<void>;
     generateText(prompt: string): Promise<string>;
 }
 
+// Gemini API implementation
 export class GeminiAPI implements LLM_API {
     public readonly providerName = 'Gemini';
     private ai: GoogleGenAI | null = null;
@@ -41,8 +44,7 @@ export class GeminiAPI implements LLM_API {
     }
 }
 
-
-
+// Open AI API implementation
 export class OpenAIAPI implements LLM_API {
     public readonly providerName = 'OpenAI';
     private client: OpenAI | null = null;
@@ -73,5 +75,19 @@ export class OpenAIAPI implements LLM_API {
         });
 
         return response.choices[0]?.message?.content || '';
+    }
+}
+
+
+// Function to send a request to the specified LLM API
+export async function sendAIRequest(llmService: LLM_API, prompt: string): Promise<string> {
+    try {
+        await llmService.createConnection();
+        console.log(`Sending prompt to ${llmService.providerName}...`);
+        const response = await llmService.generateText(prompt);
+        return response;
+    } catch (error) {
+        console.error(`Error sending request to ${llmService.providerName}:`, error);
+        throw error;
     }
 }
