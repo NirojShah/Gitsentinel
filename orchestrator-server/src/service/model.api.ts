@@ -42,3 +42,36 @@ export class GeminiAPI implements LLM_API {
 }
 
 
+
+export class OpenAIAPI implements LLM_API {
+    public readonly providerName = 'OpenAI';
+    private client: OpenAI | null = null;
+    private modelName: string;
+
+    constructor(modelName: string = 'gpt-4o-mini') {
+        this.modelName = modelName;
+    }
+
+    async createConnection(): Promise<void> {
+        const apiKey = process.env.OPENAI_API_KEY;
+        if (!apiKey) {
+            throw new Error('OPENAI_API_KEY is not set in environment variables.');
+        }
+
+        this.client = new OpenAI({ apiKey });
+        console.log(`[${this.providerName}] Connection initialized.`);
+    }
+
+    async generateText(prompt: string): Promise<string> {
+        if (!this.client) {
+            throw new Error('Connection not established. Call createConnection() first.');
+        }
+
+        const response = await this.client.chat.completions.create({
+            model: this.modelName,
+            messages: [{ role: 'user', content: prompt }],
+        });
+
+        return response.choices[0]?.message?.content || '';
+    }
+}
