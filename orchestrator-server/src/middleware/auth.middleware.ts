@@ -50,7 +50,6 @@ function authMiddleware(
             email: data.email,
             userId: data.id,
         };
-        console.log(req.user)
         next();
     } catch (err) {
         next(err);
