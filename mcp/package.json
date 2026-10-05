@@ -4,7 +4,7 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "dev": "tsx src/index.ts",
+    "dev": "NODE_ENV=dev tsx watch src/index.ts",
     "build": "tsc"
   },
   "type": "module",
@@ -13,8 +13,10 @@
   "license": "ISC",
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.30.0",
+    "@types/pg": "^8.23.1",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
+    "pg": "^8.23.0",
     "zod": "^4.4.3"
   },
   "devDependencies": {
