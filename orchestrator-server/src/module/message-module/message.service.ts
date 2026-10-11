@@ -31,7 +31,13 @@ class MessageService implements MessageServiceI {
 
     async deleteMessage(messageId: string): Promise<ResponseDto> {
         try {
-            
+            const message = await this.messageRepository.delete(messageId);
+
+            return {
+                statusCode: 204,
+                message: "Message deleted successfully",
+                data: message,
+            };
         } catch (error) {
             throw error;
         }
