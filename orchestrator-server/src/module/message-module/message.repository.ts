@@ -22,6 +22,11 @@ class MessageRepository {
     }
 
     async delete(id: string) {
+        return await this.prisma.message.delete({
+            where: {
+                id: id
+            }
+        })
     }
 }
 
