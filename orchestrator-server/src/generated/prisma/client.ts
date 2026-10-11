@@ -52,6 +52,11 @@ export type Chat = Prisma.ChatModel
  */
 export type GitRepo = Prisma.GitRepoModel
 /**
+ * Model Message
+ * 
+ */
+export type Message = Prisma.MessageModel
+/**
  * Model User
  * 
  */

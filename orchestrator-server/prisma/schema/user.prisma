@@ -14,6 +14,7 @@ model User {
     updatedAt DateTime  @updatedAt // Automatically managed by Prisma on any update
     gitRepos  GitRepo[]
     chat      Chat[]
+    message   Message[]
 
     @@map("users") // 🧠 Maps the model to a lowercase "users" table name inside PostgreSQL
 }

@@ -216,6 +216,7 @@ export type UserWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   gitRepos?: Prisma.GitRepoListRelationFilter
   chat?: Prisma.ChatListRelationFilter
+  message?: Prisma.MessageListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -230,6 +231,7 @@ export type UserOrderByWithRelationInput = {
   updatedAt?: Prisma.SortOrder
   gitRepos?: Prisma.GitRepoOrderByRelationAggregateInput
   chat?: Prisma.ChatOrderByRelationAggregateInput
+  message?: Prisma.MessageOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -247,6 +249,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   gitRepos?: Prisma.GitRepoListRelationFilter
   chat?: Prisma.ChatListRelationFilter
+  message?: Prisma.MessageListRelationFilter
 }, "id" | "email" | "username">
 
 export type UserOrderByWithAggregationInput = {
@@ -291,6 +294,7 @@ export type UserCreateInput = {
   updatedAt?: Date | string
   gitRepos?: Prisma.GitRepoCreateNestedManyWithoutUserInput
   chat?: Prisma.ChatCreateNestedManyWithoutUserInput
+  message?: Prisma.MessageCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -305,6 +309,7 @@ export type UserUncheckedCreateInput = {
   updatedAt?: Date | string
   gitRepos?: Prisma.GitRepoUncheckedCreateNestedManyWithoutUserInput
   chat?: Prisma.ChatUncheckedCreateNestedManyWithoutUserInput
+  message?: Prisma.MessageUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -319,6 +324,7 @@ export type UserUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   gitRepos?: Prisma.GitRepoUpdateManyWithoutUserNestedInput
   chat?: Prisma.ChatUpdateManyWithoutUserNestedInput
+  message?: Prisma.MessageUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -333,6 +339,7 @@ export type UserUncheckedUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   gitRepos?: Prisma.GitRepoUncheckedUpdateManyWithoutUserNestedInput
   chat?: Prisma.ChatUncheckedUpdateManyWithoutUserNestedInput
+  message?: Prisma.MessageUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -374,6 +381,11 @@ export type UserUncheckedUpdateManyInput = {
 export type UserScalarRelationFilter = {
   is?: Prisma.UserWhereInput
   isNot?: Prisma.UserWhereInput
+}
+
+export type UserNullableScalarRelationFilter = {
+  is?: Prisma.UserWhereInput | null
+  isNot?: Prisma.UserWhereInput | null
 }
 
 export type UserCountOrderByAggregateInput = {
@@ -440,6 +452,22 @@ export type UserUpdateOneRequiredWithoutGitReposNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutGitReposInput, Prisma.UserUpdateWithoutGitReposInput>, Prisma.UserUncheckedUpdateWithoutGitReposInput>
 }
 
+export type UserCreateNestedOneWithoutMessageInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutMessageInput, Prisma.UserUncheckedCreateWithoutMessageInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutMessageInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneWithoutMessageNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutMessageInput, Prisma.UserUncheckedCreateWithoutMessageInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutMessageInput
+  upsert?: Prisma.UserUpsertWithoutMessageInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutMessageInput, Prisma.UserUpdateWithoutMessageInput>, Prisma.UserUncheckedUpdateWithoutMessageInput>
+}
+
 export type BoolFieldUpdateOperationsInput = {
   set?: boolean
 }
@@ -455,6 +483,7 @@ export type UserCreateWithoutChatInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   gitRepos?: Prisma.GitRepoCreateNestedManyWithoutUserInput
+  message?: Prisma.MessageCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutChatInput = {
@@ -468,6 +497,7 @@ export type UserUncheckedCreateWithoutChatInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   gitRepos?: Prisma.GitRepoUncheckedCreateNestedManyWithoutUserInput
+  message?: Prisma.MessageUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutChatInput = {
@@ -497,6 +527,7 @@ export type UserUpdateWithoutChatInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   gitRepos?: Prisma.GitRepoUpdateManyWithoutUserNestedInput
+  message?: Prisma.MessageUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutChatInput = {
@@ -510,6 +541,7 @@ export type UserUncheckedUpdateWithoutChatInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   gitRepos?: Prisma.GitRepoUncheckedUpdateManyWithoutUserNestedInput
+  message?: Prisma.MessageUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutGitReposInput = {
@@ -523,6 +555,7 @@ export type UserCreateWithoutGitReposInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   chat?: Prisma.ChatCreateNestedManyWithoutUserInput
+  message?: Prisma.MessageCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutGitReposInput = {
@@ -536,6 +569,7 @@ export type UserUncheckedCreateWithoutGitReposInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   chat?: Prisma.ChatUncheckedCreateNestedManyWithoutUserInput
+  message?: Prisma.MessageUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutGitReposInput = {
@@ -565,6 +599,7 @@ export type UserUpdateWithoutGitReposInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   chat?: Prisma.ChatUpdateManyWithoutUserNestedInput
+  message?: Prisma.MessageUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutGitReposInput = {
@@ -578,6 +613,79 @@ export type UserUncheckedUpdateWithoutGitReposInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   chat?: Prisma.ChatUncheckedUpdateManyWithoutUserNestedInput
+  message?: Prisma.MessageUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutMessageInput = {
+  id?: string
+  email: string
+  username: string
+  name?: string | null
+  password: string
+  isActive?: boolean
+  isVerified?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  gitRepos?: Prisma.GitRepoCreateNestedManyWithoutUserInput
+  chat?: Prisma.ChatCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutMessageInput = {
+  id?: string
+  email: string
+  username: string
+  name?: string | null
+  password: string
+  isActive?: boolean
+  isVerified?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  gitRepos?: Prisma.GitRepoUncheckedCreateNestedManyWithoutUserInput
+  chat?: Prisma.ChatUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutMessageInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutMessageInput, Prisma.UserUncheckedCreateWithoutMessageInput>
+}
+
+export type UserUpsertWithoutMessageInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutMessageInput, Prisma.UserUncheckedUpdateWithoutMessageInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutMessageInput, Prisma.UserUncheckedCreateWithoutMessageInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutMessageInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutMessageInput, Prisma.UserUncheckedUpdateWithoutMessageInput>
+}
+
+export type UserUpdateWithoutMessageInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  gitRepos?: Prisma.GitRepoUpdateManyWithoutUserNestedInput
+  chat?: Prisma.ChatUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutMessageInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  gitRepos?: Prisma.GitRepoUncheckedUpdateManyWithoutUserNestedInput
+  chat?: Prisma.ChatUncheckedUpdateManyWithoutUserNestedInput
 }
 
 
@@ -588,11 +696,13 @@ export type UserUncheckedUpdateWithoutGitReposInput = {
 export type UserCountOutputType = {
   gitRepos: number
   chat: number
+  message: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   gitRepos?: boolean | UserCountOutputTypeCountGitReposArgs
   chat?: boolean | UserCountOutputTypeCountChatArgs
+  message?: boolean | UserCountOutputTypeCountMessageArgs
 }
 
 /**
@@ -619,6 +729,13 @@ export type UserCountOutputTypeCountChatArgs<ExtArgs extends runtime.Types.Exten
   where?: Prisma.ChatWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountMessageArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.MessageWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -632,6 +749,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   updatedAt?: boolean
   gitRepos?: boolean | Prisma.User$gitReposArgs<ExtArgs>
   chat?: boolean | Prisma.User$chatArgs<ExtArgs>
+  message?: boolean | Prisma.User$messageArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -675,6 +793,7 @@ export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = run
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   gitRepos?: boolean | Prisma.User$gitReposArgs<ExtArgs>
   chat?: boolean | Prisma.User$chatArgs<ExtArgs>
+  message?: boolean | Prisma.User$messageArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -685,6 +804,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   objects: {
     gitRepos: Prisma.$GitRepoPayload<ExtArgs>[]
     chat: Prisma.$ChatPayload<ExtArgs>[]
+    message: Prisma.$MessagePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1092,6 +1212,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   readonly [Symbol.toStringTag]: "PrismaPromise"
   gitRepos<T extends Prisma.User$gitReposArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$gitReposArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$GitRepoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   chat<T extends Prisma.User$chatArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$chatArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ChatPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  message<T extends Prisma.User$messageArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$messageArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1568,6 +1689,30 @@ export type User$chatArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   take?: number
   skip?: number
   distinct?: Prisma.ChatScalarFieldEnum | Prisma.ChatScalarFieldEnum[]
+}
+
+/**
+ * User.message
+ */
+export type User$messageArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Message
+   */
+  select?: Prisma.MessageSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Message
+   */
+  omit?: Prisma.MessageOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MessageInclude<ExtArgs> | null
+  where?: Prisma.MessageWhereInput
+  orderBy?: Prisma.MessageOrderByWithRelationInput | Prisma.MessageOrderByWithRelationInput[]
+  cursor?: Prisma.MessageWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.MessageScalarFieldEnum | Prisma.MessageScalarFieldEnum[]
 }
 
 /**

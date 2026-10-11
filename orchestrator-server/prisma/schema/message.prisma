@@ -1,0 +1,13 @@
+model Message {
+    id        String   @id @default(uuid())
+    sender    String?
+    chatId    String
+    content   String
+    createdAt DateTime @default(now())
+
+    user User? @relation(fields: [sender], references: [id])
+    chat Chat @relation(fields: [chatId], references: [id])
+
+    @@index([id, createdAt, chatId])
+    @@map("message")
+}
