@@ -53,6 +53,7 @@ export const AnyNull = runtime.AnyNull
 export const ModelName = {
   Chat: 'Chat',
   GitRepo: 'GitRepo',
+  Message: 'Message',
   User: 'User'
 } as const
 
@@ -96,6 +97,17 @@ export const GitRepoScalarFieldEnum = {
 } as const
 
 export type GitRepoScalarFieldEnum = (typeof GitRepoScalarFieldEnum)[keyof typeof GitRepoScalarFieldEnum]
+
+
+export const MessageScalarFieldEnum = {
+  id: 'id',
+  sender: 'sender',
+  chatId: 'chatId',
+  content: 'content',
+  createdAt: 'createdAt'
+} as const
+
+export type MessageScalarFieldEnum = (typeof MessageScalarFieldEnum)[keyof typeof MessageScalarFieldEnum]
 
 
 export const UserScalarFieldEnum = {
