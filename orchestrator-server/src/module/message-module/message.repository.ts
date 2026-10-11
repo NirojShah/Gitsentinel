@@ -10,7 +10,15 @@ class MessageRepository {
         });
     }
 
-    async findByChatId(id: string) {
+    async findByChatId(id: string, limit: number = 10, page: number = 1) {
+        const offset: number = (page - 1) * limit;
+        return await this.prisma.message.findMany({
+            where: {
+                chatId: id,
+            },
+            skip: offset,
+            take: limit
+        });
     }
 
     async delete(id: string) {
