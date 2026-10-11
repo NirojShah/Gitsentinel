@@ -45,6 +45,13 @@ class MessageService implements MessageServiceI {
 
     async messagesByChatId(chatId: string): Promise<ResponseDto> {
         try {
+            const messages = await this.messageRepository.findByChatId(chatId);
+
+            return {
+                statusCode: 200,
+                message: "Messages fetched successfully",
+                data: messages,
+            };
         } catch (error) {
             throw error;
         }
