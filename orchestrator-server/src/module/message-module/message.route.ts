@@ -14,5 +14,6 @@ const messageController = new MessageController(messageService);
 
 messageRoute.post("/", async (req: Request, res: Response) => await messageController.sendMessage(req, res))
 messageRoute.delete("/:chatId", async (req: Request, res: Response) => await messageController.deleteMessage(req, res))
+messageRoute.get("/:chatId", async (req: Request, res: Response) => await messageController.fetchMessageByChatId(req, res))
 
 export default messageRoute;
