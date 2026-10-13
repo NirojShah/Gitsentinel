@@ -23,7 +23,20 @@ class MessageController {
     }
 
     async deleteMessage(req: AuthenticatedRequest, res: Response): Promise<Response> {
-        throw new Error("Not implemented.")
+        const chatId: string = req.params.chatId as string;
+        const messageId: string = req.query.messageId as string
+        const userId: string = req.user.userId;
+
+        const response = await this.messageService.deleteMessage(messageId, chatId, userId)
+
+        if (response.statusCode != 204) {
+            throw new CustomError(response.statusCode, response.message || "something went wrong.")
+        }
+
+        return res.status(response.statusCode).json({
+            body: response.data,
+            message: response.message
+        })
     }
 
     async fetchMessageByChatId(req: AuthenticatedRequest, res: Response): Promise<Response> {
