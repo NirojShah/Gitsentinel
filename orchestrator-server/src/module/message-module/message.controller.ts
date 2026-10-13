@@ -40,7 +40,20 @@ class MessageController {
     }
 
     async fetchMessageByChatId(req: AuthenticatedRequest, res: Response): Promise<Response> {
-        throw new Error("Not implemented.")
+
+        const userId: string = req.user.userId;
+        const chatId: string = req.params.chatId as string;
+
+        const response = await this.messageService.messagesByChatId(chatId, userId)
+
+        if (response.statusCode != 200) {
+            throw new CustomError(response.statusCode, response.message || "something went wrong.")
+        }
+
+        return res.status(response.statusCode).json({
+            body: response.data,
+            message: response.message
+        })
     }
 }
 
