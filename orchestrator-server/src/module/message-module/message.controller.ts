@@ -1,0 +1,60 @@
+import type AuthenticatedRequest from "../../constants/AuthenticatedRequest.type.js";
+import CustomError from "../../constants/CustomError.js";
+import type { MessageCreateInput } from "../../generated/prisma/models.js";
+import type MessageService from "./message.service.js";
+import type { Response, Request } from "express";
+
+class MessageController {
+    constructor(private readonly messageService: MessageService) {
+    }
+
+    async sendMessage(req: AuthenticatedRequest, res: Response): Promise<Response> {
+        const body = req.body;
+        const userId: string = req.user.userId
+        const payload: MessageCreateInput = { ...body, user: userId }
+        const response = await this.messageService.sendMessage(payload)
+        if (response.statusCode != 201) {
+            throw new CustomError(response.statusCode, response.message || "something went wrong.");
+        }
+        return res.status(response.statusCode).json({
+            body: response.data,
+            message: response.message
+        })
+    }
+
+    async deleteMessage(req: AuthenticatedRequest, res: Response): Promise<Response> {
+        const chatId: string = req.params.chatId as string;
+        const messageId: string = req.query.messageId as string
+        const userId: string = req.user.userId;
+
+        const response = await this.messageService.deleteMessage(messageId, chatId, userId)
+
+        if (response.statusCode != 204) {
+            throw new CustomError(response.statusCode, response.message || "something went wrong.")
+        }
+
+        return res.status(response.statusCode).json({
+            body: response.data,
+            message: response.message
+        })
+    }
+
+    async fetchMessageByChatId(req: AuthenticatedRequest, res: Response): Promise<Response> {
+
+        const userId: string = req.user.userId;
+        const chatId: string = req.params.chatId as string;
+
+        const response = await this.messageService.messagesByChatId(chatId, userId)
+
+        if (response.statusCode != 200) {
+            throw new CustomError(response.statusCode, response.message || "something went wrong.")
+        }
+
+        return res.status(response.statusCode).json({
+            body: response.data,
+            message: response.message
+        })
+    }
+}
+
+export default MessageController;
