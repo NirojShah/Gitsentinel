@@ -1,3 +1,4 @@
+import CustomError from "../../constants/CustomError.js";
 import type ResponseDto from "../../constants/ResponseDto.js";
 import type { MessageCreateInput } from "../../generated/prisma/models.js";
 import type MessageRepository from "./message.repository.js";
@@ -43,8 +44,12 @@ class MessageService implements MessageServiceI {
         }
     }
 
-    async messagesByChatId(chatId: string, userId: string): Promise<ResponseDto> {
+    async messagesByChatId(chatId: string, userId: string, limit: number = 10, page: number = 1): Promise<ResponseDto> {
         try {
+            const isExists = await this.messageRepository.messageContainsByUserIdAndChatId(userId, chatId)
+            if (!isExists) {
+                throw new CustomError(401, "Chat and message not exists.")
+            }
             const messages = await this.messageRepository.findByChatId(chatId);
 
             return {
