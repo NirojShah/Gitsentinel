@@ -50,7 +50,7 @@ class MessageService implements MessageServiceI {
             if (!isExists) {
                 throw new CustomError(401, "Chat and message not exists.")
             }
-            const messages = await this.messageRepository.findByChatId(chatId);
+            const messages = await this.messageRepository.findByChatId(chatId, limit, page);
 
             return {
                 statusCode: 200,
