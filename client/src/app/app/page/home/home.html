@@ -17,7 +17,7 @@
       [configuredRepos]="configuredRepos()"
       [activeThreadId]="activeThreadId()"
       (newChatRequested)="onNewChat()"
-      (threadSelected)="activeThreadId.set($event)"
+      (threadSelected)="onThreadSelected($event)"
       (openConfigRequested)="isModalOpen.set(true)"
     ></app-sidebar>
 
@@ -27,6 +27,8 @@
       [configuredRepos]="configuredRepos()"
       [selectedRepo]="selectedRepo()"
       [messages]="messages()"
+      [errorMessage]="messageError()"
+      [isLoading]="isLoadingMessages()"
       (repoChanged)="selectedRepo.set($event)"
       (messageSent)="onSendMessage($event)"
       (openConfigRequested)="isModalOpen.set(true)"

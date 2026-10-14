@@ -21,6 +21,8 @@ export class ChatWindowComponent {
   configuredRepos = input<string[]>([]);
   selectedRepo = input<string>('');
   messages = input<ChatMessage[]>([]);
+  errorMessage = input<string>('');
+  isLoading = input<boolean>(false);
 
   repoChanged = output<string>();
   messageSent = output<string>();
