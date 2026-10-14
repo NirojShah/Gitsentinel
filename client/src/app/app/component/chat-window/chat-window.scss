@@ -38,6 +38,15 @@
     }
   }
 
+  .message-status,
+  .message-error {
+    margin: 12px 24px 0;
+    font-size: 13px;
+  }
+
+  .message-status { color: $text-muted; }
+  .message-error { color: #ff8a8a; }
+
   .chat-messages {
     flex: 1;
     overflow-y: auto;
