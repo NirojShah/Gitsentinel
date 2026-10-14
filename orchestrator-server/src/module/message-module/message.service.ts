@@ -32,7 +32,7 @@ class MessageService implements MessageServiceI {
 
     async deleteMessage(messageId: string, chatId: string, userId: string): Promise<ResponseDto> {
         try {
-            const message = await this.messageRepository.delete(messageId);
+            const message = await this.messageRepository.delete(messageId, chatId, userId);
 
             return {
                 statusCode: 204,
