@@ -4,8 +4,8 @@ import type MessageRepository from "./message.repository.js";
 
 interface MessageServiceI {
     sendMessage(data: MessageCreateInput): Promise<ResponseDto>;
-    deleteMessage(messageId: string): Promise<ResponseDto>;
-    messagesByChatId(chatId: string): Promise<ResponseDto>;
+    deleteMessage(messageId: string, chatId: string, userId: string): Promise<ResponseDto>;
+    messagesByChatId(chatId: string, userId: string): Promise<ResponseDto>;
 }
 
 class MessageService implements MessageServiceI {
@@ -29,7 +29,7 @@ class MessageService implements MessageServiceI {
         }
     }
 
-    async deleteMessage(messageId: string): Promise<ResponseDto> {
+    async deleteMessage(messageId: string, chatId: string, userId: string): Promise<ResponseDto> {
         try {
             const message = await this.messageRepository.delete(messageId);
 
@@ -43,7 +43,7 @@ class MessageService implements MessageServiceI {
         }
     }
 
-    async messagesByChatId(chatId: string): Promise<ResponseDto> {
+    async messagesByChatId(chatId: string, userId: string): Promise<ResponseDto> {
         try {
             const messages = await this.messageRepository.findByChatId(chatId);
 
