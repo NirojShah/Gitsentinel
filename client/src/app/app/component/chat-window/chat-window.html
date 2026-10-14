@@ -11,6 +11,13 @@
         </div>
     </header>
 
+    @if (isLoading()) {
+    <p class="message-status" role="status">Loading messages...</p>
+    }
+    @if (errorMessage()) {
+    <p class="message-error" role="alert">{{ errorMessage() }}</p>
+    }
+
     <div class="chat-messages">
         @for (msg of messages(); track msg.id) {
         <div class="message-wrapper" [class.user]="msg.sender === 'user'">
