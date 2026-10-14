@@ -28,7 +28,20 @@ class MessageRepository {
             }
         })
     }
-}
 
+    async messageContainsByUserIdAndChatId(userId: string, chatId: string): Promise<boolean> {
+        const exists = await this.prisma.message.findFirst({
+            where: {
+                chatId: chatId,
+                sender: userId
+            },
+            select: {
+                id: true
+            }
+        });
+
+        return exists !== null;
+    }
+}
 
 export default MessageRepository;
