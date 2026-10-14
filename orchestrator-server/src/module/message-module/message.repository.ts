@@ -21,14 +21,29 @@ class MessageRepository {
         });
     }
 
-    async delete(id: string) {
+    async delete(id: string, chatId: string, userId: string) {
         return await this.prisma.message.delete({
             where: {
-                id: id
+                id: id,
+                chatId: chatId,
+                sender: userId
             }
         })
     }
-}
 
+    async messageContainsByUserIdAndChatId(userId: string, chatId: string): Promise<boolean> {
+        const exists = await this.prisma.message.findFirst({
+            where: {
+                chatId: chatId,
+                sender: userId
+            },
+            select: {
+                id: true
+            }
+        });
+
+        return exists !== null;
+    }
+}
 
 export default MessageRepository;
