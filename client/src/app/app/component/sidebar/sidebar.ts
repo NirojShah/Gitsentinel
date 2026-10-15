@@ -1,10 +1,12 @@
 import { Component, input, output } from '@angular/core';
 import { ButtonComponent } from '../button/button';
+import type { RepoConfig } from '../repo-config/repo-config service/repo-config.service';
 
 export interface ChatThread {
   id: string;
   title: string;
   repoName: string;
+  repoId: string;
 }
 
 @Component({
@@ -17,7 +19,7 @@ export interface ChatThread {
 export class SidebarComponent {
   // Inputs from Parent
   chatHistory = input<ChatThread[]>([]);
-  configuredRepos = input<string[]>([]);
+  configuredRepos = input<RepoConfig[]>([]);
   activeThreadId = input<string>('');
   userName = input<string>('Developer');
 
