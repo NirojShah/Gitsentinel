@@ -2,10 +2,11 @@
 <main class="chat-container glass-panel">
     <header class="chat-header">
         <div class="repo-selector">
-            <label>Active Repo:</label>
-            <select [ngModel]="selectedRepo()" (ngModelChange)="repoChanged.emit($event)">
-                @for (repo of configuredRepos(); track repo) {
-                <option [value]="repo">{{ repo }}</option>
+            <label for="active-repo">Active Repo:</label>
+            <select id="active-repo" [ngModel]="selectedRepo()" (ngModelChange)="repoChanged.emit($event)"
+                [disabled]="!!activeThreadId()">
+                @for (repo of configuredRepos(); track repo.id) {
+                <option [value]="repo.id">{{ repo.repoUrl }}</option>
                 }
             </select>
         </div>
@@ -19,6 +20,17 @@
     }
 
     <div class="chat-messages">
+        @if (!messages().length && !isLoading()) {
+        <div class="empty-chat">
+            @if (configuredRepos().length) {
+            <p>Start a conversation about your repository.</p>
+            } @else {
+            <p>Configure a repository to start chatting with GitSentinel.</p>
+            <app-button title="Configure Repository" type="secondary" size="sm"
+                (onClick)="openConfigRequested.emit()"></app-button>
+            }
+        </div>
+        }
         @for (msg of messages(); track msg.id) {
         <div class="message-wrapper" [class.user]="msg.sender === 'user'">
             <div class="message-bubble" [class.ai-bubble]="msg.sender === 'assistant'">
@@ -34,8 +46,11 @@
     <footer class="chat-input-area">
         <form (ngSubmit)="handleSend()" class="input-form">
             <input type="text" placeholder="Ask GitSentinel to analyze PRs or inspect code..."
-                [ngModel]="inputMessage()" (ngModelChange)="inputMessage.set($event)" name="chatInput" />
-            <app-button title="Send" type="primary" size="md" (onClick)="handleSend()"></app-button>
+                [ngModel]="inputMessage()" (ngModelChange)="inputMessage.set($event)" name="chatInput"
+                [disabled]="!configuredRepos().length || isSending()" />
+            <app-button [title]="isSending() ? 'Sending...' : 'Send'" type="primary" size="md"
+                [disabled]="isSending() || !configuredRepos().length"
+                (onClick)="handleSend()"></app-button>
         </form>
     </footer>
 </main>
