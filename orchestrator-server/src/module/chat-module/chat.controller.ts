@@ -18,7 +18,10 @@ class ChatController {
             );
         }
 
-        const response = await this.chatService.createChat(result.data);
+        const response = await this.chatService.createChat({
+            ...result.data,
+            userId: req.user.userId,
+        });
 
         return res.status(response.statusCode).json({
             data: response.data,
@@ -36,7 +39,7 @@ class ChatController {
             )
         }
 
-        const response = await this.chatService.updateChat(result.data)
+        const response = await this.chatService.updateChat(result.data, req.user.userId)
 
         return res.status(response.statusCode).json({
             data: response.data,
@@ -50,7 +53,7 @@ class ChatController {
             throw new CustomError(StatusCode.BAD_REQUEST, result.error.message)
         }
 
-        const response = await this.chatService.findChatById(result.data.chatId)
+        const response = await this.chatService.findChatById(result.data.chatId, req.user.userId)
 
         return res.status(response.statusCode).json({
             data: response.data,
