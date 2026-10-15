@@ -11,7 +11,7 @@ const chatController = new ChatController(chatService)
 
 chatRouter.post("/", async (req: Request, res: Response) => chatController.createChat(req as AuthenticatedRequest, res))
 chatRouter.patch("/:chatId", async (req: Request, res: Response) => chatController.updateChat(req as AuthenticatedRequest, res))
-chatRouter.get("/", async (req: Request, res: Response) => chatController.findChat(req as AuthenticatedRequest, res))
+chatRouter.get("/", async (req: Request, res: Response) => chatController.findMyChat(req as AuthenticatedRequest, res))
 chatRouter.get("/:chatId", async (req: Request, res: Response) => chatController.findChat(req as AuthenticatedRequest, res))
 
 export default chatRouter;
