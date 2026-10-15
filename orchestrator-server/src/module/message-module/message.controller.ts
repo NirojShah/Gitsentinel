@@ -1,6 +1,5 @@
 import type AuthenticatedRequest from "../../constants/AuthenticatedRequest.type.js";
 import CustomError from "../../constants/CustomError.js";
-import type { MessageCreateInput } from "../../generated/prisma/models.js";
 import type MessageService from "./message.service.js";
 import type { Response, Request } from "express";
 
@@ -9,10 +8,22 @@ class MessageController {
     }
 
     async sendMessage(req: AuthenticatedRequest, res: Response): Promise<Response> {
-        const body = req.body;
-        const userId: string = req.user.userId
-        const payload: MessageCreateInput = { ...body, user: userId }
-        const response = await this.messageService.sendMessage(payload)
+        const body: unknown = req.body;
+        if (typeof body !== "object" || body === null || !("chatId" in body) || !("content" in body)) {
+            throw new CustomError(400, "A chat ID and non-empty message content are required.");
+        }
+
+        const { chatId, content } = body;
+        if (typeof chatId !== "string" || !chatId.trim() ||
+            typeof content !== "string" || !content.trim()) {
+            throw new CustomError(400, "A chat ID and non-empty message content are required.");
+        }
+
+        const userId = req.user.userId;
+        const response = await this.messageService.sendMessage(
+            { chatId, content, sender: userId },
+            userId,
+        );
         if (response.statusCode != 201) {
             throw new CustomError(response.statusCode, response.message || "something went wrong.");
         }
