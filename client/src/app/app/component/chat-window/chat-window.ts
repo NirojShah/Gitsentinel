@@ -1,6 +1,7 @@
 import { Component, input, output, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ButtonComponent } from '../button/button';
+import type { RepoConfig } from '../repo-config/repo-config service/repo-config.service';
 
 export interface ChatMessage {
   id: string;
@@ -18,14 +19,17 @@ export interface ChatMessage {
 })
 export class ChatWindowComponent {
   // Inputs & Outputs
-  configuredRepos = input<string[]>([]);
+  configuredRepos = input<RepoConfig[]>([]);
   selectedRepo = input<string>('');
+  activeThreadId = input<string>('');
   messages = input<ChatMessage[]>([]);
   errorMessage = input<string>('');
   isLoading = input<boolean>(false);
+  isSending = input<boolean>(false);
 
   repoChanged = output<string>();
   messageSent = output<string>();
+  openConfigRequested = output<void>();
 
   inputMessage = signal<string>('');
 
