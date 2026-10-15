@@ -1,10 +1,11 @@
 import CustomError from "../../constants/CustomError.js";
 import type ResponseDto from "../../constants/ResponseDto.js";
-import type { MessageCreateInput } from "../../generated/prisma/models.js";
+import type { Prisma } from "../../generated/prisma/client.js";
 import type MessageRepository from "./message.repository.js";
+import StatusCode from "../../constants/StatusCode.js";
 
 interface MessageServiceI {
-    sendMessage(data: MessageCreateInput): Promise<ResponseDto>;
+    sendMessage(data: Prisma.MessageUncheckedCreateInput, userId: string): Promise<ResponseDto>;
     deleteMessage(messageId: string, chatId: string, userId: string): Promise<ResponseDto>;
     messagesByChatId(chatId: string, userId: string): Promise<ResponseDto>;
 }
@@ -16,8 +17,12 @@ class MessageService implements MessageServiceI {
         this.messageRepository = messageRepository;
     }
 
-    async sendMessage(data: MessageCreateInput): Promise<ResponseDto> {
+    async sendMessage(data: Prisma.MessageUncheckedCreateInput, userId: string): Promise<ResponseDto> {
         try {
+            if (!(await this.messageRepository.chatBelongsToUser(userId, data.chatId))) {
+                throw new CustomError(StatusCode.NOT_FOUND, "Chat not found.");
+            }
+
             const message = await this.messageRepository.save(data);
 
             return {
@@ -46,9 +51,9 @@ class MessageService implements MessageServiceI {
 
     async messagesByChatId(chatId: string, userId: string, limit: number = 10, page: number = 1): Promise<ResponseDto> {
         try {
-            const isExists = await this.messageRepository.messageContainsByUserIdAndChatId(userId, chatId)
+            const isExists = await this.messageRepository.chatBelongsToUser(userId, chatId)
             if (!isExists) {
-                throw new CustomError(401, "Chat and message not exists.")
+                throw new CustomError(StatusCode.NOT_FOUND, "Chat not found.")
             }
             const messages = await this.messageRepository.findByChatId(chatId, limit, page);
 
