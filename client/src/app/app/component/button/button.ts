@@ -13,11 +13,12 @@ export class ButtonComponent {
   title = input.required<string>();
   type = input<ButtonType>('normal');
   size = input<ButtonSize>('md');
+  disabled = input<boolean>(false);
 
   // Outputs
   onClick = output<void>();
 
   handleClick() {
-    this.onClick.emit();
+    if (!this.disabled()) this.onClick.emit();
   }
 }
