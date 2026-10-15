@@ -9,6 +9,12 @@
     </header>
 
     <form [formGroup]="configForm" (ngSubmit)="onSubmit()" class="modal-body">
+      @if (errorMessage()) {
+        <p class="error-msg" role="alert">{{ errorMessage() }}</p>
+      }
+      @if (errorMessage()) {
+        <p class="error-msg" role="alert">{{ errorMessage() }}</p>
+      }
       <!-- Git Provider Selection -->
       <div class="form-group">
         <label for="provider">Git Provider</label>
