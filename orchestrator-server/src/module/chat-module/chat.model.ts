@@ -6,12 +6,11 @@ namespace ChatModel {
 
     export const CreateChatSchema = z.object({
         chatName: z.string().trim().min(1).max(100).optional(),
-        userId: z.string().min(1),
         repoId: z.string().min(1)
 
     })
 
-    export type CreateChat = z.infer<typeof CreateChatSchema>
+    export type CreateChat = z.infer<typeof CreateChatSchema> & { userId: string }
 
 
     export const UpdateChatSchema = z.object({
