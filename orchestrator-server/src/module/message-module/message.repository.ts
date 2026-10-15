@@ -1,10 +1,10 @@
 import type { PrismaClient } from "../../generated/prisma/client.js";
-import type { MessageCreateInput } from "../../generated/prisma/models.js";
+import type { Prisma } from "../../generated/prisma/client.js";
 
 class MessageRepository {
     constructor(private readonly prisma: PrismaClient) { }
 
-    async save(data: MessageCreateInput) {
+    async save(data: Prisma.MessageUncheckedCreateInput) {
         return await this.prisma.message.create({
             data,
         });
@@ -15,6 +15,9 @@ class MessageRepository {
         return await this.prisma.message.findMany({
             where: {
                 chatId: id,
+            },
+            orderBy: {
+                createdAt: "asc",
             },
             skip: offset,
             take: limit
@@ -31,14 +34,14 @@ class MessageRepository {
         })
     }
 
-    async messageContainsByUserIdAndChatId(userId: string, chatId: string): Promise<boolean> {
-        const exists = await this.prisma.message.findFirst({
+    async chatBelongsToUser(userId: string, chatId: string): Promise<boolean> {
+        const exists = await this.prisma.chat.findFirst({
             where: {
-                chatId: chatId,
-                sender: userId
+                id: chatId,
+                userId,
             },
             select: {
-                id: true
+                id: true,
             }
         });
 

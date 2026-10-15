@@ -5,6 +5,7 @@ import gitRouter from "../module/git-module/git.route.js";
 import authMiddleware from "../middleware/auth.middleware.js";
 import type AuthenticatedRequest from "../constants/AuthenticatedRequest.type.js";
 import messageRoute from "../module/message-module/message.route.js";
+import chatRouter from "../module/chat-module/chat.route.js";
 
 const appRoute: Mainrouter = Router();
 
@@ -20,6 +21,7 @@ appRoute.use(
 );
 appRoute.use("/git", gitRouter)
 
+appRoute.use("/chat", chatRouter)
 appRoute.use("/message", messageRoute)
 
 appRoute.use("", async (req: Request, res: Response) => {

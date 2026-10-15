@@ -1,8 +1,8 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, output, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { finalize } from 'rxjs';
 import { ButtonComponent } from '../button/button';
 import RepoConfigService, { type CreateRepoConfig } from './repo-config service/repo-config.service';
-import { config } from 'rxjs';
 
 export enum GitProvider {
   GITHUB = 'GITHUB',
@@ -23,6 +23,9 @@ export class RepoConfigModalComponent {
   providers = Object.values(GitProvider);
   configForm: FormGroup;
   isSubmitting = signal<boolean>(false);
+  errorMessage = signal<string>('');
+  closeModal = output<void>();
+  repoSaved = output<void>();
 
   constructor(private fb: FormBuilder) {
     this.configForm = this.fb.group({
@@ -34,26 +37,46 @@ export class RepoConfigModalComponent {
   }
 
   onSubmit() {
+    if (this.isSubmitting()) return;
     if (this.configForm.invalid) {
       this.configForm.markAllAsTouched();
-      console.warn('[RepoConfigModal] Form is invalid:', this.configForm.errors);
       return;
     }
 
+    this.errorMessage.set('');
     this.isSubmitting.set(true);
-    console.log('[RepoConfigModal] Submitting GitRepo Config:', this.configForm.value);
-
-    this.repoService.createRepoConfig(this.configForm.value as CreateRepoConfig);
-
+    this.repoService
+      .createRepoConfig(this.configForm.value as CreateRepoConfig)
+      .pipe(finalize(() => this.isSubmitting.set(false)))
+      .subscribe({
+        next: () => {
+          this.repoSaved.emit();
+          this.closeModal.emit();
+        },
+        error: (error: unknown) => this.errorMessage.set(this.getErrorMessage(error)),
+      });
   }
 
   handleClose() {
-    console.log('[RepoConfigModal] Close requested');
+    this.closeModal.emit();
   }
 
   onBackdropClick(event: MouseEvent) {
     if ((event.target as HTMLElement).classList.contains('modal-backdrop')) {
       this.handleClose();
+    }
+    }
+
+    private getErrorMessage(error: unknown): string {
+      if (typeof error === 'object' && error !== null && 'error' in error) {
+        const responseError = error.error;
+        if (typeof responseError === 'object' && responseError !== null && 'message' in responseError) {
+          const message = responseError.message;
+          if (typeof message === 'string') return message;
+      }
+      }
+      if (error instanceof Error) return error.message;
+      return 'Unable to save repository configuration.';
     }
   }
 }

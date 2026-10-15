@@ -55,6 +55,14 @@
     flex-direction: column;
     gap: 16px;
 
+    .empty-chat {
+      margin: auto;
+      text-align: center;
+      color: $text-muted;
+
+      p { margin-bottom: 14px; }
+    }
+
     .message-wrapper {
       display: flex;
       &.user { justify-content: flex-end; }
