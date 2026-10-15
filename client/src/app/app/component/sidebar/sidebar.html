@@ -30,10 +30,10 @@
             <button class="icon-btn" (click)="openConfigRequested.emit()">⚙️</button>
         </div>
         <div class="repo-list">
-            @for (repo of configuredRepos(); track repo) {
+            @for (repo of configuredRepos(); track repo.id) {
             <div class="repo-item">
                 <span class="repo-icon">📦</span>
-                <span class="repo-name">{{ repo }}</span>
+                <span class="repo-name">{{ repo.repoUrl }}</span>
             </div>
             }
         </div>

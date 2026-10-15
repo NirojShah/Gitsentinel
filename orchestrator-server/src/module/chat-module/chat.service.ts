@@ -1,24 +1,21 @@
 import type ResponseDto from "../../constants/ResponseDto.js";
+import CustomError from "../../constants/CustomError.js";
 import StatusCode from "../../constants/StatusCode.js";
 import type ChatModel from "./chat.model.js";
 import ChatRepository from "./chat.repository.js";
 
 interface ChatService {
     createChat(data: ChatModel.CreateChat): Promise<ResponseDto>;
-    findChatById(id: string): Promise<ResponseDto>;
+    findChatById(id: string, userId: string): Promise<ResponseDto>;
     findChatByUserId(userId: string): Promise<ResponseDto>
-    updateChat(data: ChatModel.UpdateChat): Promise<ResponseDto>;
+    updateChat(data: ChatModel.UpdateChat, userId: string): Promise<ResponseDto>;
 }
 
 class ChatServiceImpl implements ChatService {
     private readonly chatRepository = new ChatRepository();
     async createChat(data: ChatModel.CreateChat): Promise<ResponseDto> {
-        const isChatExists: boolean = await this.chatRepository.chatExistsByData(data);
-        if (isChatExists) {
-            return {
-                statusCode: StatusCode.BAD_REQUEST,
-                message: "The chat already exists."
-            }
+        if (!(await this.chatRepository.repoBelongsToUser(data.repoId, data.userId))) {
+            throw new CustomError(StatusCode.NOT_FOUND, "Repository not found.");
         }
 
         const resp = await this.chatRepository.save(data);
@@ -31,8 +28,8 @@ class ChatServiceImpl implements ChatService {
 
     }
 
-    async findChatById(id: string): Promise<ResponseDto> {
-        const chatExists: boolean = await this.chatRepository.chatExistsById(id)
+    async findChatById(id: string, userId: string): Promise<ResponseDto> {
+        const chatExists: boolean = await this.chatRepository.chatExistsById(id, userId)
 
         if (!chatExists) {
             return {
@@ -41,7 +38,7 @@ class ChatServiceImpl implements ChatService {
             }
         }
 
-        const chat = await this.chatRepository.findById(id)
+        const chat = await this.chatRepository.findById(id, userId)
 
         return {
             statusCode: StatusCode.OK,
@@ -59,8 +56,8 @@ class ChatServiceImpl implements ChatService {
         }
     }
 
-    async updateChat(data: ChatModel.UpdateChat): Promise<ResponseDto> {
-        const chatExists: boolean = await this.chatRepository.chatExistsById(data.chatId)
+    async updateChat(data: ChatModel.UpdateChat, userId: string): Promise<ResponseDto> {
+        const chatExists: boolean = await this.chatRepository.chatExistsById(data.chatId, userId)
 
         if (!chatExists) {
             return {
@@ -69,7 +66,7 @@ class ChatServiceImpl implements ChatService {
             }
         }
 
-        const chat = await this.chatRepository.update(data)
+        const chat = await this.chatRepository.update(data, userId)
 
         return {
             statusCode: StatusCode.OK,

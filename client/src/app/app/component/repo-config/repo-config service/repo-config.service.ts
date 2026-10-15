@@ -1,5 +1,6 @@
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
+import { defer, type Observable } from "rxjs";
 
 
 export type CreateRepoConfig = {
@@ -10,11 +11,19 @@ export type CreateRepoConfig = {
 }
 
 export type RepoConfig = {
+    id: string,
     provider: "GITHUB" | "GITLAB" | "BITBUCKET",
     repoUrl: string,
     baseBranch: string,
-    createdAt: Date,
     userId: string
+}
+
+interface RepoListResponse {
+    data: RepoConfig[];
+}
+
+interface RepoCreateResponse {
+    data: RepoConfig;
 }
 
 @Injectable({
@@ -28,15 +37,30 @@ class RepoConfigService {
 
     }
 
-    async createRepoConfig(config: CreateRepoConfig) {
-        const toke = localStorage.getItem("token");
-
-        const resp = this.httpClient.post(this.apiUrl, config, {
-            headers: {
-                Authorization: `Bearer ${toke}`
+    getConfiguredRepositories(): Observable<RepoListResponse> {
+        return defer(() => {
+            const token = localStorage.getItem("token");
+            if (!token) {
+                throw new Error("You must be signed in to load repositories.");
             }
-        })
-        // return resp as RepoConfig;
+
+            return this.httpClient.get<RepoListResponse>(this.apiUrl, {
+                headers: new HttpHeaders({ Authorization: `Bearer ${token}` }),
+            });
+        });
+    }
+
+    createRepoConfig(config: CreateRepoConfig): Observable<RepoCreateResponse> {
+        return defer(() => {
+            const token = localStorage.getItem("token");
+            if (!token) {
+                throw new Error("You must be signed in to configure a repository.");
+            }
+
+            return this.httpClient.post<RepoCreateResponse>(this.apiUrl, config, {
+                headers: new HttpHeaders({ Authorization: `Bearer ${token}` }),
+            });
+        });
     }
 
 }

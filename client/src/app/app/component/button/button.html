@@ -1,4 +1,6 @@
 <button 
+  type="button"
+  [disabled]="disabled()"
   [class]="'btn btn-' + type() + ' btn-' + size()" 
   (click)="handleClick()">
   {{ title() }}

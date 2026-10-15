@@ -1,10 +1,20 @@
 import { prisma } from "../../../prisma/prisma.js";
-import CustomError from "../../constants/CustomError.js";
-import StatusCode from "../../constants/StatusCode.js";
-import type { Prisma } from "../../generated/prisma/client.js";
 import type ChatModel from "./chat.model.js";
 
 class ChatRepository {
+    async repoBelongsToUser(repoId: string, userId: string): Promise<boolean> {
+        const repo = await prisma.gitRepo.findFirst({
+            where: {
+                id: repoId,
+                userId,
+            },
+            select: {
+                id: true,
+            },
+        });
+        return repo !== null;
+    }
+
     async save(data: ChatModel.CreateChat) {
         return prisma.chat.create({
             data: {
@@ -20,30 +30,42 @@ class ChatRepository {
                     },
                 },
             },
+            include: {
+                gitRepo: {
+                    select: {
+                        repoUrl: true,
+                    },
+                },
+            },
         });
     }
 
-    async update(data: ChatModel.UpdateChat) {
+    async update(data: ChatModel.UpdateChat, userId: string) {
         return prisma.chat.update({
             where: {
                 id: data.chatId,
+                userId,
             },
-            data,
+            data: {
+                chatName: data.chatName,
+            },
         });
     }
 
-    async findById(id: string) {
-        return prisma.chat.findUnique({
+    async findById(id: string, userId: string) {
+        return prisma.chat.findFirst({
             where: {
                 id,
+                userId,
             },
         });
     }
 
-    async chatExistsById(id: string): Promise<boolean> {
+    async chatExistsById(id: string, userId: string): Promise<boolean> {
         const isChatExists = await prisma.chat.findFirst({
             where: {
-                id: id
+                id,
+                userId,
             },
             select: {
                 id: true
@@ -56,24 +78,6 @@ class ChatRepository {
         return false
     }
 
-    async chatExistsByData(data: ChatModel.CreateChat): Promise<boolean> {
-        const existingChat = await prisma.chat.findFirst({
-            where: {
-                chatName: data.chatName,
-                userId: data.userId,
-                repoId: data.repoId,
-            },
-            select: {
-                id: true
-            }
-        });
-
-        if (existingChat) {
-            return true
-        }
-        return false
-    }
-
     async findChatByUserId(userId: string) {
         return await prisma.chat.findMany({
             where: {
@@ -81,10 +85,19 @@ class ChatRepository {
                     id: userId
                 }
             },
+            orderBy: {
+                createdAt: "desc",
+            },
             select: {
                 chatName: true,
                 id: true,
-                userId: true
+                userId: true,
+                repoId: true,
+                gitRepo: {
+                    select: {
+                        repoUrl: true,
+                    },
+                },
             }
         })
     }

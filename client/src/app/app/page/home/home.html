@@ -4,7 +4,7 @@
 
   <!-- Top Navigation Bar -->
   <app-navbar
-    [activeRepo]="selectedRepo()"
+    [activeRepo]="selectedRepoName()"
     (newChatRequested)="onNewChat()"
     (openConfigRequested)="isModalOpen.set(true)"
   ></app-navbar>
@@ -26,9 +26,11 @@
     <app-chat-window
       [configuredRepos]="configuredRepos()"
       [selectedRepo]="selectedRepo()"
+      [activeThreadId]="activeThreadId()"
       [messages]="messages()"
-      [errorMessage]="messageError()"
+      [errorMessage]="displayedError()"
       [isLoading]="isLoadingMessages()"
+      [isSending]="isSendingMessage()"
       (repoChanged)="selectedRepo.set($event)"
       (messageSent)="onSendMessage($event)"
       (openConfigRequested)="isModalOpen.set(true)"
@@ -36,6 +38,9 @@
   </div>
 
   @if (isModalOpen()) {
-    <app-repo-config-modal (closeModal)="isModalOpen.set(false)"></app-repo-config-modal>
+    <app-repo-config-modal
+      (closeModal)="isModalOpen.set(false)"
+      (repoSaved)="onRepositoriesSaved()"
+    ></app-repo-config-modal>
   }
 </div>
