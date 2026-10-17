@@ -18,7 +18,6 @@ export enum GitProvider {
   styleUrl: './repo-config.scss',
 })
 export class RepoConfigModalComponent {
-
   repoService = inject(RepoConfigService);
   providers = Object.values(GitProvider);
   configForm: FormGroup;
@@ -78,5 +77,17 @@ export class RepoConfigModalComponent {
       if (error instanceof Error) return error.message;
       return 'Unable to save repository configuration.';
     }
+  }
+
+  private getErrorMessage(error: unknown): string {
+    if (typeof error === 'object' && error !== null && 'error' in error) {
+      const responseError = error.error;
+      if (typeof responseError === 'object' && responseError !== null && 'message' in responseError) {
+        const message = responseError.message;
+        if (typeof message === 'string') return message;
+      }
+    }
+    if (error instanceof Error) return error.message;
+    return 'Unable to save repository configuration.';
   }
 }

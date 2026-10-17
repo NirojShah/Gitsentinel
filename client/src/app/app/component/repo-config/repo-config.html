@@ -12,9 +12,6 @@
       @if (errorMessage()) {
         <p class="error-msg" role="alert">{{ errorMessage() }}</p>
       }
-      @if (errorMessage()) {
-        <p class="error-msg" role="alert">{{ errorMessage() }}</p>
-      }
       <!-- Git Provider Selection -->
       <div class="form-group">
         <label for="provider">Git Provider</label>
@@ -24,8 +21,6 @@
           }
         </select>
       </div>
-
-      <!-- Repository URL -->
       <div class="form-group">
         <label for="repoUrl">Repository URL</label>
         <input
