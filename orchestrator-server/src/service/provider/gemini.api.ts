@@ -6,14 +6,12 @@ import type {
     ModelResponse
 } from "../interface/model.interface.js";
 
-const GEMINI_API_KEY = "YOUR_GEMINI_API_KEY";
-
 class GeminiApi implements ModelFunctions {
     private readonly client: GoogleGenAI;
 
-    constructor() {
+    constructor(apiKey: string) {
         this.client = new GoogleGenAI({
-            apiKey: GEMINI_API_KEY
+            apiKey
         });
     }
 
@@ -30,7 +28,10 @@ class GeminiApi implements ModelFunctions {
             const conversationMessages = messages
                 .filter((message) => message.role !== "system")
                 .map((message) => ({
-                    role: message.role === "assistant" ? "model" as const : "user" as const,
+                    role:
+                        message.role === "assistant"
+                            ? "model" as const
+                            : "user" as const,
                     parts: [{ text: message.content }]
                 }));
 
@@ -47,7 +48,7 @@ class GeminiApi implements ModelFunctions {
             const content = response.text;
 
             if (!content) {
-                throw new Error("Gemini returned an empty response.");
+                return { content: null };
             }
 
             return { content };
