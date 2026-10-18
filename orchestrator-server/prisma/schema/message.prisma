@@ -6,7 +6,7 @@ model Message {
     createdAt DateTime @default(now())
 
     user User? @relation(fields: [sender], references: [id])
-    chat Chat @relation(fields: [chatId], references: [id])
+    chat Chat  @relation(fields: [chatId], references: [id])
 
     @@index([id, createdAt, chatId])
     @@map("message")
