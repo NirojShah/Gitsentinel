@@ -1,20 +1,20 @@
 // prisma/schema/user.prisma
 
 model User {
-    id         String  @id @default(uuid()) // UUID string prevents ID scraping
-    email      String  @unique // Unique email for authentication
-    username   String  @unique // Unique system identifier
-    name       String? // Optional display name
-    password   String // Encrypted password string
-    isActive   Boolean @default(true) // Easily deactivate accounts
-    isVerified Boolean @default(false) // Track email confirmation status
+    id         String  @id @default(uuid())
+    email      String  @unique
+    username   String  @unique
+    name       String?
+    password   String
+    isActive   Boolean @default(true)
+    isVerified Boolean @default(false)
 
-    // Tracking Timestamps
-    createdAt DateTime  @default(now()) // Automatically set on creation
-    updatedAt DateTime  @updatedAt // Automatically managed by Prisma on any update
-    gitRepos  GitRepo[]
-    chat      Chat[]
-    message   Message[]
+    createdAt       DateTime          @default(now())
+    updatedAt       DateTime          @updatedAt
+    gitRepos        GitRepo[]
+    chat            Chat[]
+    message         Message[]
+    aiConfiguration Aiconfiguration[]
 
-    @@map("users") // 🧠 Maps the model to a lowercase "users" table name inside PostgreSQL
+    @@map("users")
 }
