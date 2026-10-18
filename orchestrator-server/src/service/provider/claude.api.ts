@@ -6,14 +6,12 @@ import type {
     ModelResponse
 } from "../interface/model.interface.js";
 
-const ANTHROPIC_API_KEY = "YOUR_ANTHROPIC_API_KEY";
-
 class ClaudeApi implements ModelFunctions {
     private readonly client: Anthropic;
 
-    constructor() {
+    constructor(apiKey: string) {
         this.client = new Anthropic({
-            apiKey: ANTHROPIC_API_KEY
+            apiKey
         });
     }
 
@@ -23,19 +21,23 @@ class ClaudeApi implements ModelFunctions {
         try {
             const { messages, model } = request;
 
+            // Extract the system message
             const systemMessage = messages.find(
                 (message) => message.role === "system"
             );
 
+            // Convert the remaining messages into Claude's format
             const conversationMessages = messages
                 .filter((message) => message.role !== "system")
                 .map((message) => ({
-                    role: message.role === "assistant"
-                        ? "assistant" as const
-                        : "user" as const,
+                    role:
+                        message.role === "assistant"
+                            ? "assistant" as const
+                            : "user" as const,
                     content: message.content
                 }));
 
+            // Generate the response
             const response = await this.client.messages.create({
                 model,
                 max_tokens: 4096,
@@ -45,13 +47,15 @@ class ClaudeApi implements ModelFunctions {
                 })
             });
 
+            // Extract text blocks from the response
             const content = response.content
                 .filter((block) => block.type === "text")
                 .map((block) => block.text)
                 .join("\n");
 
+            // Handle an empty response
             if (!content) {
-                throw new Error("Claude returned an empty response.");
+                return { content: null };
             }
 
             return { content };
