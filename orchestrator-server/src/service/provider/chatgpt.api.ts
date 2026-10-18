@@ -6,14 +6,12 @@ import type {
     ModelResponse
 } from "../interface/model.interface.js";
 
-const OPENAI_API_KEY = "YOUR_OPENAI_API_KEY";
-
 class OpenAiApi implements ModelFunctions {
     private readonly client: OpenAI;
 
-    constructor() {
+    constructor(apiKey: string) {
         this.client = new OpenAI({
-            apiKey: OPENAI_API_KEY
+            apiKey
         });
     }
 
@@ -23,10 +21,12 @@ class OpenAiApi implements ModelFunctions {
         try {
             const { messages, model } = request;
 
+            // Extract the system message
             const systemMessage = messages.find(
                 (message) => message.role === "system"
             );
 
+            // Convert the remaining messages into OpenAI's format
             const conversationMessages = messages
                 .filter((message) => message.role !== "system")
                 .map((message) => ({
@@ -34,6 +34,7 @@ class OpenAiApi implements ModelFunctions {
                     content: message.content
                 }));
 
+            // Generate the response
             const response = await this.client.responses.create({
                 model,
                 instructions: systemMessage?.content,
@@ -42,8 +43,9 @@ class OpenAiApi implements ModelFunctions {
 
             const content = response.output_text;
 
+            // Handle an empty response
             if (!content) {
-                throw new Error("OpenAI returned an empty response.");
+                return { content: null };
             }
 
             return { content };
