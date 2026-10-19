@@ -10,12 +10,12 @@ interface AiConfigurationServiceI {
 }
 
 class AiConfigurationService implements AiConfigurationServiceI {
-    constructor(private readonly prismaRepository: AiConfigurationRepository) { }
+    constructor(private readonly aiConfigurationRepository: AiConfigurationRepository) { }
 
     async createAiConfiguration(payload: Prisma.AiconfigurationCreateInput): Promise<ResponseDto> {
         try {
 
-            const response = await this.prismaRepository.createConfiguration(payload);
+            const response = await this.aiConfigurationRepository.createConfiguration(payload);
             return {
                 statusCode: 201,
                 data: response
@@ -30,7 +30,7 @@ class AiConfigurationService implements AiConfigurationServiceI {
     }
     async updateAiConfiguration(configurationId: string, payload: Prisma.AiconfigurationUpdateArgs): Promise<ResponseDto> {
         try {
-            const response = await this.prismaRepository.updateConfiguration(configurationId, payload);
+            const response = await this.aiConfigurationRepository.updateConfiguration(configurationId, payload);
             return {
                 statusCode: 200,
 
@@ -44,8 +44,20 @@ class AiConfigurationService implements AiConfigurationServiceI {
             }
         }
     }
-    getAIConfigurationByUserId(userId: string, page: number, limit: number): Promise<ResponseDto> {
-        throw new Error("Method not implemented.");
+    async getAIConfigurationByUserId(userId: string, page: number, limit: number): Promise<ResponseDto> {
+        try {
+            const response = await this.aiConfigurationRepository.getConfigurationByUserId(userId, page, limit)
+            return {
+                statusCode: 200,
+                data: response
+            }
+        } catch (err) {
+            const error: Error = err as Error;
+            return {
+                statusCode: 500,
+                message: error.message
+            }
+        }
     }
 }
 
