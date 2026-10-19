@@ -20,6 +20,18 @@ class AiConfigurationRepository {
         return updateConfiguration;
     }
 
+    async getConfigurationByUserId(userId: string, page: number, limit: number) {
+        const configurations = await prisma.aiconfiguration.findMany({
+            where: {
+                userId: userId
+            },
+            skip: (page - 1) * limit,
+            take: limit
+        })
+
+        return configurations;
+    }
+
 }
 
 export default AiConfigurationRepository;
