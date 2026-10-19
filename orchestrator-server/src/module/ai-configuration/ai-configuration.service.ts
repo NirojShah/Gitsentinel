@@ -5,7 +5,7 @@ import type AiConfigurationRepository from "./ai-configuration.repository.js";
 
 interface AiConfigurationServiceI {
     createAiConfiguration(payload: Prisma.AiconfigurationCreateInput): Promise<ResponseDto>
-    updateAiConfiguration(configurationId: string, payload: Prisma.AiconfigurationCreateInput): Promise<ResponseDto>
+    updateAiConfiguration(configurationId: string, payload: Prisma.AiconfigurationUpdateArgs): Promise<ResponseDto>
     getAIConfigurationByUserId(userId: string, page: number, limit: number): Promise<ResponseDto>
 }
 
@@ -13,14 +13,36 @@ class AiConfigurationService implements AiConfigurationServiceI {
     constructor(private readonly prismaRepository: AiConfigurationRepository) { }
 
     async createAiConfiguration(payload: Prisma.AiconfigurationCreateInput): Promise<ResponseDto> {
-        const response = await this.prismaRepository.createConfiguration(payload);
-        return {
-            statusCode: 201,
-            data: response
+        try {
+
+            const response = await this.prismaRepository.createConfiguration(payload);
+            return {
+                statusCode: 201,
+                data: response
+            }
+        } catch (err) {
+            const error: Error = err as Error
+            return {
+                statusCode: 500,
+                message: error.message
+            }
         }
     }
-    updateAiConfiguration(configurationId: string, payload: Prisma.AiconfigurationCreateInput): Promise<ResponseDto> {
-        throw new Error("Method not implemented.");
+    async updateAiConfiguration(configurationId: string, payload: Prisma.AiconfigurationUpdateArgs): Promise<ResponseDto> {
+        try {
+            const response = await this.prismaRepository.updateConfiguration(configurationId, payload);
+            return {
+                statusCode: 200,
+
+                data: response
+            }
+        } catch (err) {
+            const error: Error = err as Error;
+            return {
+                statusCode: 500,
+                message: error.message
+            }
+        }
     }
     getAIConfigurationByUserId(userId: string, page: number, limit: number): Promise<ResponseDto> {
         throw new Error("Method not implemented.");
