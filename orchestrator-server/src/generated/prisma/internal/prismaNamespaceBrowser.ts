@@ -51,6 +51,7 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
+  Aiconfiguration: 'Aiconfiguration',
   Chat: 'Chat',
   GitRepo: 'GitRepo',
   Message: 'Message',
@@ -71,6 +72,16 @@ export const TransactionIsolationLevel = runtime.makeStrictEnum({
 } as const)
 
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
+
+
+export const AiconfigurationScalarFieldEnum = {
+  id: 'id',
+  provider: 'provider',
+  model: 'model',
+  userId: 'userId'
+} as const
+
+export type AiconfigurationScalarFieldEnum = (typeof AiconfigurationScalarFieldEnum)[keyof typeof AiconfigurationScalarFieldEnum]
 
 
 export const ChatScalarFieldEnum = {
