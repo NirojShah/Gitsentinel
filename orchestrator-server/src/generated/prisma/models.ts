@@ -8,6 +8,7 @@
  *
  * 🟢 You can import this file directly.
  */
+export type * from './models/Aiconfiguration.js'
 export type * from './models/Chat.js'
 export type * from './models/GitRepo.js'
 export type * from './models/Message.js'
