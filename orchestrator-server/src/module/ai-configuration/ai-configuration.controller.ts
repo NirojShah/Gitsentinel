@@ -56,11 +56,38 @@ class AiConfigurationController {
         }
     }
 
-    async updateConfiguration(
-        req: AuthenticatedRequest,
-        res: Response
-    ): Promise<Response> {
-        throw new Error("not implemented.");
+    async updateConfiguration(req: AuthenticatedRequest, res: Response): Promise<Response> {
+        try {
+            const configurationId = req.params.configurationId;
+
+            if (typeof configurationId !== "string") {
+                return res.status(400).json({
+                    statusCode: 400,
+                    message: "Invalid configuration ID",
+                });
+            }
+
+            const { model, provider } = req.body;
+
+            const payload: Prisma.AiconfigurationUpdateInput = {
+                ...(model !== undefined && { model }),
+                ...(provider !== undefined && { provider }),
+            };
+
+            const result = await this.aiService.updateAiConfiguration(
+                configurationId,
+                payload
+            );
+
+            return res.status(result.statusCode).json(result);
+        } catch (error) {
+            const err = error as Error;
+
+            return res.status(500).json({
+                statusCode: 500,
+                message: err.message,
+            });
+        }
     }
 }
 
