@@ -217,6 +217,7 @@ export type UserWhereInput = {
   gitRepos?: Prisma.GitRepoListRelationFilter
   chat?: Prisma.ChatListRelationFilter
   message?: Prisma.MessageListRelationFilter
+  aiConfiguration?: Prisma.AiconfigurationListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -232,6 +233,7 @@ export type UserOrderByWithRelationInput = {
   gitRepos?: Prisma.GitRepoOrderByRelationAggregateInput
   chat?: Prisma.ChatOrderByRelationAggregateInput
   message?: Prisma.MessageOrderByRelationAggregateInput
+  aiConfiguration?: Prisma.AiconfigurationOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -250,6 +252,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   gitRepos?: Prisma.GitRepoListRelationFilter
   chat?: Prisma.ChatListRelationFilter
   message?: Prisma.MessageListRelationFilter
+  aiConfiguration?: Prisma.AiconfigurationListRelationFilter
 }, "id" | "email" | "username">
 
 export type UserOrderByWithAggregationInput = {
@@ -295,6 +298,7 @@ export type UserCreateInput = {
   gitRepos?: Prisma.GitRepoCreateNestedManyWithoutUserInput
   chat?: Prisma.ChatCreateNestedManyWithoutUserInput
   message?: Prisma.MessageCreateNestedManyWithoutUserInput
+  aiConfiguration?: Prisma.AiconfigurationCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -310,6 +314,7 @@ export type UserUncheckedCreateInput = {
   gitRepos?: Prisma.GitRepoUncheckedCreateNestedManyWithoutUserInput
   chat?: Prisma.ChatUncheckedCreateNestedManyWithoutUserInput
   message?: Prisma.MessageUncheckedCreateNestedManyWithoutUserInput
+  aiConfiguration?: Prisma.AiconfigurationUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -325,6 +330,7 @@ export type UserUpdateInput = {
   gitRepos?: Prisma.GitRepoUpdateManyWithoutUserNestedInput
   chat?: Prisma.ChatUpdateManyWithoutUserNestedInput
   message?: Prisma.MessageUpdateManyWithoutUserNestedInput
+  aiConfiguration?: Prisma.AiconfigurationUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -340,6 +346,7 @@ export type UserUncheckedUpdateInput = {
   gitRepos?: Prisma.GitRepoUncheckedUpdateManyWithoutUserNestedInput
   chat?: Prisma.ChatUncheckedUpdateManyWithoutUserNestedInput
   message?: Prisma.MessageUncheckedUpdateManyWithoutUserNestedInput
+  aiConfiguration?: Prisma.AiconfigurationUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -424,6 +431,20 @@ export type UserMinOrderByAggregateInput = {
   updatedAt?: Prisma.SortOrder
 }
 
+export type UserCreateNestedOneWithoutAiConfigurationInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAiConfigurationInput, Prisma.UserUncheckedCreateWithoutAiConfigurationInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAiConfigurationInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutAiConfigurationNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAiConfigurationInput, Prisma.UserUncheckedCreateWithoutAiConfigurationInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAiConfigurationInput
+  upsert?: Prisma.UserUpsertWithoutAiConfigurationInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAiConfigurationInput, Prisma.UserUpdateWithoutAiConfigurationInput>, Prisma.UserUncheckedUpdateWithoutAiConfigurationInput>
+}
+
 export type UserCreateNestedOneWithoutChatInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutChatInput, Prisma.UserUncheckedCreateWithoutChatInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutChatInput
@@ -472,6 +493,82 @@ export type BoolFieldUpdateOperationsInput = {
   set?: boolean
 }
 
+export type UserCreateWithoutAiConfigurationInput = {
+  id?: string
+  email: string
+  username: string
+  name?: string | null
+  password: string
+  isActive?: boolean
+  isVerified?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  gitRepos?: Prisma.GitRepoCreateNestedManyWithoutUserInput
+  chat?: Prisma.ChatCreateNestedManyWithoutUserInput
+  message?: Prisma.MessageCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutAiConfigurationInput = {
+  id?: string
+  email: string
+  username: string
+  name?: string | null
+  password: string
+  isActive?: boolean
+  isVerified?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  gitRepos?: Prisma.GitRepoUncheckedCreateNestedManyWithoutUserInput
+  chat?: Prisma.ChatUncheckedCreateNestedManyWithoutUserInput
+  message?: Prisma.MessageUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutAiConfigurationInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutAiConfigurationInput, Prisma.UserUncheckedCreateWithoutAiConfigurationInput>
+}
+
+export type UserUpsertWithoutAiConfigurationInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutAiConfigurationInput, Prisma.UserUncheckedUpdateWithoutAiConfigurationInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutAiConfigurationInput, Prisma.UserUncheckedCreateWithoutAiConfigurationInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutAiConfigurationInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutAiConfigurationInput, Prisma.UserUncheckedUpdateWithoutAiConfigurationInput>
+}
+
+export type UserUpdateWithoutAiConfigurationInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  gitRepos?: Prisma.GitRepoUpdateManyWithoutUserNestedInput
+  chat?: Prisma.ChatUpdateManyWithoutUserNestedInput
+  message?: Prisma.MessageUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutAiConfigurationInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  gitRepos?: Prisma.GitRepoUncheckedUpdateManyWithoutUserNestedInput
+  chat?: Prisma.ChatUncheckedUpdateManyWithoutUserNestedInput
+  message?: Prisma.MessageUncheckedUpdateManyWithoutUserNestedInput
+}
+
 export type UserCreateWithoutChatInput = {
   id?: string
   email: string
@@ -484,6 +581,7 @@ export type UserCreateWithoutChatInput = {
   updatedAt?: Date | string
   gitRepos?: Prisma.GitRepoCreateNestedManyWithoutUserInput
   message?: Prisma.MessageCreateNestedManyWithoutUserInput
+  aiConfiguration?: Prisma.AiconfigurationCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutChatInput = {
@@ -498,6 +596,7 @@ export type UserUncheckedCreateWithoutChatInput = {
   updatedAt?: Date | string
   gitRepos?: Prisma.GitRepoUncheckedCreateNestedManyWithoutUserInput
   message?: Prisma.MessageUncheckedCreateNestedManyWithoutUserInput
+  aiConfiguration?: Prisma.AiconfigurationUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutChatInput = {
@@ -528,6 +627,7 @@ export type UserUpdateWithoutChatInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   gitRepos?: Prisma.GitRepoUpdateManyWithoutUserNestedInput
   message?: Prisma.MessageUpdateManyWithoutUserNestedInput
+  aiConfiguration?: Prisma.AiconfigurationUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutChatInput = {
@@ -542,6 +642,7 @@ export type UserUncheckedUpdateWithoutChatInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   gitRepos?: Prisma.GitRepoUncheckedUpdateManyWithoutUserNestedInput
   message?: Prisma.MessageUncheckedUpdateManyWithoutUserNestedInput
+  aiConfiguration?: Prisma.AiconfigurationUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutGitReposInput = {
@@ -556,6 +657,7 @@ export type UserCreateWithoutGitReposInput = {
   updatedAt?: Date | string
   chat?: Prisma.ChatCreateNestedManyWithoutUserInput
   message?: Prisma.MessageCreateNestedManyWithoutUserInput
+  aiConfiguration?: Prisma.AiconfigurationCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutGitReposInput = {
@@ -570,6 +672,7 @@ export type UserUncheckedCreateWithoutGitReposInput = {
   updatedAt?: Date | string
   chat?: Prisma.ChatUncheckedCreateNestedManyWithoutUserInput
   message?: Prisma.MessageUncheckedCreateNestedManyWithoutUserInput
+  aiConfiguration?: Prisma.AiconfigurationUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutGitReposInput = {
@@ -600,6 +703,7 @@ export type UserUpdateWithoutGitReposInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   chat?: Prisma.ChatUpdateManyWithoutUserNestedInput
   message?: Prisma.MessageUpdateManyWithoutUserNestedInput
+  aiConfiguration?: Prisma.AiconfigurationUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutGitReposInput = {
@@ -614,6 +718,7 @@ export type UserUncheckedUpdateWithoutGitReposInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   chat?: Prisma.ChatUncheckedUpdateManyWithoutUserNestedInput
   message?: Prisma.MessageUncheckedUpdateManyWithoutUserNestedInput
+  aiConfiguration?: Prisma.AiconfigurationUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutMessageInput = {
@@ -628,6 +733,7 @@ export type UserCreateWithoutMessageInput = {
   updatedAt?: Date | string
   gitRepos?: Prisma.GitRepoCreateNestedManyWithoutUserInput
   chat?: Prisma.ChatCreateNestedManyWithoutUserInput
+  aiConfiguration?: Prisma.AiconfigurationCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutMessageInput = {
@@ -642,6 +748,7 @@ export type UserUncheckedCreateWithoutMessageInput = {
   updatedAt?: Date | string
   gitRepos?: Prisma.GitRepoUncheckedCreateNestedManyWithoutUserInput
   chat?: Prisma.ChatUncheckedCreateNestedManyWithoutUserInput
+  aiConfiguration?: Prisma.AiconfigurationUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutMessageInput = {
@@ -672,6 +779,7 @@ export type UserUpdateWithoutMessageInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   gitRepos?: Prisma.GitRepoUpdateManyWithoutUserNestedInput
   chat?: Prisma.ChatUpdateManyWithoutUserNestedInput
+  aiConfiguration?: Prisma.AiconfigurationUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutMessageInput = {
@@ -686,6 +794,7 @@ export type UserUncheckedUpdateWithoutMessageInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   gitRepos?: Prisma.GitRepoUncheckedUpdateManyWithoutUserNestedInput
   chat?: Prisma.ChatUncheckedUpdateManyWithoutUserNestedInput
+  aiConfiguration?: Prisma.AiconfigurationUncheckedUpdateManyWithoutUserNestedInput
 }
 
 
@@ -697,12 +806,14 @@ export type UserCountOutputType = {
   gitRepos: number
   chat: number
   message: number
+  aiConfiguration: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   gitRepos?: boolean | UserCountOutputTypeCountGitReposArgs
   chat?: boolean | UserCountOutputTypeCountChatArgs
   message?: boolean | UserCountOutputTypeCountMessageArgs
+  aiConfiguration?: boolean | UserCountOutputTypeCountAiConfigurationArgs
 }
 
 /**
@@ -736,6 +847,13 @@ export type UserCountOutputTypeCountMessageArgs<ExtArgs extends runtime.Types.Ex
   where?: Prisma.MessageWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountAiConfigurationArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AiconfigurationWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -750,6 +868,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   gitRepos?: boolean | Prisma.User$gitReposArgs<ExtArgs>
   chat?: boolean | Prisma.User$chatArgs<ExtArgs>
   message?: boolean | Prisma.User$messageArgs<ExtArgs>
+  aiConfiguration?: boolean | Prisma.User$aiConfigurationArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -794,6 +913,7 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   gitRepos?: boolean | Prisma.User$gitReposArgs<ExtArgs>
   chat?: boolean | Prisma.User$chatArgs<ExtArgs>
   message?: boolean | Prisma.User$messageArgs<ExtArgs>
+  aiConfiguration?: boolean | Prisma.User$aiConfigurationArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -805,6 +925,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     gitRepos: Prisma.$GitRepoPayload<ExtArgs>[]
     chat: Prisma.$ChatPayload<ExtArgs>[]
     message: Prisma.$MessagePayload<ExtArgs>[]
+    aiConfiguration: Prisma.$AiconfigurationPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1213,6 +1334,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   gitRepos<T extends Prisma.User$gitReposArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$gitReposArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$GitRepoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   chat<T extends Prisma.User$chatArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$chatArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ChatPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   message<T extends Prisma.User$messageArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$messageArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  aiConfiguration<T extends Prisma.User$aiConfigurationArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$aiConfigurationArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AiconfigurationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1713,6 +1835,30 @@ export type User$messageArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
   take?: number
   skip?: number
   distinct?: Prisma.MessageScalarFieldEnum | Prisma.MessageScalarFieldEnum[]
+}
+
+/**
+ * User.aiConfiguration
+ */
+export type User$aiConfigurationArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Aiconfiguration
+   */
+  select?: Prisma.AiconfigurationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Aiconfiguration
+   */
+  omit?: Prisma.AiconfigurationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AiconfigurationInclude<ExtArgs> | null
+  where?: Prisma.AiconfigurationWhereInput
+  orderBy?: Prisma.AiconfigurationOrderByWithRelationInput | Prisma.AiconfigurationOrderByWithRelationInput[]
+  cursor?: Prisma.AiconfigurationWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AiconfigurationScalarFieldEnum | Prisma.AiconfigurationScalarFieldEnum[]
 }
 
 /**

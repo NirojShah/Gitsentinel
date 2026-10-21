@@ -353,10 +353,6 @@ export type ChatScalarRelationFilter = {
   isNot?: Prisma.ChatWhereInput
 }
 
-export type StringFieldUpdateOperationsInput = {
-  set?: string
-}
-
 export type NullableStringFieldUpdateOperationsInput = {
   set?: string | null
 }

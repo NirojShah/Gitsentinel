@@ -397,6 +397,7 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 
 
 export const ModelName = {
+  Aiconfiguration: 'Aiconfiguration',
   Chat: 'Chat',
   GitRepo: 'GitRepo',
   Message: 'Message',
@@ -416,10 +417,84 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "chat" | "gitRepo" | "message" | "user"
+    modelProps: "aiconfiguration" | "chat" | "gitRepo" | "message" | "user"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
+    Aiconfiguration: {
+      payload: Prisma.$AiconfigurationPayload<ExtArgs>
+      fields: Prisma.AiconfigurationFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.AiconfigurationFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AiconfigurationPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.AiconfigurationFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AiconfigurationPayload>
+        }
+        findFirst: {
+          args: Prisma.AiconfigurationFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AiconfigurationPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.AiconfigurationFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AiconfigurationPayload>
+        }
+        findMany: {
+          args: Prisma.AiconfigurationFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AiconfigurationPayload>[]
+        }
+        create: {
+          args: Prisma.AiconfigurationCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AiconfigurationPayload>
+        }
+        createMany: {
+          args: Prisma.AiconfigurationCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.AiconfigurationCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AiconfigurationPayload>[]
+        }
+        delete: {
+          args: Prisma.AiconfigurationDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AiconfigurationPayload>
+        }
+        update: {
+          args: Prisma.AiconfigurationUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AiconfigurationPayload>
+        }
+        deleteMany: {
+          args: Prisma.AiconfigurationDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.AiconfigurationUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.AiconfigurationUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AiconfigurationPayload>[]
+        }
+        upsert: {
+          args: Prisma.AiconfigurationUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AiconfigurationPayload>
+        }
+        aggregate: {
+          args: Prisma.AiconfigurationAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateAiconfiguration>
+        }
+        groupBy: {
+          args: Prisma.AiconfigurationGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AiconfigurationGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.AiconfigurationCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AiconfigurationCountAggregateOutputType> | number
+        }
+      }
+    }
     Chat: {
       payload: Prisma.$ChatPayload<ExtArgs>
       fields: Prisma.ChatFieldRefs
@@ -755,6 +830,16 @@ export const TransactionIsolationLevel = runtime.makeStrictEnum({
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
+export const AiconfigurationScalarFieldEnum = {
+  id: 'id',
+  provider: 'provider',
+  model: 'model',
+  userId: 'userId'
+} as const
+
+export type AiconfigurationScalarFieldEnum = (typeof AiconfigurationScalarFieldEnum)[keyof typeof AiconfigurationScalarFieldEnum]
+
+
 export const ChatScalarFieldEnum = {
   id: 'id',
   chatName: 'chatName',
@@ -1050,6 +1135,7 @@ export interface PrismaClientOptionsWithAdapter extends PrismaClientBaseOptions 
  */
 export type PrismaClientOptions = PrismaClientOptionsWithAccelerateUrl | PrismaClientOptionsWithAdapter
 export type GlobalOmitConfig = {
+  aiconfiguration?: Prisma.AiconfigurationOmit
   chat?: Prisma.ChatOmit
   gitRepo?: Prisma.GitRepoOmit
   message?: Prisma.MessageOmit
