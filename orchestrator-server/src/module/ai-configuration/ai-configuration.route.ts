@@ -1,15 +1,21 @@
 import { Router } from "express";
-import { Router as AiConfigurationRouter } from "express";
+import type { Request, Response } from "express";
 import AiConfigurationController from "./ai-configuration.controller.js";
 import AiConfigurationService from "./ai-configuration.service.js";
 import AiConfigurationRepository from "./ai-configuration.repository.js";
-import { AiConfigurationControllerType, type AiConfigurationRepositoryType, type AiConfigurationServiceType } from "./ai-configuration.model.js";
+import type AuthenticatedRequest from "../../constants/AuthenticatedRequest.type.js";
 
-const aiConfigurationRouter: AiConfigurationRouter = Router();
+const aiConfigurationRouter = Router();
 
-const aiConfigurationReposotory: AiConfigurationRepositoryType = new AiConfigurationRepository()
-const aiConfigurationService: AiConfigurationServiceType = new AiConfigurationService(aiConfigurationReposotory);
-const aiConfigurationController: AiConfigurationControllerType = new AiConfigurationController(aiConfigurationService);
+const aiConfigurationRepository = new AiConfigurationRepository();
+const aiConfigurationService = new AiConfigurationService(aiConfigurationRepository);
+const aiConfigurationController = new AiConfigurationController(aiConfigurationService);
 
+aiConfigurationRouter.post("/", async (req: Request, res: Response) =>
+    aiConfigurationController.createConfiguration(req as AuthenticatedRequest, res));
+aiConfigurationRouter.get("/", async (req: Request, res: Response) =>
+    aiConfigurationController.getConfiguration(req as AuthenticatedRequest, res));
+aiConfigurationRouter.put("/:configurationId", async (req: Request, res: Response) =>
+    aiConfigurationController.updateConfiguration(req as AuthenticatedRequest, res));
 
 export default aiConfigurationRouter;
