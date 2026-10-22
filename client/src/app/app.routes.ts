@@ -5,6 +5,7 @@ import authGuardRedirection from './app/core/auth-guard/auth-guard';
 
 import { loginGuard } from './app/core/login-guard/login-guard';
 import { HomeComponent } from './app/page/home/home';
+import { AiConfiguration } from './app/component/ai-configuration/ai-configuration';
 
 export const routes: Routes = [
     {
@@ -19,6 +20,11 @@ export const routes: Routes = [
     {
         path: 'home',
         component: HomeComponent,
+        canActivate: [authGuardRedirection]
+    },
+    {
+        path: 'ai-configuration',
+        component: AiConfiguration,
         canActivate: [authGuardRedirection]
     },
     {
