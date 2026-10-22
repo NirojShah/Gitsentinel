@@ -1,12 +1,20 @@
+<<<<<<< Updated upstream
 import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { finalize, switchMap } from 'rxjs';
+=======
+import { Component, inject, OnInit, signal } from '@angular/core';
+import { finalize } from 'rxjs';
+>>>>>>> Stashed changes
 import { SidebarComponent, type ChatThread } from '../../component/sidebar/sidebar';
 import { ChatWindowComponent, type ChatMessage } from '../../component/chat-window/chat-window';
 import { RepoConfigModalComponent } from '../../component/repo-config/repo-config';
 import { NavbarComponent } from '../../component/navbar/navbar';
 import { MessageService, type MessageRecord } from '../../core/message-service/message.service';
+<<<<<<< Updated upstream
 import { ChatService, type ChatRecord } from '../../core/chat-service/chat.service';
 import RepoConfigService, { type RepoConfig } from '../../component/repo-config/repo-config service/repo-config.service';
+=======
+>>>>>>> Stashed changes
 
 @Component({
   selector: 'app-home',
@@ -31,6 +39,7 @@ export class HomeComponent implements OnInit {
 
   messages = signal<ChatMessage[]>([]);
   messageError = signal<string>('');
+<<<<<<< Updated upstream
   repositoryError = signal<string>('');
   displayedError = computed(
     () => [this.repositoryError(), this.messageError()].filter(Boolean).join(' '),
@@ -46,6 +55,14 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
     this.loadRepositories();
     this.loadChatHistory();
+=======
+  isLoadingMessages = signal<boolean>(false);
+
+  private readonly messageService = inject(MessageService);
+
+  ngOnInit() {
+    this.loadMessages(this.activeThreadId());
+>>>>>>> Stashed changes
   }
 
   // Resizer Drag Handlers
@@ -71,6 +88,7 @@ export class HomeComponent implements OnInit {
   }
 
   onNewChat() {
+<<<<<<< Updated upstream
     this.messageLoadRequest += 1;
     this.activeThreadId.set('');
     this.messages.set([]);
@@ -89,10 +107,22 @@ export class HomeComponent implements OnInit {
     const repoId = this.selectedRepo();
     if (!this.activeThreadId() && !repoId) {
       this.messageError.set('Configure a repository before starting a chat.');
+=======
+    this.activeThreadId.set('');
+    this.messages.set([]);
+    this.messageError.set('');
+  }
+
+  onSendMessage(text: string) {
+    const chatId = this.activeThreadId();
+    if (!chatId) {
+      this.messageError.set('Select an existing chat before sending a message.');
+>>>>>>> Stashed changes
       return;
     }
 
     this.messageError.set('');
+<<<<<<< Updated upstream
     this.isSendingMessage.set(true);
 
     const selectionAtSend = this.messageLoadRequest;
@@ -117,19 +147,28 @@ export class HomeComponent implements OnInit {
           this.messages.update((messages) => [...messages, this.toChatMessage(body)]);
         }
       },
+=======
+    this.messageService.sendMessage(chatId, text).subscribe({
+      next: ({ body }) => this.messages.update((messages) => [...messages, this.toChatMessage(body)]),
+>>>>>>> Stashed changes
       error: (error: unknown) => this.messageError.set(this.getErrorMessage(error, 'Unable to send message.')),
     });
   }
 
   onThreadSelected(chatId: string) {
+<<<<<<< Updated upstream
     this.messageLoadRequest += 1;
     this.activeThreadId.set(chatId);
     const thread = this.chatHistory().find((chat) => chat.id === chatId);
     if (thread) this.selectedRepo.set(thread.repoId);
+=======
+    this.activeThreadId.set(chatId);
+>>>>>>> Stashed changes
     this.messages.set([]);
     this.loadMessages(chatId);
   }
 
+<<<<<<< Updated upstream
   private loadRepositories() {
     this.repoConfigService.getConfiguredRepositories().subscribe({
       next: ({ data }) => {
@@ -168,10 +207,16 @@ export class HomeComponent implements OnInit {
     if (!chatId) return;
 
     const requestId = ++this.messageLoadRequest;
+=======
+  private loadMessages(chatId: string) {
+    if (!chatId) return;
+
+>>>>>>> Stashed changes
     this.isLoadingMessages.set(true);
     this.messageError.set('');
     this.messageService
       .fetchMessages(chatId)
+<<<<<<< Updated upstream
       .pipe(finalize(() => {
         if (requestId === this.messageLoadRequest) this.isLoadingMessages.set(false);
       }))
@@ -186,6 +231,12 @@ export class HomeComponent implements OnInit {
             this.messageError.set(this.getErrorMessage(error, 'Unable to load messages.'));
           }
         },
+=======
+      .pipe(finalize(() => this.isLoadingMessages.set(false)))
+      .subscribe({
+        next: ({ body }) => this.messages.set(body.map((message) => this.toChatMessage(message))),
+        error: (error: unknown) => this.messageError.set(this.getErrorMessage(error, 'Unable to load messages.')),
+>>>>>>> Stashed changes
       });
   }
 
@@ -198,6 +249,7 @@ export class HomeComponent implements OnInit {
     };
   }
 
+<<<<<<< Updated upstream
   private toChatThread(chat: ChatRecord): ChatThread {
     return {
       id: chat.id,
@@ -212,6 +264,8 @@ export class HomeComponent implements OnInit {
     this.chatHistory.update((threads) => [thread, ...threads.filter((item) => item.id !== thread.id)]);
   }
 
+=======
+>>>>>>> Stashed changes
   private getErrorMessage(error: unknown, fallback: string): string {
     if (typeof error === 'object' && error !== null && 'error' in error) {
       const responseError = error.error;

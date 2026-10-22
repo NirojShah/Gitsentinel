@@ -26,7 +26,6 @@ export class ChatWindowComponent {
   errorMessage = input<string>('');
   isLoading = input<boolean>(false);
   isSending = input<boolean>(false);
-
   repoChanged = output<string>();
   messageSent = output<string>();
   openConfigRequested = output<void>();
