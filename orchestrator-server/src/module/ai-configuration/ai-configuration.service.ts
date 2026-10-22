@@ -5,7 +5,7 @@ import type AiConfigurationRepository from "./ai-configuration.repository.js";
 
 interface AiConfigurationServiceI {
     createAiConfiguration(payload: Prisma.AiconfigurationCreateInput): Promise<ResponseDto>
-    updateAiConfiguration(configurationId: string, payload: Prisma.AiconfigurationUpdateArgs): Promise<ResponseDto>
+    updateAiConfiguration(configurationId: string, payload: Prisma.AiconfigurationUpdateInput): Promise<ResponseDto>
     getAIConfigurationByUserId(userId: string, page: number, limit: number): Promise<ResponseDto>
 }
 
@@ -28,7 +28,7 @@ class AiConfigurationService implements AiConfigurationServiceI {
             }
         }
     }
-    async updateAiConfiguration(configurationId: string, payload: Prisma.AiconfigurationUpdateArgs): Promise<ResponseDto> {
+    async updateAiConfiguration(configurationId: string, payload: Prisma.AiconfigurationUpdateInput): Promise<ResponseDto> {
         try {
             const response = await this.aiConfigurationRepository.updateConfiguration(configurationId, payload);
             return {

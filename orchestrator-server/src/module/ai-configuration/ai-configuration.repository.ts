@@ -10,7 +10,7 @@ class AiConfigurationRepository {
         return configuration;
     }
 
-    async updateConfiguration(id: string, payload: Prisma.AiconfigurationUpdateArgs) {
+    async updateConfiguration(id: string, payload: Prisma.AiconfigurationUpdateInput) {
         const updateConfiguration = await prisma.aiconfiguration.update({
             where: {
                 id: id

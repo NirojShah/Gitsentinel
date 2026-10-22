@@ -64,19 +64,6 @@ export class RepoConfigModalComponent {
     if ((event.target as HTMLElement).classList.contains('modal-backdrop')) {
       this.handleClose();
     }
-    }
-
-    private getErrorMessage(error: unknown): string {
-      if (typeof error === 'object' && error !== null && 'error' in error) {
-        const responseError = error.error;
-        if (typeof responseError === 'object' && responseError !== null && 'message' in responseError) {
-          const message = responseError.message;
-          if (typeof message === 'string') return message;
-      }
-      }
-      if (error instanceof Error) return error.message;
-      return 'Unable to save repository configuration.';
-    }
   }
 
   private getErrorMessage(error: unknown): string {
