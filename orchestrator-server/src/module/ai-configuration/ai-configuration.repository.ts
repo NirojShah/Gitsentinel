@@ -10,14 +10,25 @@ class AiConfigurationRepository {
         return configuration;
     }
 
-    async updateConfiguration(id: string, payload: Prisma.AiconfigurationUpdateInput) {
-        const updateConfiguration = await prisma.aiconfiguration.update({
+    async updateConfiguration(id: string, userId: string, payload: Prisma.AiconfigurationUpdateManyMutationInput) {
+        const updateResult = await prisma.aiconfiguration.updateMany({
             where: {
-                id: id
+                id,
+                userId,
             },
             data: payload
-        })
-        return updateConfiguration;
+        });
+
+        if (updateResult.count === 0) {
+            return null;
+        }
+
+        return prisma.aiconfiguration.findFirst({
+            where: {
+                id,
+                userId,
+            },
+        });
     }
 
     async getConfigurationByUserId(userId: string, page: number, limit: number) {
