@@ -1,0 +1,110 @@
+<main class="ai-settings-page">
+  <div class="ambient ambient-purple"></div>
+  <div class="ambient ambient-cyan"></div>
+
+  <header class="page-header">
+    <a class="back-link" routerLink="/home">← Back to dashboard</a>
+    <span class="eyebrow">Workspace settings</span>
+    <h1>AI Configuration</h1>
+    <p>Choose the provider and model GitSentinel should use for AI-powered work.</p>
+  </header>
+
+  <section class="settings-grid" aria-label="AI configuration settings">
+    <form class="configuration-card glass-panel" [formGroup]="configForm" (ngSubmit)="onSubmit()">
+      <div class="card-heading">
+        <div>
+          <span class="eyebrow">{{ editingId() ? 'Update configuration' : 'New configuration' }}</span>
+          <h2>{{ editingId() ? 'Edit AI model' : 'Add an AI model' }}</h2>
+        </div>
+        <span class="provider-mark" aria-hidden="true">✦</span>
+      </div>
+
+      <p class="card-description">
+        Select a supported provider and enter the model identifier used by that provider.
+      </p>
+
+      @if (errorMessage()) {
+        <p class="message error-message" role="alert">{{ errorMessage() }}</p>
+      }
+      @if (successMessage()) {
+        <p class="message success-message" role="status">{{ successMessage() }}</p>
+      }
+
+      <div class="form-group">
+        <label for="ai-provider">Provider</label>
+        <select id="ai-provider" class="form-control" formControlName="provider">
+          @for (provider of providers; track provider) {
+            <option [value]="provider">{{ provider === 'openai' ? 'OpenAI' : provider === 'claude' ? 'Anthropic Claude' : 'Google Gemini' }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="ai-model">Model</label>
+        <input
+          id="ai-model"
+          type="text"
+          class="form-control"
+          formControlName="model"
+          placeholder="e.g. gpt-4.1"
+          autocomplete="off"
+          [class.invalid]="configForm.controls.model.touched && configForm.controls.model.invalid"
+        />
+        @if (configForm.controls.model.touched && configForm.controls.model.hasError('required')) {
+          <span class="field-error">Enter a model identifier.</span>
+        }
+        @if (configForm.controls.model.touched && configForm.controls.model.hasError('maxlength')) {
+          <span class="field-error">Model identifiers must be 120 characters or fewer.</span>
+        }
+        <span class="field-hint">Use the exact model name supported by your provider.</span>
+      </div>
+
+      <div class="form-actions">
+        @if (editingId()) {
+          <button class="button button-secondary" type="button" (click)="cancelEditing()">Cancel</button>
+        }
+        <button class="button button-primary" type="submit" [disabled]="isSaving()">
+          {{ isSaving() ? 'Saving...' : editingId() ? 'Save changes' : 'Save configuration' }}
+        </button>
+      </div>
+    </form>
+
+    <section class="saved-card glass-panel" aria-labelledby="saved-configurations-title">
+      <div class="card-heading">
+        <div>
+          <span class="eyebrow">Your workspace</span>
+          <h2 id="saved-configurations-title">Saved configurations</h2>
+        </div>
+        <span class="count-badge">{{ configurations().length }}</span>
+      </div>
+
+      @if (isLoading()) {
+        <p class="empty-state">Loading your configurations...</p>
+      } @else if (configurations().length === 0) {
+        <p class="empty-state">No AI configurations yet. Add one to get started.</p>
+      } @else {
+        <div class="configuration-list">
+          @for (configuration of configurations(); track configuration.id) {
+            <article class="configuration-item" [class.selected]="editingId() === configuration.id">
+              <div class="configuration-icon" aria-hidden="true">✦</div>
+              <div class="configuration-details">
+                <span class="provider-name">
+                  {{ configuration.provider === 'openai' ? 'OpenAI' : configuration.provider === 'claude' ? 'Anthropic Claude' : 'Google Gemini' }}
+                </span>
+                <span class="model-name">{{ configuration.model }}</span>
+              </div>
+              <button
+                class="edit-button"
+                type="button"
+                [attr.aria-label]="'Edit ' + configuration.provider + ' ' + configuration.model"
+                (click)="editConfiguration(configuration)"
+              >
+                Edit
+              </button>
+            </article>
+          }
+        </div>
+      }
+    </section>
+  </section>
+</main>
