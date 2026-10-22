@@ -1,4 +1,5 @@
 import { Component, input, output } from '@angular/core';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 import { ButtonComponent } from '../button/button';
 import type { RepoConfig } from '../repo-config/repo-config service/repo-config.service';
 
@@ -12,7 +13,7 @@ export interface ChatThread {
 @Component({
   selector: 'app-sidebar',
   standalone: true,
-  imports: [ButtonComponent],
+  imports: [ButtonComponent, RouterLink, RouterLinkActive],
   templateUrl: './sidebar.html',
   styleUrl: './sidebar.scss',
 })
