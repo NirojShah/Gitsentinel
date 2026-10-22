@@ -16,9 +16,7 @@
   "license": "ISC",
   "type": "module",
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.135.0",
-    "@google/genai": "^2.30.0",
-    "@modelcontextprotocol/sdk": "^1.32.1",
+    "@google/genai": "^2.21.0",
     "@prisma/adapter-pg": "^7.9.1",
     "@prisma/client": "^7.9.1",
     "@types/bcrypt": "^6.0.0",
@@ -28,7 +26,7 @@
     "express": "^5.2.1",
     "inversify": "^8.2.3",
     "jsonwebtoken": "^9.0.3",
-    "openai": "^7.36.0",
+    "openai": "^7.10.0",
     "pg": "^8.23.0",
     "zod": "^4.4.3"
   },
