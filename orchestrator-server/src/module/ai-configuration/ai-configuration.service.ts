@@ -5,7 +5,7 @@ import type AiConfigurationRepository from "./ai-configuration.repository.js";
 
 interface AiConfigurationServiceI {
     createAiConfiguration(payload: Prisma.AiconfigurationCreateInput): Promise<ResponseDto>
-    updateAiConfiguration(configurationId: string, payload: Prisma.AiconfigurationUpdateInput): Promise<ResponseDto>
+    updateAiConfiguration(configurationId: string, userId: string, payload: Prisma.AiconfigurationUpdateManyMutationInput): Promise<ResponseDto>
     getAIConfigurationByUserId(userId: string, page: number, limit: number): Promise<ResponseDto>
 }
 
@@ -28,12 +28,18 @@ class AiConfigurationService implements AiConfigurationServiceI {
             }
         }
     }
-    async updateAiConfiguration(configurationId: string, payload: Prisma.AiconfigurationUpdateInput): Promise<ResponseDto> {
+    async updateAiConfiguration(configurationId: string, userId: string, payload: Prisma.AiconfigurationUpdateManyMutationInput): Promise<ResponseDto> {
         try {
-            const response = await this.aiConfigurationRepository.updateConfiguration(configurationId, payload);
+            const response = await this.aiConfigurationRepository.updateConfiguration(configurationId, userId, payload);
+            if (!response) {
+                return {
+                    statusCode: 404,
+                    message: "AI configuration not found."
+                };
+            }
+
             return {
                 statusCode: 200,
-
                 data: response
             }
         } catch (err) {
