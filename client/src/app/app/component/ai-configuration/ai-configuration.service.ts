@@ -8,12 +8,14 @@ export interface AiConfiguration {
   id: string;
   provider: AiProvider;
   model: string;
+  apiKey: string;
   userId: string;
 }
 
 export interface AiConfigurationInput {
   provider: AiProvider;
   model: string;
+  apiKey: string;
 }
 
 export interface AiConfigurationResponse<T> {
