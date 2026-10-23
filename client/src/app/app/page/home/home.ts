@@ -5,7 +5,7 @@ import { ChatWindowComponent, type ChatMessage } from '../../component/chat-wind
 import { RepoConfigModalComponent } from '../../component/repo-config/repo-config';
 import { NavbarComponent } from '../../component/navbar/navbar';
 import { MessageService, type MessageRecord } from '../../core/message-service/message.service';
-import type { RepoConfig } from '../../component/repo-config/repo-config service/repo-config.service';
+import RepoConfigService, { type RepoConfig } from '../../component/repo-config/repo-config service/repo-config.service';
 
 @Component({
   selector: 'app-home',
@@ -31,10 +31,14 @@ export class HomeComponent implements OnInit {
   messages = signal<ChatMessage[]>([]);
   messageError = signal<string>('');
   isLoadingMessages = signal<boolean>(false);
+  isSendingMessage = signal<boolean>(false);
+  displayedError = computed(() => this.messageError());
 
   private readonly messageService = inject(MessageService);
+  private readonly repoConfigService = inject(RepoConfigService);
 
   ngOnInit() {
+    this.loadConfiguredRepositories();
     this.loadMessages(this.activeThreadId());
   }
 
@@ -74,16 +78,39 @@ export class HomeComponent implements OnInit {
     }
 
     this.messageError.set('');
-    this.messageService.sendMessage(chatId, text).subscribe({
-      next: ({ body }) => this.messages.update((messages) => [...messages, this.toChatMessage(body)]),
-      error: (error: unknown) => this.messageError.set(this.getErrorMessage(error, 'Unable to send message.')),
-    });
+    this.isSendingMessage.set(true);
+    this.messageService
+      .sendMessage(chatId, text)
+      .pipe(finalize(() => this.isSendingMessage.set(false)))
+      .subscribe({
+        next: ({ body }) => this.messages.update((messages) => [...messages, this.toChatMessage(body)]),
+        error: (error: unknown) => this.messageError.set(this.getErrorMessage(error, 'Unable to send message.')),
+      });
   }
 
   onThreadSelected(chatId: string) {
     this.activeThreadId.set(chatId);
     this.messages.set([]);
     this.loadMessages(chatId);
+  }
+
+  onRepositoriesSaved() {
+    this.isModalOpen.set(false);
+    this.loadConfiguredRepositories();
+  }
+
+  private loadConfiguredRepositories() {
+    this.repoConfigService
+      .getConfiguredRepositories()
+      .subscribe({
+        next: ({ data }) => {
+          this.configuredRepos.set(data ?? []);
+          if (!this.selectedRepo() && data.length > 0) {
+            this.selectedRepo.set(data[0].id);
+          }
+        },
+        error: (error: unknown) => this.messageError.set(this.getErrorMessage(error, 'Unable to load repositories.')),
+      });
   }
 
   private loadMessages(chatId: string) {

@@ -38,6 +38,10 @@ export class AiConfiguration implements OnInit {
       nonNullable: true,
       validators: [Validators.required, Validators.maxLength(120)],
     }),
+    apiKey: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required, Validators.minLength(1)],
+    }),
   });
 
   ngOnInit(): void {
@@ -68,6 +72,7 @@ export class AiConfiguration implements OnInit {
     const configuration: AiConfigurationInput = {
       provider: this.configForm.controls.provider.value,
       model: this.configForm.controls.model.value.trim(),
+      apiKey: this.configForm.controls.apiKey.value.trim(),
     };
     const configurationId = this.editingId();
 
@@ -96,6 +101,7 @@ export class AiConfiguration implements OnInit {
     this.configForm.setValue({
       provider: configuration.provider,
       model: configuration.model,
+      apiKey: configuration.apiKey,
     });
     this.errorMessage.set('');
     this.successMessage.set('');
@@ -110,6 +116,7 @@ export class AiConfiguration implements OnInit {
     this.configForm.reset({
       provider: 'openai',
       model: '',
+      apiKey: '',
     });
   }
 
