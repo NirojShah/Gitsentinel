@@ -20,7 +20,7 @@
       </div>
 
       <p class="card-description">
-        Select a supported provider and enter the model identifier used by that provider.
+        Select a supported provider, enter the model identifier, and provide the API key used by that provider.
       </p>
 
       @if (errorMessage()) {
@@ -57,6 +57,26 @@
           <span class="field-error">Model identifiers must be 120 characters or fewer.</span>
         }
         <span class="field-hint">Use the exact model name supported by your provider.</span>
+      </div>
+
+      <div class="form-group">
+        <label for="ai-api-key">API key</label>
+        <input
+          id="ai-api-key"
+          type="password"
+          class="form-control"
+          formControlName="apiKey"
+          placeholder="Enter provider API key"
+          autocomplete="off"
+          [class.invalid]="configForm.controls.apiKey.touched && configForm.controls.apiKey.invalid"
+        />
+        @if (configForm.controls.apiKey.touched && configForm.controls.apiKey.hasError('required')) {
+          <span class="field-error">Enter an API key.</span>
+        }
+        @if (configForm.controls.apiKey.touched && configForm.controls.apiKey.hasError('minlength')) {
+          <span class="field-error">API key cannot be empty.</span>
+        }
+        <span class="field-hint">Stored with your AI configuration and used to authenticate requests.</span>
       </div>
 
       <div class="form-actions">
