@@ -2,6 +2,10 @@ import type { Response } from "express";
 import type AuthenticatedRequest from "../../constants/AuthenticatedRequest.type.js";
 import type { Prisma } from "../../generated/prisma/client.js";
 import type AiConfigurationService from "./ai-configuration.service.js";
+import { AI_PROVIDERS } from "./ai-configuration.model.js";
+
+const isAiProvider = (provider: unknown): provider is (typeof AI_PROVIDERS)[number] =>
+    typeof provider === "string" && AI_PROVIDERS.includes(provider as (typeof AI_PROVIDERS)[number]);
 
 class AiConfigurationController {
     constructor(
@@ -10,11 +14,27 @@ class AiConfigurationController {
 
     async createConfiguration(req: AuthenticatedRequest, res: Response): Promise<Response> {
         try {
-            const { model, provider } = req.body;
+            const body: unknown = req.body;
+            if (typeof body !== "object" || body === null) {
+                return res.status(400).json({
+                    statusCode: 400,
+                    message: "A supported provider and model are required.",
+                });
+            }
+
+            const { model, provider } = body as Record<string, unknown>;
+
+            if (!isAiProvider(provider) || typeof model !== "string" || !model.trim()) {
+                return res.status(400).json({
+                    statusCode: 400,
+                    message: "A supported provider and model are required.",
+                });
+            }
+
             const userId = req.user.userId;
 
             const payload: Prisma.AiconfigurationCreateInput = {
-                model,
+                model: model.trim(),
                 provider,
                 user: {
                     connect: {
@@ -41,18 +61,25 @@ class AiConfigurationController {
         res: Response
     ): Promise<Response> {
         try {
-
             const userId: string = req.user.userId;
-            const page: number = Number(req.query.page);
-            const limit: number = Number(req.query.limit);
-            const data = await this.aiService.getAIConfigurationByUserId(userId, page, limit)
-            return res.status(data.statusCode).json(data)
+            const page = req.query.page === undefined ? 1 : Number(req.query.page);
+            const limit = req.query.limit === undefined ? 50 : Number(req.query.limit);
+
+            if (!Number.isInteger(page) || page < 1 || !Number.isInteger(limit) || limit < 1 || limit > 100) {
+                return res.status(400).json({
+                    statusCode: 400,
+                    message: "Page must be positive and limit must be between 1 and 100.",
+                });
+            }
+
+            const data = await this.aiService.getAIConfigurationByUserId(userId, page, limit);
+            return res.status(data.statusCode).json(data);
         } catch (error) {
             const err = error as Error;
             return res.status(500).json({
+                statusCode: 500,
                 message: err.message,
-                stackTrace: err.stack
-            })
+            });
         }
     }
 
@@ -67,15 +94,35 @@ class AiConfigurationController {
                 });
             }
 
-            const { model, provider } = req.body;
+            const body: unknown = req.body;
+            if (typeof body !== "object" || body === null) {
+                return res.status(400).json({
+                    statusCode: 400,
+                    message: "Provide a supported provider and/or a non-empty model.",
+                });
+            }
 
-            const payload: Prisma.AiconfigurationUpdateInput = {
-                ...(model !== undefined && { model }),
+            const { model, provider } = body as Record<string, unknown>;
+
+            if (
+                (model === undefined && provider === undefined) ||
+                (model !== undefined && (typeof model !== "string" || !model.trim())) ||
+                (provider !== undefined && !isAiProvider(provider))
+            ) {
+                return res.status(400).json({
+                    statusCode: 400,
+                    message: "Provide a supported provider and/or a non-empty model.",
+                });
+            }
+
+            const payload: Prisma.AiconfigurationUpdateManyMutationInput = {
+                ...(model !== undefined && { model: model.trim() }),
                 ...(provider !== undefined && { provider }),
             };
 
             const result = await this.aiService.updateAiConfiguration(
                 configurationId,
+                req.user.userId,
                 payload
             );
 
