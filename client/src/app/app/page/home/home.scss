@@ -107,4 +107,15 @@
     flex: 1;
     min-height: 0; /* Ensures proper scrolling inside chat */
   }
+
+  .mcp-status-wrapper {
+    position: relative;
+    z-index: 1;
+    background: $glass-bg;
+    border: $glass-border;
+    backdrop-filter: $glass-blur;
+    -webkit-backdrop-filter: $glass-blur;
+    border-radius: 20px;
+    box-shadow: $glass-shadow;
+  }
 }

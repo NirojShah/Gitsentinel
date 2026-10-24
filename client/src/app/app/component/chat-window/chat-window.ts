@@ -8,6 +8,7 @@ export interface ChatMessage {
   sender: 'user' | 'assistant';
   text: string;
   timestamp: Date;
+  mcpToolsAvailable?: Array<{ name: string; description?: string }>;
 }
 
 @Component({
@@ -31,10 +32,22 @@ export class ChatWindowComponent {
   openConfigRequested = output<void>();
 
   inputMessage = signal<string>('');
+  showMcpTools = signal<Record<string, boolean>>({});
 
   handleSend() {
     if (!this.inputMessage().trim()) return;
     this.messageSent.emit(this.inputMessage());
     this.inputMessage.set('');
+  }
+
+  toggleMcpTools(messageId: string) {
+    this.showMcpTools.update((state) => ({
+      ...state,
+      [messageId]: !state[messageId],
+    }));
+  }
+
+  hasMcpTools(message: ChatMessage): boolean {
+    return message.mcpToolsAvailable !== undefined && message.mcpToolsAvailable.length > 0;
   }
 }

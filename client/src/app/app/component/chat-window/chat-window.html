@@ -38,6 +38,26 @@
                     <span class="sender-name">{{ msg.sender === 'user' ? 'You' : 'GitSentinel AI' }}</span>
                 </div>
                 <p class="message-text">{{ msg.text }}</p>
+                @if (hasMcpTools(msg)) {
+                <div class="mcp-tools-indicator">
+                    <button class="mcp-toggle-btn" (click)="toggleMcpTools(msg.id)">
+                        <span>MCP Tools Available ({{ msg.mcpToolsAvailable?.length }})</span>
+                        <span class="toggle-icon">{{ showMcpTools()[msg.id] ? '▼' : '▶' }}</span>
+                    </button>
+                    @if (showMcpTools()[msg.id]) {
+                    <div class="mcp-tools-list">
+                        @for (tool of msg.mcpToolsAvailable; track tool.name) {
+                        <div class="mcp-tool-item">
+                            <div class="tool-name">{{ tool.name }}</div>
+                            @if (tool.description) {
+                            <div class="tool-description">{{ tool.description }}</div>
+                            }
+                        </div>
+                        }
+                    </div>
+                    }
+                </div>
+                }
             </div>
         </div>
         }
