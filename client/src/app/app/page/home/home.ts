@@ -4,13 +4,14 @@ import { SidebarComponent, type ChatThread } from '../../component/sidebar/sideb
 import { ChatWindowComponent, type ChatMessage } from '../../component/chat-window/chat-window';
 import { RepoConfigModalComponent } from '../../component/repo-config/repo-config';
 import { NavbarComponent } from '../../component/navbar/navbar';
+import { McpStatusComponent } from '../../component/mcp-status/mcp-status';
 import { MessageService, type MessageRecord } from '../../core/message-service/message.service';
 import RepoConfigService, { type RepoConfig } from '../../component/repo-config/repo-config service/repo-config.service';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [SidebarComponent, ChatWindowComponent, RepoConfigModalComponent, NavbarComponent],
+  imports: [SidebarComponent, ChatWindowComponent, RepoConfigModalComponent, NavbarComponent, McpStatusComponent],
   templateUrl: './home.html',
   styleUrl: './home.scss',
 })
@@ -133,6 +134,7 @@ export class HomeComponent implements OnInit {
       sender: message.sender ? 'user' : 'assistant',
       text: message.content,
       timestamp: new Date(message.createdAt),
+      mcpToolsAvailable: (message as any).mcpToolsAvailable,
     };
   }
 
