@@ -1,0 +1,57 @@
+<div class="mcp-status-container">
+  <div class="mcp-header">
+    <h3>MCP Service Status</h3>
+    <div class="status-indicator">
+      @if (isLoading()) {
+        <span class="loading">Loading...</span>
+      } @else if (mcpStatus()?.connected) {
+        <span class="connected">Connected</span>
+      } @else {
+        <span class="disconnected">Disconnected</span>
+      }
+    </div>
+  </div>
+
+  @if (errorMessage()) {
+    <div class="error-message">
+      {{ errorMessage() }}
+    </div>
+  }
+
+  <div class="mcp-actions">
+    @if (!mcpStatus()?.connected) {
+      <app-button (click)="connectToMcp()" [disabled]="isLoading()">
+        Connect
+      </app-button>
+    } @else {
+      <app-button (click)="disconnectFromMcp()" [disabled]="isLoading()">
+        Disconnect
+      </app-button>
+    }
+    <app-button (click)="loadMcpStatus()" [disabled]="isLoading()">
+      Refresh
+    </app-button>
+  </div>
+
+  @if (mcpStatus()?.connected && mcpTools().length > 0) {
+    <div class="mcp-tools-section">
+      <div class="tools-header" (click)="toggleExpanded()">
+        <h4>Available Tools ({{ mcpTools().length }})</h4>
+        <span class="expand-icon">{{ isExpanded() ? '▼' : '▶' }}</span>
+      </div>
+
+      @if (isExpanded()) {
+        <div class="tools-list">
+          @for (tool of mcpTools(); track tool.name) {
+            <div class="tool-item">
+              <div class="tool-name">{{ tool.name }}</div>
+              @if (tool.description) {
+                <div class="tool-description">{{ tool.description }}</div>
+              }
+            </div>
+          }
+        </div>
+      }
+    </div>
+  }
+</div>
