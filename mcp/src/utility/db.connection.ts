@@ -2,22 +2,23 @@ import { Client } from "pg";
 
 class DatabaseConnection {
     private readonly client: Client;
-    private readonly dbUrl = "postgresql://admin:admin%40123@localhost:5432/gitsentinel?schema=public"
 
     constructor() {
-        this.client = new Client({
-            connectionString: this.dbUrl,
-        });
+        const dbUrl = process.env.DB_URL;
+        if (!dbUrl) {
+            throw new Error("DB_URL must be configured for the MCP service.");
+        }
+        this.client = new Client({ connectionString: dbUrl });
     }
 
     async connectToDatabase(): Promise<Client> {
         try {
-            const connection: Client = await this.client.connect();
+            await this.client.connect();
             console.log("Connected to PostgreSQL");
-            return connection;
+            return this.client;
         } catch (error) {
             console.error("Failed to connect to PostgreSQL:", error);
-            throw new Error((error as Error).message)
+            throw new Error("Failed to connect to the MCP database.");
         }
     }
 
