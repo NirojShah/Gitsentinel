@@ -1,4 +1,4 @@
-import { Component, inject, type OnInit, signal } from '@angular/core';
+import { Component, computed, inject, type OnInit, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { finalize } from 'rxjs';
@@ -24,6 +24,9 @@ export class AiConfiguration implements OnInit {
   readonly providers = AI_PROVIDERS;
   readonly configurations = signal<AiConfigurationType[]>([]);
   readonly editingId = signal<string | null>(null);
+  readonly editingHasApiKey = computed(
+    () => this.configurations().find((configuration) => configuration.id === this.editingId())?.hasApiKey ?? false,
+  );
   readonly isLoading = signal<boolean>(false);
   readonly isSaving = signal<boolean>(false);
   readonly errorMessage = signal<string>('');
@@ -40,7 +43,6 @@ export class AiConfiguration implements OnInit {
     }),
     apiKey: new FormControl('', {
       nonNullable: true,
-      validators: [Validators.required, Validators.minLength(1)],
     }),
   });
 
@@ -69,12 +71,19 @@ export class AiConfiguration implements OnInit {
       return;
     }
 
+    const apiKey = this.configForm.controls.apiKey.value.trim();
+    const configurationId = this.editingId();
+    if ((!configurationId || !this.editingHasApiKey()) && !apiKey) {
+      this.configForm.controls.apiKey.markAsTouched();
+      this.errorMessage.set('Enter an API key.');
+      return;
+    }
+
     const configuration: AiConfigurationInput = {
       provider: this.configForm.controls.provider.value,
       model: this.configForm.controls.model.value.trim(),
-      apiKey: this.configForm.controls.apiKey.value.trim(),
+      ...(apiKey && { apiKey }),
     };
-    const configurationId = this.editingId();
 
     this.errorMessage.set('');
     this.successMessage.set('');
@@ -101,7 +110,7 @@ export class AiConfiguration implements OnInit {
     this.configForm.setValue({
       provider: configuration.provider,
       model: configuration.model,
-      apiKey: configuration.apiKey,
+      apiKey: '',
     });
     this.errorMessage.set('');
     this.successMessage.set('');
