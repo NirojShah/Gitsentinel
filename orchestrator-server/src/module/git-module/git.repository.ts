@@ -31,6 +31,13 @@ class GitrepoRepository {
                     },
                 },
             },
+            select: {
+                id: true,
+                provider: true,
+                repoUrl: true,
+                baseBranch: true,
+                userId: true,
+            },
         });
     }
 
