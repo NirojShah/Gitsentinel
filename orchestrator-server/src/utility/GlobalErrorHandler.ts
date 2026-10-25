@@ -1,4 +1,5 @@
 import type { Request, Response, NextFunction } from "express";
+import CustomError from "../constants/CustomError.js";
 
 const GlobalErrorHandler = (
     err: Error,
@@ -19,7 +20,7 @@ const GlobalErrorHandler = (
         responseBody.stackTrace = err.stack;
     }
 
-    res.status(500).json(responseBody);
+    res.status(err instanceof CustomError ? err.statusCode : 500).json(responseBody);
 };
 
 export default GlobalErrorHandler;
