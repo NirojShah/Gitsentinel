@@ -20,6 +20,10 @@
 /orchestrator-server/.agents/
 /orchestrator-server/skills-lock.json
 /orchestrator-server/prisma/schema/migrations/
+!/orchestrator-server/prisma/schema/migrations/
+/orchestrator-server/prisma/schema/migrations/*
+!/orchestrator-server/prisma/schema/migrations/20261025230000_ai_configuration_credentials/
+!/orchestrator-server/prisma/schema/migrations/20261025230000_ai_configuration_credentials/migration.sql
 
 
 
@@ -27,3 +31,5 @@
 
 
 /gateway/node_modules
+/gateway/dist/
+/mcp/dist/
