@@ -1,6 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { inject, Injectable, signal } from "@angular/core";
 import { catchError, throwError, tap } from "rxjs";
+import { API_BASE_URL } from "../../../core/api-base-url";
 
 type LoginResponse = {
     message: string;
@@ -13,8 +14,7 @@ type LoginResponse = {
     providedIn: "root"
 })
 class LoginService {
-    private readonly apiUrl =
-        "http://localhost:5000/app/v1/user/login";
+    private readonly apiUrl = `${API_BASE_URL}/user/login`;
 
     private readonly http = inject(HttpClient);
 

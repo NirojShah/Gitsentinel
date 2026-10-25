@@ -1,16 +1,25 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Navbar } from './navbar';
+import { provideRouter } from '@angular/router';
+import { ProfileService } from '../profile/profile-service/profile-service';
+import { NavbarComponent } from './navbar';
 
 describe('Navbar', () => {
-  let component: Navbar;
-  let fixture: ComponentFixture<Navbar>;
+  let component: NavbarComponent;
+  let fixture: ComponentFixture<NavbarComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Navbar],
+      imports: [NavbarComponent],
+      providers: [
+        provideRouter([]),
+        {
+          provide: ProfileService,
+          useValue: { fetchProfileInfo: () => Promise.resolve({ name: 'Test', username: 'test', email: 'test@example.com', isActive: true, isVerified: true }) },
+        },
+      ],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(Navbar);
+    fixture = TestBed.createComponent(NavbarComponent);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

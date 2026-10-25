@@ -5,6 +5,7 @@ import setupEnvironment from "./utility/env.setup.js";
 import { handleConnection } from "./service/mcp.connection.js";
 import DatabaseConnection from "./utility/db.connection.js";
 import GitRepository from "./repository/git.repository.js";
+import authMiddleware from "./utility/middlewares.js";
 
 
 const currentEnv: "dev" | "prod" | "test" = process.env.NODE_ENV === "prod" ||
@@ -16,11 +17,6 @@ setupEnvironment(currentEnv);
 const app: Express = express();
 
 app.use(express.json(),);
-
-app.all("/mcp", async (req, res) => {
-    await handleConnection(req, res,);
-});
-
 
 app.get("/health", (_req, res) => {
     res.status(200).json({
@@ -46,11 +42,11 @@ async function main(): Promise<void> {
             database.getClient()
         );
 
-        // Create/register your MCP tools using gitRepository
-        // const mcpTools = new McpTools(server, gitRepository);
-        // mcpTools.Testing();
+        app.all("/mcp", authMiddleware, async (req, res) => {
+            await handleConnection(req, res, gitRepository);
+        });
 
-        const port = Number(process.env.MCP_SERVER_PORT) || 5000;
+        const port = Number(process.env.MCP_SERVER_PORT) || 5001;
         const host = process.env.HOST || "127.0.0.1";
 
         server.listen(port, host, () => {

@@ -3,7 +3,7 @@
     <header class="modal-header">
       <div class="header-title">
         <span class="header-icon">⚙️</span>
-        <h3>Connect Repository</h3>
+        <h3>{{ repository() ? 'Update Repository' : 'Connect Repository' }}</h3>
       </div>
       <button class="close-btn" (click)="handleClose()">✕</button>
     </header>
@@ -29,6 +29,7 @@
           formControlName="repoUrl"
           placeholder="https://github.com/username/repository"
           class="form-control"
+          [readonly]="!!repository()"
           [class.invalid]="configForm.get('repoUrl')?.touched && configForm.get('repoUrl')?.invalid"
         />
         @if (configForm.get('repoUrl')?.touched && configForm.get('repoUrl')?.errors?.['required']) {
@@ -41,19 +42,19 @@
 
       <!-- Personal Access Token -->
       <div class="form-group">
-        <label for="accessToken">Access Token</label>
+        <label for="accessToken">{{ repository() ? 'Replace Access Token (Optional)' : 'Access Token' }}</label>
         <input
           id="accessToken"
           type="password"
           formControlName="accessToken"
-          placeholder="ghp_xxxxxxxxxxxxxxxxxxxx"
+          [placeholder]="repository() ? 'Leave blank to keep existing token' : 'Enter a repository access token'"
           class="form-control"
           [class.invalid]="configForm.get('accessToken')?.touched && configForm.get('accessToken')?.invalid"
         />
         @if (configForm.get('accessToken')?.touched && configForm.get('accessToken')?.invalid) {
           <span class="error-msg">Access token is required</span>
         }
-        <span class="hint">Requires read/write scope for repo content and PR creation.</span>
+        <span class="hint">Use a read-only repository token for file analysis. Chat does not perform write or pull-request actions.</span>
       </div>
 
       <!-- Base Branch -->
@@ -81,7 +82,7 @@
           (onClick)="handleClose()"
         ></app-button>
         <app-button
-          [title]="isSubmitting() ? 'Saving...' : 'Save Configuration'"
+          [title]="isSubmitting() ? 'Saving...' : repository() ? 'Update Repository' : 'Save Configuration'"
           type="primary"
           size="sm"
           (onClick)="onSubmit()"

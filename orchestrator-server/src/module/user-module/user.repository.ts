@@ -24,6 +24,13 @@ class UserRepository {
         })
     }
 
+    async userExistsByUsername(username: string) {
+        return prisma.user.findUnique({
+            where: { username },
+            select: { id: true },
+        });
+    }
+
     async authenticateUser(email: string) {
         return await prisma.user.findFirst({
             where: {
@@ -35,6 +42,19 @@ class UserRepository {
                 id: true
             }
         })
+    }
+
+    async findProfileById(userId: string) {
+        return prisma.user.findUnique({
+            where: { id: userId },
+            select: {
+                name: true,
+                email: true,
+                username: true,
+                isActive: true,
+                isVerified: true,
+            },
+        });
     }
 }
 

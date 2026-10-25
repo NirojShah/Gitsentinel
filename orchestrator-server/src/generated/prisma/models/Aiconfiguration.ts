@@ -28,21 +28,30 @@ export type AiconfigurationMinAggregateOutputType = {
   id: string | null
   provider: string | null
   model: string | null
+  apiKey: string | null
   userId: string | null
+  createdAt: Date | null
+  updatedAt: Date | null
 }
 
 export type AiconfigurationMaxAggregateOutputType = {
   id: string | null
   provider: string | null
   model: string | null
+  apiKey: string | null
   userId: string | null
+  createdAt: Date | null
+  updatedAt: Date | null
 }
 
 export type AiconfigurationCountAggregateOutputType = {
   id: number
   provider: number
   model: number
+  apiKey: number
   userId: number
+  createdAt: number
+  updatedAt: number
   _all: number
 }
 
@@ -51,21 +60,30 @@ export type AiconfigurationMinAggregateInputType = {
   id?: true
   provider?: true
   model?: true
+  apiKey?: true
   userId?: true
+  createdAt?: true
+  updatedAt?: true
 }
 
 export type AiconfigurationMaxAggregateInputType = {
   id?: true
   provider?: true
   model?: true
+  apiKey?: true
   userId?: true
+  createdAt?: true
+  updatedAt?: true
 }
 
 export type AiconfigurationCountAggregateInputType = {
   id?: true
   provider?: true
   model?: true
+  apiKey?: true
   userId?: true
+  createdAt?: true
+  updatedAt?: true
   _all?: true
 }
 
@@ -145,7 +163,10 @@ export type AiconfigurationGroupByOutputType = {
   id: string
   provider: string
   model: string
+  apiKey: string | null
   userId: string
+  createdAt: Date
+  updatedAt: Date
   _count: AiconfigurationCountAggregateOutputType | null
   _min: AiconfigurationMinAggregateOutputType | null
   _max: AiconfigurationMaxAggregateOutputType | null
@@ -173,7 +194,10 @@ export type AiconfigurationWhereInput = {
   id?: Prisma.StringFilter<"Aiconfiguration"> | string
   provider?: Prisma.StringFilter<"Aiconfiguration"> | string
   model?: Prisma.StringFilter<"Aiconfiguration"> | string
+  apiKey?: Prisma.StringNullableFilter<"Aiconfiguration"> | string | null
   userId?: Prisma.StringFilter<"Aiconfiguration"> | string
+  createdAt?: Prisma.DateTimeFilter<"Aiconfiguration"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Aiconfiguration"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }
 
@@ -181,7 +205,10 @@ export type AiconfigurationOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   provider?: Prisma.SortOrder
   model?: Prisma.SortOrder
+  apiKey?: Prisma.SortOrderInput | Prisma.SortOrder
   userId?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
 }
 
@@ -192,7 +219,10 @@ export type AiconfigurationWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.AiconfigurationWhereInput | Prisma.AiconfigurationWhereInput[]
   provider?: Prisma.StringFilter<"Aiconfiguration"> | string
   model?: Prisma.StringFilter<"Aiconfiguration"> | string
+  apiKey?: Prisma.StringNullableFilter<"Aiconfiguration"> | string | null
   userId?: Prisma.StringFilter<"Aiconfiguration"> | string
+  createdAt?: Prisma.DateTimeFilter<"Aiconfiguration"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Aiconfiguration"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }, "id">
 
@@ -200,7 +230,10 @@ export type AiconfigurationOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   provider?: Prisma.SortOrder
   model?: Prisma.SortOrder
+  apiKey?: Prisma.SortOrderInput | Prisma.SortOrder
   userId?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   _count?: Prisma.AiconfigurationCountOrderByAggregateInput
   _max?: Prisma.AiconfigurationMaxOrderByAggregateInput
   _min?: Prisma.AiconfigurationMinOrderByAggregateInput
@@ -213,13 +246,19 @@ export type AiconfigurationScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"Aiconfiguration"> | string
   provider?: Prisma.StringWithAggregatesFilter<"Aiconfiguration"> | string
   model?: Prisma.StringWithAggregatesFilter<"Aiconfiguration"> | string
+  apiKey?: Prisma.StringNullableWithAggregatesFilter<"Aiconfiguration"> | string | null
   userId?: Prisma.StringWithAggregatesFilter<"Aiconfiguration"> | string
+  createdAt?: Prisma.DateTimeWithAggregatesFilter<"Aiconfiguration"> | Date | string
+  updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Aiconfiguration"> | Date | string
 }
 
 export type AiconfigurationCreateInput = {
   id?: string
   provider: string
   model: string
+  apiKey?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutAiConfigurationInput
 }
 
@@ -227,13 +266,19 @@ export type AiconfigurationUncheckedCreateInput = {
   id?: string
   provider: string
   model: string
+  apiKey?: string | null
   userId: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type AiconfigurationUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   provider?: Prisma.StringFieldUpdateOperationsInput | string
   model?: Prisma.StringFieldUpdateOperationsInput | string
+  apiKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutAiConfigurationNestedInput
 }
 
@@ -241,48 +286,69 @@ export type AiconfigurationUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   provider?: Prisma.StringFieldUpdateOperationsInput | string
   model?: Prisma.StringFieldUpdateOperationsInput | string
+  apiKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type AiconfigurationCreateManyInput = {
   id?: string
   provider: string
   model: string
+  apiKey?: string | null
   userId: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type AiconfigurationUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   provider?: Prisma.StringFieldUpdateOperationsInput | string
   model?: Prisma.StringFieldUpdateOperationsInput | string
+  apiKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type AiconfigurationUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   provider?: Prisma.StringFieldUpdateOperationsInput | string
   model?: Prisma.StringFieldUpdateOperationsInput | string
+  apiKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type AiconfigurationCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   provider?: Prisma.SortOrder
   model?: Prisma.SortOrder
+  apiKey?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type AiconfigurationMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   provider?: Prisma.SortOrder
   model?: Prisma.SortOrder
+  apiKey?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type AiconfigurationMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   provider?: Prisma.SortOrder
   model?: Prisma.SortOrder
+  apiKey?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type AiconfigurationListRelationFilter = {
@@ -297,6 +363,14 @@ export type AiconfigurationOrderByRelationAggregateInput = {
 
 export type StringFieldUpdateOperationsInput = {
   set?: string
+}
+
+export type NullableStringFieldUpdateOperationsInput = {
+  set?: string | null
+}
+
+export type DateTimeFieldUpdateOperationsInput = {
+  set?: Date | string
 }
 
 export type AiconfigurationCreateNestedManyWithoutUserInput = {
@@ -345,12 +419,18 @@ export type AiconfigurationCreateWithoutUserInput = {
   id?: string
   provider: string
   model: string
+  apiKey?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type AiconfigurationUncheckedCreateWithoutUserInput = {
   id?: string
   provider: string
   model: string
+  apiKey?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type AiconfigurationCreateOrConnectWithoutUserInput = {
@@ -386,31 +466,46 @@ export type AiconfigurationScalarWhereInput = {
   id?: Prisma.StringFilter<"Aiconfiguration"> | string
   provider?: Prisma.StringFilter<"Aiconfiguration"> | string
   model?: Prisma.StringFilter<"Aiconfiguration"> | string
+  apiKey?: Prisma.StringNullableFilter<"Aiconfiguration"> | string | null
   userId?: Prisma.StringFilter<"Aiconfiguration"> | string
+  createdAt?: Prisma.DateTimeFilter<"Aiconfiguration"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Aiconfiguration"> | Date | string
 }
 
 export type AiconfigurationCreateManyUserInput = {
   id?: string
   provider: string
   model: string
+  apiKey?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type AiconfigurationUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   provider?: Prisma.StringFieldUpdateOperationsInput | string
   model?: Prisma.StringFieldUpdateOperationsInput | string
+  apiKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type AiconfigurationUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   provider?: Prisma.StringFieldUpdateOperationsInput | string
   model?: Prisma.StringFieldUpdateOperationsInput | string
+  apiKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type AiconfigurationUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   provider?: Prisma.StringFieldUpdateOperationsInput | string
   model?: Prisma.StringFieldUpdateOperationsInput | string
+  apiKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 
@@ -419,7 +514,10 @@ export type AiconfigurationSelect<ExtArgs extends runtime.Types.Extensions.Inter
   id?: boolean
   provider?: boolean
   model?: boolean
+  apiKey?: boolean
   userId?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["aiconfiguration"]>
 
@@ -427,7 +525,10 @@ export type AiconfigurationSelectCreateManyAndReturn<ExtArgs extends runtime.Typ
   id?: boolean
   provider?: boolean
   model?: boolean
+  apiKey?: boolean
   userId?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["aiconfiguration"]>
 
@@ -435,7 +536,10 @@ export type AiconfigurationSelectUpdateManyAndReturn<ExtArgs extends runtime.Typ
   id?: boolean
   provider?: boolean
   model?: boolean
+  apiKey?: boolean
   userId?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["aiconfiguration"]>
 
@@ -443,10 +547,13 @@ export type AiconfigurationSelectScalar = {
   id?: boolean
   provider?: boolean
   model?: boolean
+  apiKey?: boolean
   userId?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
 }
 
-export type AiconfigurationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "provider" | "model" | "userId", ExtArgs["result"]["aiconfiguration"]>
+export type AiconfigurationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "provider" | "model" | "apiKey" | "userId" | "createdAt" | "updatedAt", ExtArgs["result"]["aiconfiguration"]>
 export type AiconfigurationInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
@@ -466,7 +573,10 @@ export type $AiconfigurationPayload<ExtArgs extends runtime.Types.Extensions.Int
     id: string
     provider: string
     model: string
+    apiKey: string | null
     userId: string
+    createdAt: Date
+    updatedAt: Date
   }, ExtArgs["result"]["aiconfiguration"]>
   composites: {}
 }
@@ -894,7 +1004,10 @@ export interface AiconfigurationFieldRefs {
   readonly id: Prisma.FieldRef<"Aiconfiguration", 'String'>
   readonly provider: Prisma.FieldRef<"Aiconfiguration", 'String'>
   readonly model: Prisma.FieldRef<"Aiconfiguration", 'String'>
+  readonly apiKey: Prisma.FieldRef<"Aiconfiguration", 'String'>
   readonly userId: Prisma.FieldRef<"Aiconfiguration", 'String'>
+  readonly createdAt: Prisma.FieldRef<"Aiconfiguration", 'DateTime'>
+  readonly updatedAt: Prisma.FieldRef<"Aiconfiguration", 'DateTime'>
 }
     
 

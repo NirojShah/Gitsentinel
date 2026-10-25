@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { defer, type Observable } from 'rxjs';
+import { API_BASE_URL } from '../api-base-url';
 
 export interface ChatRecord {
   id: string;
@@ -9,6 +10,12 @@ export interface ChatRecord {
   gitRepo: {
     repoUrl: string;
   };
+}
+
+export interface ChatUpdateRecord {
+  id: string;
+  chatName: string | null;
+  repoId: string;
 }
 
 interface ChatApiResponse<T> {
@@ -20,7 +27,7 @@ interface ChatApiResponse<T> {
   providedIn: 'root',
 })
 export class ChatService {
-  private readonly apiUrl = 'http://localhost:5000/app/v1/chat';
+  private readonly apiUrl = `${API_BASE_URL}/chat`;
   private readonly http = inject(HttpClient);
 
   fetchChats(): Observable<ChatApiResponse<ChatRecord[]>> {
@@ -36,6 +43,16 @@ export class ChatService {
       this.http.post<ChatApiResponse<ChatRecord>>(
         this.apiUrl,
         { repoId, chatName },
+        { headers: this.authorizationHeaders() },
+      ),
+    );
+  }
+
+  updateChat(chatId: string, chatName: string): Observable<ChatApiResponse<ChatUpdateRecord>> {
+    return defer(() =>
+      this.http.patch<ChatApiResponse<ChatUpdateRecord>>(
+        `${this.apiUrl}/${encodeURIComponent(chatId)}`,
+        { chatId, chatName },
         { headers: this.authorizationHeaders() },
       ),
     );

@@ -20,16 +20,16 @@
 
   <div class="mcp-actions">
     @if (!mcpStatus()?.connected) {
-      <app-button (click)="connectToMcp()" [disabled]="isLoading()">
-        Connect
+      <app-button title="Connect" type="secondary" size="sm" (onClick)="connectToMcp()"
+        [disabled]="isLoading()">
       </app-button>
     } @else {
-      <app-button (click)="disconnectFromMcp()" [disabled]="isLoading()">
-        Disconnect
+      <app-button title="Disconnect" type="secondary" size="sm" (onClick)="disconnectFromMcp()"
+        [disabled]="isLoading()">
       </app-button>
     }
-    <app-button (click)="loadMcpStatus()" [disabled]="isLoading()">
-      Refresh
+    <app-button title="Refresh" type="normal" size="sm" (onClick)="loadMcpStatus()"
+      [disabled]="isLoading()">
     </app-button>
   </div>
 

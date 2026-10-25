@@ -1,8 +1,8 @@
-import { Component, inject, output, signal } from '@angular/core';
+import { Component, inject, input, OnInit, output, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { finalize } from 'rxjs';
 import { ButtonComponent } from '../button/button';
-import RepoConfigService, { type CreateRepoConfig } from './repo-config service/repo-config.service';
+import RepoConfigService, { type CreateRepoConfig, type RepoConfig } from './repo-config service/repo-config.service';
 
 export enum GitProvider {
   GITHUB = 'GITHUB',
@@ -17,8 +17,9 @@ export enum GitProvider {
   templateUrl: './repo-config.html',
   styleUrl: './repo-config.scss',
 })
-export class RepoConfigModalComponent {
+export class RepoConfigModalComponent implements OnInit {
   repoService = inject(RepoConfigService);
+  repository = input<RepoConfig | null>(null);
   providers = Object.values(GitProvider);
   configForm: FormGroup;
   isSubmitting = signal<boolean>(false);
@@ -35,6 +36,22 @@ export class RepoConfigModalComponent {
     });
   }
 
+  ngOnInit(): void {
+    const repository = this.repository();
+    if (!repository) return;
+
+    this.configForm.patchValue({
+      provider: repository.provider,
+      repoUrl: repository.repoUrl,
+      accessToken: '',
+      baseBranch: repository.baseBranch,
+    });
+    this.configForm.get('provider')?.disable();
+    const accessTokenControl = this.configForm.get('accessToken');
+    accessTokenControl?.clearValidators();
+    accessTokenControl?.updateValueAndValidity();
+  }
+
   onSubmit() {
     if (this.isSubmitting()) return;
     if (this.configForm.invalid) {
@@ -44,8 +61,15 @@ export class RepoConfigModalComponent {
 
     this.errorMessage.set('');
     this.isSubmitting.set(true);
-    this.repoService
-      .createRepoConfig(this.configForm.value as CreateRepoConfig)
+    const formValue = this.configForm.getRawValue() as CreateRepoConfig;
+    const repository = this.repository();
+    const request = repository
+      ? this.repoService.updateRepoConfig(repository.id, {
+          baseBranch: formValue.baseBranch.trim(),
+          ...(formValue.accessToken.trim() && { accessToken: formValue.accessToken.trim() }),
+        })
+      : this.repoService.createRepoConfig(formValue);
+    request
       .pipe(finalize(() => this.isSubmitting.set(false)))
       .subscribe({
         next: () => {

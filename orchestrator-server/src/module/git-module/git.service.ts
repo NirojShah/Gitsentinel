@@ -3,7 +3,6 @@ import GitrepoRepository from "./git.repository.js"
 import type { Prisma } from "../../generated/prisma/client.js"
 import StatusCode from "../../constants/StatusCode.js";
 import CustomError from "../../constants/CustomError.js";
-import { error } from "node:console";
 
 class GitrepoServiceImplementation {
 
@@ -52,11 +51,11 @@ class GitrepoServiceImplementation {
                 statusCode: StatusCode.OK,
                 data: repo
             }
-        } catch (err) {
-            if (err instanceof CustomError) {
+        } catch (error) {
+            if (error instanceof CustomError) {
                 throw error;
             }
-            return new CustomError(StatusCode.INTERNAL_SERVER_ERROR, "Failed to find git repo by UserId")
+            throw new CustomError(StatusCode.INTERNAL_SERVER_ERROR, "Failed to find git repository.");
         }
     }
 
@@ -71,7 +70,7 @@ class GitrepoServiceImplementation {
             if (error instanceof CustomError) {
                 throw error
             }
-            return new CustomError(StatusCode.INTERNAL_SERVER_ERROR, "Failed to update the repo details.")
+            throw new CustomError(StatusCode.INTERNAL_SERVER_ERROR, "Failed to update the repository details.");
         }
     }
 

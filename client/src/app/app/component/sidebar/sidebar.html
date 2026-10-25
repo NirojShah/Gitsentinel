@@ -12,14 +12,19 @@
         <span class="section-title">Chat History</span>
         <div class="history-list">
             @for (thread of chatHistory(); track thread.id) {
-            <button class="history-item" [class.active]="activeThreadId() === thread.id"
-                (click)="threadSelected.emit(thread.id)">
-                <span class="chat-icon">💬</span>
-                <div class="chat-info">
-                    <span class="title">{{ thread.title }}</span>
-                    <span class="repo-badge">{{ thread.repoName }}</span>
-                </div>
-            </button>
+            <div class="history-row">
+                <button class="history-item" [class.active]="activeThreadId() === thread.id"
+                    (click)="threadSelected.emit(thread.id)">
+                    <span class="chat-icon">💬</span>
+                    <div class="chat-info">
+                        <span class="title">{{ thread.title }}</span>
+                        <span class="repo-badge">{{ thread.repoName }}</span>
+                    </div>
+                </button>
+                <button class="history-action" type="button" title="Rename chat"
+                    [attr.aria-label]="'Rename ' + thread.title"
+                    (click)="renameThreadRequested.emit(thread.id)">Edit</button>
+            </div>
             }
         </div>
     </div>
@@ -34,6 +39,9 @@
             <div class="repo-item">
                 <span class="repo-icon">📦</span>
                 <span class="repo-name">{{ repo.repoUrl }}</span>
+                <button class="history-action" type="button" title="Edit repository"
+                  [attr.aria-label]="'Edit ' + repo.repoUrl"
+                  (click)="editRepositoryRequested.emit(repo.id)">Edit</button>
             </div>
             }
         </div>

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { API_BASE_URL } from '../api-base-url';
 
 export interface McpTool {
   name: string;
@@ -24,7 +25,7 @@ export interface McpToolExecution {
   providedIn: 'root',
 })
 export class McpService {
-  private readonly baseUrl = 'http://localhost:5000/app/v1/mcp';
+  private readonly baseUrl = `${API_BASE_URL}/mcp`;
 
   constructor(private readonly http: HttpClient) {}
 

@@ -5,6 +5,7 @@ import type {
     ModelRequest,
     ModelResponse
 } from "../interface/model.interface.js";
+import { randomUUID } from "node:crypto";
 
 class GeminiApi implements ModelFunctions {
     private readonly client: GoogleGenAI;
@@ -27,31 +28,64 @@ class GeminiApi implements ModelFunctions {
 
             const conversationMessages = messages
                 .filter((message) => message.role !== "system")
-                .map((message) => ({
-                    role:
-                        message.role === "assistant"
-                            ? "model" as const
-                            : "user" as const,
-                    parts: [{ text: message.content }]
-                }));
+                .map((message) => {
+                    if (message.role === "tool") {
+                        return {
+                            role: "user" as const,
+                            parts: [{
+                                functionResponse: {
+                                    name: message.name,
+                                    response: { result: message.content },
+                                },
+                            }],
+                        };
+                    }
+                    if (message.toolCalls?.length) {
+                        return {
+                            role: "model" as const,
+                            parts: message.toolCalls.map((call) => ({
+                                functionCall: { name: call.name, args: call.arguments, id: call.id },
+                            })),
+                        };
+                    }
+                    return {
+                        role: message.role === "assistant" ? "model" as const : "user" as const,
+                        parts: [{ text: message.content }],
+                    };
+                });
 
             const response = await this.client.models.generateContent({
                 model,
                 contents: conversationMessages,
-                ...(systemMessage && {
-                    config: {
-                        systemInstruction: systemMessage.content
-                    }
-                })
+                config: {
+                    ...(systemMessage && { systemInstruction: systemMessage.content }),
+                    ...(request.tools?.length && {
+                        tools: [{
+                            functionDeclarations: request.tools.map((tool) => ({
+                                name: tool.name,
+                                description: tool.description,
+                                parametersJsonSchema: tool.inputSchema,
+                            })),
+                        }],
+                    }),
+                },
             });
 
             const content = response.text;
-
-            if (!content) {
-                return { content: null };
-            }
-
-            return { content };
+            return {
+                content: content || null,
+                toolCalls: (response.functionCalls ?? []).flatMap((call) => {
+                    if (!call.name) return [];
+                    if (typeof call.args !== "object" || call.args === null || Array.isArray(call.args)) {
+                        throw new Error("Gemini returned tool-call arguments that are not an object.");
+                    }
+                    return [{
+                        id: call.id || randomUUID(),
+                        name: call.name,
+                        arguments: call.args as Record<string, unknown>,
+                    }];
+                }),
+            };
         } catch (error: unknown) {
             console.error("Gemini API error:", error);
 

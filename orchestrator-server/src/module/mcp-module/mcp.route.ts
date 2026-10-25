@@ -1,13 +1,17 @@
 import { Router } from "express";
+import type { Request, Response } from "express";
+import type AuthenticatedRequest from "../../constants/AuthenticatedRequest.type.js";
 import McpController from "./mcp.controller.js";
 
 const mcpRouter = Router();
 const mcpController = new McpController();
 
-mcpRouter.get("/status", (req, res) => mcpController.getStatus(req, res));
-mcpRouter.get("/tools", (req, res) => mcpController.getTools(req, res));
-mcpRouter.post("/execute", (req, res) => mcpController.executeTool(req, res));
-mcpRouter.post("/connect", (req, res) => mcpController.connect(req, res));
-mcpRouter.post("/disconnect", (req, res) => mcpController.disconnect(req, res));
+const authenticated = (request: Request): AuthenticatedRequest => request as AuthenticatedRequest;
+
+mcpRouter.get("/status", (req: Request, res: Response) => mcpController.getStatus(authenticated(req), res));
+mcpRouter.get("/tools", (req: Request, res: Response) => mcpController.getTools(authenticated(req), res));
+mcpRouter.post("/execute", (req: Request, res: Response) => mcpController.executeTool(authenticated(req), res));
+mcpRouter.post("/connect", (req: Request, res: Response) => mcpController.connect(authenticated(req), res));
+mcpRouter.post("/disconnect", (req: Request, res: Response) => mcpController.disconnect(authenticated(req), res));
 
 export default mcpRouter;

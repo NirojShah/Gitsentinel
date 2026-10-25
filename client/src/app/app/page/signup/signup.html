@@ -10,6 +10,14 @@
     </div>
 
     <form (ngSubmit)="handleSignup()" class="signup-form">
+      @if (errorMessage()) {
+        <p class="error-message" role="alert">{{ errorMessage() }}</p>
+      }
+      @if (successMessage()) {
+        <p class="success-message" role="status">
+          {{ successMessage() }} <a routerLink="/login">Sign in</a>
+        </p>
+      }
       <div class="form-row">
         <div class="form-group">
           <label for="username">Username *</label>
@@ -80,9 +88,10 @@
 
       <div class="form-actions">
         <app-button
-          title="Create Account"
+          [title]="isSubmitting() ? 'Creating Account...' : 'Create Account'"
           type="primary"
           size="lg"
+          [disabled]="isSubmitting()"
           (onClick)="handleSignup()"
         ></app-button>
       </div>
