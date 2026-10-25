@@ -1,165 +1,78 @@
-# MCP Integration Setup Guide
+# AI and MCP integration setup
 
-This document explains how to configure the MCP (Model Context Protocol) integration between the orchestrator-server and the MCP service.
+The chat flow is wired through the Angular client, orchestrator, AI provider SDK, and MCP server:
 
-## Architecture Overview
+1. Add an OpenAI, Anthropic Claude, or Google Gemini configuration in **AI Configuration**.
+2. Start a chat attached to a repository and send a message.
+3. The orchestrator loads the latest saved provider configuration, sends chat history to that provider, and advertises the read-only `githubfilefetch` MCP tool.
+4. If the model requests that tool, the orchestrator binds it to the repository attached to the chat, executes the tool, and returns the result to the model before saving the assistant reply.
+5. The assistant reply and MCP tool availability are shown in the chat.
 
-The GitSentinel project now has full MCP integration across three layers:
+The chat flow intentionally does not expose the MCP tool that creates commits and pull requests. That write operation needs a separate explicit review/confirmation flow before it can safely be made available.
 
-1. **MCP Service** (`/mcp`) - Independent MCP server that provides tools for GitHub operations
-2. **Orchestrator Server** (`/orchestrator-server`) - Backend that connects to MCP and exposes MCP endpoints
-3. **Angular Client** (`/client`) - Frontend UI that displays MCP status and available tools
+## Configure environment
 
-## Environment Configuration
+Copy each example file to `.env.development` in its service directory and set real values locally. Do not commit the development files.
 
-### MCP Service Configuration
-
-Edit `/mcp/src/env/.env.development`:
+### MCP service (`mcp/src/env/.env.development`)
 
 ```env
+HOST=127.0.0.1
 MCP_SERVER_PORT=5001
-MCP_TRANSPORT=sse
-MCP_AUTH_SECRET=super_secret_mcp_token
-ENCRYPTION_KEY=a_32_byte_secret_key_for_db_keys
-DB_URL="postgresql://postgres:postgres@localhost:5432/gitsentinel_db?schema=public"
+MCP_AUTH_SECRET=<long-random-shared-secret>
+DB_URL=postgresql://USER:PASSWORD@localhost:5432/gitsentinel_db?schema=public
 ```
 
-### Orchestrator Server Configuration
-
-Edit `/orchestrator-server/src/env/.env.development`:
+### Orchestrator (`orchestrator-server/src/env/.env.development`)
 
 ```env
 PORT=5000
 ALLOWED_SERVER=http://localhost:4200,http://localhost:5000
-DB_URL=postgresql://postgres:postgres@localhost:5432/gitsentinel_db?schema=public
-
-# MCP Service Configuration
+DB_URL=postgresql://USER:PASSWORD@localhost:5432/gitsentinel_db?schema=public
 MCP_SERVER_URL=http://127.0.0.1:5001/mcp
-MCP_AUTH_SECRET=super_secret_mcp_token
+MCP_AUTH_SECRET=<same-long-random-shared-secret>
+AI_KEY_ENCRYPTION_KEY=<64-hex-characters-encoding-32-random-bytes>
 ```
 
-**Important**: The `MCP_AUTH_SECRET` must match between both services for authentication to work.
+Use the same `MCP_AUTH_SECRET` in both services. Generate a separate random 32-byte `AI_KEY_ENCRYPTION_KEY` and keep it backed up securely; losing or changing it makes already-stored provider keys unreadable. Provider API keys are encrypted with AES-256-GCM before database storage, and API responses return only `hasApiKey`, never the key itself.
 
-## Starting the Services
-
-### 1. Start the MCP Service
-
-```bash
-cd mcp
-npm install
-npm run dev
-```
-
-The MCP service will start on `http://127.0.0.1:5001/mcp`
-
-### 2. Start the Orchestrator Server
+The AI configuration migration must be applied before using the configuration UI:
 
 ```bash
 cd orchestrator-server
-npm install
-npm run dev
+npx prisma migrate deploy
+npx prisma generate
 ```
 
-The orchestrator server will start on `http://127.0.0.1:5000`
-
-### 3. Start the Angular Client
+Start the services in separate terminals:
 
 ```bash
-cd client
-npm install
-npm start
+cd mcp && npm run dev
+cd orchestrator-server && npm run dev
+cd client && npm start
 ```
 
-The Angular client will start on `http://localhost:4200`
+The client sends API requests through the gateway at `http://127.0.0.1:5050`; start it in another terminal:
 
-## MCP Integration Features
+```bash
+cd gateway
+PORT=5050 ORCHESTRATOR_URL=http://127.0.0.1:5000 npm run dev
+```
 
-### Backend (Orchestrator Server)
+## Available endpoints
 
-- **MCP Service** (`/orchestrator-server/src/service/mcp service/mcp.service.ts`):
-  - Manages connection to MCP server using HTTP transport
-  - Provides methods to get available tools and execute them
-  - Handles connection lifecycle (connect/disconnect)
+All orchestrator routes use `/app/v1` and require the user's bearer access token. The gateway forwards those requests to the orchestrator; the MCP server separately requires its shared bearer secret on `/mcp`. Only the MCP health endpoint is unauthenticated.
 
-- **MCP Module** (`/orchestrator-server/src/module/mcp-module/`):
-  - REST endpoints for MCP operations:
-    - `GET /app/v1/mcp/status` - Check MCP connection status
-    - `GET /app/v1/mcp/tools` - List available MCP tools
-    - `POST /app/v1/mcp/execute` - Execute an MCP tool
-    - `POST /app/v1/mcp/connect` - Connect to MCP server
-    - `POST /app/v1/mcp/disconnect` - Disconnect from MCP server
+- `POST/GET /app/v1/ai-configuration` and `PUT /app/v1/ai-configuration/:configurationId`
+- `GET /app/v1/mcp/status` and `/app/v1/mcp/tools`
+- `POST /app/v1/mcp/connect`, `/disconnect`, and `/execute`
+- `POST /app/v1/message` for the provider-backed chat workflow
 
-- **Message Service Integration**:
-  - Automatically detects when MCP tools might be needed based on message content
-  - Returns available MCP tools with message responses when relevant keywords are detected
-
-### Frontend (Angular Client)
-
-- **MCP Service** (`/client/src/app/app/core/mcp-service/mcp.service.ts`):
-  - HTTP client to communicate with orchestrator-server MCP endpoints
-  - Methods for status, tools, execution, connect, and disconnect
-
-- **MCP Status Component** (`/client/src/app/app/component/mcp-status/`):
-  - Displays MCP connection status (Connected/Disconnected)
-  - Shows available MCP tools in an expandable list
-  - Provides Connect/Disconnect/Refresh buttons
-  - Integrated into the home page above the chat interface
-
-- **Chat Window Integration**:
-  - Messages from the assistant now include MCP tool availability information
-  - Collapsible "MCP Tools Available" indicator shows which tools are relevant
-  - Tools are displayed with name and description in a styled list
-
-## Usage Flow
-
-1. User logs into the Angular client
-2. MCP status component shows connection status (initially disconnected)
-3. User clicks "Connect" to establish MCP connection
-4. Once connected, available tools are displayed
-5. When user sends a message with keywords like "file", "repository", "commit", etc.:
-   - Backend detects the relevance
-   - Returns available MCP tools with the message
-   - Frontend displays "MCP Tools Available" indicator in the chat bubble
-6. User can expand the tool list to see what tools are available for that context
-
-## MCP Tools Available
-
-The MCP service currently provides the following tools:
-
-- **githubfilefetch**: Fetch a file from a GitHub repository for updates and comparison
-  - Parameters: `path`, `branch` (optional), `repositoryId`
-
-Additional tools can be registered in `/mcp/src/service/mcp.server.tools.ts`
+The MCP execution endpoint currently permits only `githubfilefetch`, and verifies repository ownership against the authenticated user. The AI tool loop is capped at three rounds per message.
 
 ## Troubleshooting
 
-### MCP Connection Fails
-
-1. Ensure MCP service is running on port 5001
-2. Check that `MCP_AUTH_SECRET` matches in both services
-3. Verify the `MCP_SERVER_URL` is correct in orchestrator-server config
-4. Check browser console and server logs for specific error messages
-
-### Tools Not Showing in Chat
-
-1. Ensure MCP is connected (check status component)
-2. Message must contain relevant keywords (file, repository, commit, etc.)
-3. Check that the message service integration is working correctly
-4. Verify the backend is returning `mcpToolsAvailable` in the message response
-
-### CORS Issues
-
-If you encounter CORS errors between the Angular client and orchestrator-server:
-- Ensure `ALLOWED_SERVER` in orchestrator-server includes `http://localhost:4200`
-- Check that the CORS middleware is properly configured in `/orchestrator-server/src/app.ts`
-
-## Next Steps
-
-To enhance the MCP integration further:
-
-1. Implement AI-based tool selection (currently using keyword heuristics)
-2. Add actual tool execution from the chat interface
-3. Display tool execution results in the chat
-4. Add tool execution history
-5. Implement tool result caching
-6. Add more MCP tools for additional GitHub operations
+- **Credential encryption error:** Ensure `AI_KEY_ENCRYPTION_KEY` is exactly 64 hex characters or base64 encoding exactly 32 bytes, and that the same value remains configured across restarts.
+- **MCP connection error:** Check that the MCP server is listening on port 5001, `MCP_SERVER_URL` is correct, both services use the same auth secret, and both use the expected database.
+- **No AI response:** Add a provider configuration in the client, verify the provider/model/key combination, and check orchestrator logs for provider errors.
+- **No repository tool use:** Check the MCP status panel and ensure the chat is attached to a repository belonging to the signed-in user. The model decides whether the read-only file-fetch tool is relevant to a message.
