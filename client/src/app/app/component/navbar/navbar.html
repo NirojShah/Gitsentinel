@@ -33,19 +33,25 @@
     <!-- User Profile Dropdown Trigger -->
     <div class="profile-container">
       <button class="profile-avatar" (click)="toggleProfileMenu()">
-        {{ userAvatar() }}
+        {{ displayedAvatar() }}
       </button>
 
       @if (isProfileMenuOpen()) {
         <div class="profile-menu glass-panel">
           <div class="user-info">
-            <span class="user-name">{{ userName() }}</span>
-            <span class="user-role">Full Stack Developer</span>
+            <span class="user-name">{{ displayedName() }}</span>
+            @if (profileInfo(); as profile) {
+              <span class="user-role">{{ profile.email }}</span>
+            }
           </div>
           <hr class="menu-divider" />
-          <button class="menu-item">Account Settings</button>
-          <button class="menu-item">API Keys</button>
-          <button class="menu-item logout">Sign Out</button>
+          @if (profileError()) {
+            <span class="user-role" role="alert">{{ profileError() }}</span>
+          }
+          <a class="menu-item" routerLink="/ai-configuration" (click)="isProfileMenuOpen.set(false)">
+            AI Configuration
+          </a>
+          <button class="menu-item logout" (click)="signOut()">Sign Out</button>
         </div>
       }
     </div>
