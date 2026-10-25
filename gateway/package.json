@@ -4,6 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -16,7 +19,6 @@
     "typescript": "^7.0.2"
   },
   "dependencies": {
-    "@types/express": "^5.0.6",
-    "http": "^0.0.1-security"
+    "@types/express": "^5.0.6"
   }
 }
