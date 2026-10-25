@@ -22,12 +22,13 @@ class AiConfigurationController {
                 });
             }
 
-            const { model, provider } = body as Record<string, unknown>;
+            const { model, provider, apiKey } = body as Record<string, unknown>;
 
-            if (!isAiProvider(provider) || typeof model !== "string" || !model.trim()) {
+            if (!isAiProvider(provider) || typeof model !== "string" || !model.trim() ||
+                typeof apiKey !== "string" || !apiKey.trim()) {
                 return res.status(400).json({
                     statusCode: 400,
-                    message: "A supported provider and model are required.",
+                    message: "A supported provider, model, and API key are required.",
                 });
             }
 
@@ -36,6 +37,7 @@ class AiConfigurationController {
             const payload: Prisma.AiconfigurationCreateInput = {
                 model: model.trim(),
                 provider,
+                apiKey: this.aiService.encryptApiKey(apiKey.trim()),
                 user: {
                     connect: {
                         id: userId,
@@ -102,12 +104,13 @@ class AiConfigurationController {
                 });
             }
 
-            const { model, provider } = body as Record<string, unknown>;
+            const { model, provider, apiKey } = body as Record<string, unknown>;
 
             if (
-                (model === undefined && provider === undefined) ||
+                (model === undefined && provider === undefined && apiKey === undefined) ||
                 (model !== undefined && (typeof model !== "string" || !model.trim())) ||
-                (provider !== undefined && !isAiProvider(provider))
+                (provider !== undefined && !isAiProvider(provider)) ||
+                (apiKey !== undefined && (typeof apiKey !== "string" || !apiKey.trim()))
             ) {
                 return res.status(400).json({
                     statusCode: 400,
@@ -118,6 +121,7 @@ class AiConfigurationController {
             const payload: Prisma.AiconfigurationUpdateManyMutationInput = {
                 ...(model !== undefined && { model: model.trim() }),
                 ...(provider !== undefined && { provider }),
+                ...(apiKey !== undefined && { apiKey: this.aiService.encryptApiKey(apiKey.trim()) }),
             };
 
             const result = await this.aiService.updateAiConfiguration(

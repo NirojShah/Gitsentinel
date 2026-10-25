@@ -6,7 +6,7 @@
   <app-navbar
     [activeRepo]="selectedRepoName()"
     (newChatRequested)="onNewChat()"
-    (openConfigRequested)="isModalOpen.set(true)"
+    (openConfigRequested)="openRepoConfig()"
   ></app-navbar>
 
   <!-- MCP Status Component -->
@@ -23,7 +23,9 @@
       [activeThreadId]="activeThreadId()"
       (newChatRequested)="onNewChat()"
       (threadSelected)="onThreadSelected($event)"
-      (openConfigRequested)="isModalOpen.set(true)"
+      (renameThreadRequested)="onRenameChat($event)"
+      (editRepositoryRequested)="onEditRepository($event)"
+      (openConfigRequested)="openRepoConfig()"
     ></app-sidebar>
 
     <div class="resizer" (mousedown)="startResizing($event)"></div>
@@ -38,13 +40,15 @@
       [isSending]="isSendingMessage()"
       (repoChanged)="selectedRepo.set($event)"
       (messageSent)="onSendMessage($event)"
-      (openConfigRequested)="isModalOpen.set(true)"
+      (deleteMessageRequested)="onDeleteMessage($event)"
+      (openConfigRequested)="openRepoConfig()"
     ></app-chat-window>
   </div>
 
   @if (isModalOpen()) {
     <app-repo-config-modal
-      (closeModal)="isModalOpen.set(false)"
+      [repository]="editingRepository()"
+      (closeModal)="closeRepoConfig()"
       (repoSaved)="onRepositoriesSaved()"
     ></app-repo-config-modal>
   }

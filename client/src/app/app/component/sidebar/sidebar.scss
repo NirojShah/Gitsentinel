@@ -70,7 +70,15 @@
       gap: 6px;
     }
 
+    .history-row {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
     .history-item {
+      flex: 1;
+      min-width: 0;
       display: flex;
       align-items: center;
       gap: 10px;
@@ -87,6 +95,16 @@
         background: rgba(255, 255, 255, 0.06);
         border-color: rgba(255, 255, 255, 0.1);
         color: $text-main;
+      }
+
+      .history-action {
+        padding: 6px;
+        border: 0;
+        background: transparent;
+        color: $text-muted;
+        cursor: pointer;
+
+        &:hover { color: $text-main; }
       }
 
       .chat-info {

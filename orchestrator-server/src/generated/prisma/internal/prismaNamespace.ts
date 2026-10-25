@@ -834,7 +834,10 @@ export const AiconfigurationScalarFieldEnum = {
   id: 'id',
   provider: 'provider',
   model: 'model',
-  userId: 'userId'
+  apiKey: 'apiKey',
+  userId: 'userId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 } as const
 
 export type AiconfigurationScalarFieldEnum = (typeof AiconfigurationScalarFieldEnum)[keyof typeof AiconfigurationScalarFieldEnum]

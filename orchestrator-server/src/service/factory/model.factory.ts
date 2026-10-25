@@ -11,10 +11,10 @@ class ModelFactory {
                 return new GeminiApi(configuration.apiKey);
 
             case "openai":
-                return new OpenAiApi();
+                return new OpenAiApi(configuration.apiKey);
 
             case "claude":
-                return new ClaudeApi();
+                return new ClaudeApi(configuration.apiKey);
 
             default:
                 throw new Error(`Unsupported AI Provider: ${configuration.provider}`);

@@ -9,6 +9,8 @@ export interface ChatMessage {
   text: string;
   timestamp: Date;
   mcpToolsAvailable?: Array<{ name: string; description?: string }>;
+  mcpToolsExecuted?: number;
+  mcpWarning?: string;
 }
 
 @Component({
@@ -29,6 +31,7 @@ export class ChatWindowComponent {
   isSending = input<boolean>(false);
   repoChanged = output<string>();
   messageSent = output<string>();
+  deleteMessageRequested = output<string>();
   openConfigRequested = output<void>();
 
   inputMessage = signal<string>('');

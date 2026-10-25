@@ -8,11 +8,14 @@ const server: Server = http.createServer(app);
 
 const PORT: number = Number(process.env.PORT) || 5000;
 
-const startServer = () => {
-    connectDatabase()
+const startServer = async () => {
+    await connectDatabase();
     server.listen(PORT, "127.0.0.1", () => {
-        console.log("SERVER STARTED AT PORT - " + PORT);
-    })
+        console.log(`SERVER STARTED AT PORT - ${PORT}`);
+    });
 }
 
-startServer()
+startServer().catch((error: unknown) => {
+    console.error(error instanceof Error ? error.message : "Failed to start orchestrator.");
+    process.exitCode = 1;
+});

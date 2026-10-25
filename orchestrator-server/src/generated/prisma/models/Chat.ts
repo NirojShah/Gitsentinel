@@ -353,14 +353,6 @@ export type ChatScalarRelationFilter = {
   isNot?: Prisma.ChatWhereInput
 }
 
-export type NullableStringFieldUpdateOperationsInput = {
-  set?: string | null
-}
-
-export type DateTimeFieldUpdateOperationsInput = {
-  set?: Date | string
-}
-
 export type ChatCreateNestedManyWithoutGitRepoInput = {
   create?: Prisma.XOR<Prisma.ChatCreateWithoutGitRepoInput, Prisma.ChatUncheckedCreateWithoutGitRepoInput> | Prisma.ChatCreateWithoutGitRepoInput[] | Prisma.ChatUncheckedCreateWithoutGitRepoInput[]
   connectOrCreate?: Prisma.ChatCreateOrConnectWithoutGitRepoInput | Prisma.ChatCreateOrConnectWithoutGitRepoInput[]

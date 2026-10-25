@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { defer, type Observable } from 'rxjs';
+import { API_BASE_URL } from '../../core/api-base-url';
 
 export type AiProvider = 'openai' | 'claude' | 'gemini';
 
@@ -8,14 +9,14 @@ export interface AiConfiguration {
   id: string;
   provider: AiProvider;
   model: string;
-  apiKey: string;
+  hasApiKey: boolean;
   userId: string;
 }
 
 export interface AiConfigurationInput {
   provider: AiProvider;
   model: string;
-  apiKey: string;
+  apiKey?: string;
 }
 
 export interface AiConfigurationResponse<T> {
@@ -28,7 +29,7 @@ export interface AiConfigurationResponse<T> {
   providedIn: 'root',
 })
 export class AiConfigurationService {
-  private readonly apiUrl = 'http://localhost:5000/app/v1/ai-configuration';
+  private readonly apiUrl = `${API_BASE_URL}/ai-configuration`;
   private readonly http = inject(HttpClient);
 
   getConfigurations(page = 1, limit = 100): Observable<AiConfigurationResponse<AiConfiguration[]>> {

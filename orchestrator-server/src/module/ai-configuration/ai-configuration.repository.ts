@@ -36,11 +36,19 @@ class AiConfigurationRepository {
             where: {
                 userId: userId
             },
+            orderBy: { createdAt: "desc" },
             skip: (page - 1) * limit,
             take: limit
         })
 
         return configurations;
+    }
+
+    async getLatestConfigurationByUserId(userId: string) {
+        return prisma.aiconfiguration.findFirst({
+            where: { userId, apiKey: { not: null } },
+            orderBy: { createdAt: "desc" },
+        });
     }
 
 }

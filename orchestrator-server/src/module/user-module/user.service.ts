@@ -16,6 +16,9 @@ class UserServiceImplementation {
         if (userExists) {
             throw new CustomError(StatusCode.BAD_REQUEST, "User already exists.")
         }
+        if (await this.userRepository.userExistsByUsername(userData.username)) {
+            throw new CustomError(StatusCode.BAD_REQUEST, "Username is already taken.");
+        }
         const hashedPassword = await bcrypt.hash(userData.password.toString(), 10);
         await this.userRepository.createuser({
             email: userData.email,
@@ -72,6 +75,17 @@ class UserServiceImplementation {
             data: {
                 token: tokenResponse.token
             }
+        };
+    }
+
+    async getUserProfile(userId: string): Promise<ResponseDto> {
+        const profile = await this.userRepository.findProfileById(userId);
+        if (!profile) {
+            throw new CustomError(StatusCode.NOT_FOUND, "User profile not found.");
+        }
+        return {
+            statusCode: StatusCode.OK,
+            data: profile,
         };
     }
 }
