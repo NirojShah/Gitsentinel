@@ -2,7 +2,6 @@ import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp";
 import { z } from "zod";
 import GitRepository from "../repository/git.repository.js";
 import { FetchFile } from "../service-actions/resolve.file.js";
-import type { privateDecrypt } from "node:crypto";
 import { RaisePrService } from "../service-actions/raisepr.service.js";
 
 class Mcptools {
@@ -45,6 +44,13 @@ class Mcptools {
                         return {
                             isError: true,
                             content: [{ type: "text", text: `Repository details not found for ${repositoryId}` }],
+                        };
+                    }
+
+                    if (repoDetails.provider !== "GITHUB") {
+                        return {
+                            isError: true,
+                            content: [{ type: "text", text: "Repository file fetching currently supports GitHub repositories only." }],
                         };
                     }
 
