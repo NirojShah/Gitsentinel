@@ -10,7 +10,7 @@ class MessageRepository {
         });
     }
 
-    async findByChatId(id: string, limit: number = 10, page: number = 1) {
+    async findByChatId(id: string, limit: number = 50, page: number = 1) {
         const offset: number = (page - 1) * limit;
         return await this.prisma.message.findMany({
             where: {
@@ -22,6 +22,32 @@ class MessageRepository {
             skip: offset,
             take: limit
         });
+    }
+
+    async getChatContext(chatId: string, userId: string) {
+        return this.prisma.chat.findFirst({
+            where: { id: chatId, userId },
+            select: {
+                id: true,
+                chatName: true,
+                repoId: true,
+                gitRepo: {
+                    select: {
+                        repoUrl: true,
+                        baseBranch: true,
+                    },
+                },
+            },
+        });
+    }
+
+    async getConversationHistory(chatId: string, limit = 20) {
+        const messages = await this.prisma.message.findMany({
+            where: { chatId },
+            orderBy: { createdAt: "desc" },
+            take: limit,
+        });
+        return messages.reverse();
     }
 
     async delete(id: string, chatId: string, userId: string) {
