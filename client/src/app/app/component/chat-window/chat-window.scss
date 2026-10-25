@@ -87,10 +87,28 @@
           display: block;
         }
 
+        .delete-message-button {
+          margin-left: 12px;
+          padding: 0;
+          border: 0;
+          background: transparent;
+          color: $text-muted;
+          font-size: 11px;
+          cursor: pointer;
+
+          &:hover { color: #ff8a8a; }
+        }
+
         .message-text {
           margin: 0;
           font-size: 15px;
           line-height: 1.5;
+        }
+
+        .mcp-warning {
+          margin: 10px 0 0;
+          color: #ffcf70;
+          font-size: 12px;
         }
 
         .mcp-tools-indicator {
