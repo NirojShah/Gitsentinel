@@ -20,7 +20,7 @@
       </div>
 
       <p class="card-description">
-        Select a supported provider, enter the model identifier, and provide the API key used by that provider.
+        Select a supported provider, enter the model identifier, and provide the API key used by that provider. Keys are encrypted before storage and never returned to the browser.
       </p>
 
       @if (errorMessage()) {
@@ -70,13 +70,20 @@
           autocomplete="off"
           [class.invalid]="configForm.controls.apiKey.touched && configForm.controls.apiKey.invalid"
         />
-        @if (configForm.controls.apiKey.touched && configForm.controls.apiKey.hasError('required')) {
+        @if (configForm.controls.apiKey.touched && !configForm.controls.apiKey.value && !editingId()) {
           <span class="field-error">Enter an API key.</span>
         }
-        @if (configForm.controls.apiKey.touched && configForm.controls.apiKey.hasError('minlength')) {
-          <span class="field-error">API key cannot be empty.</span>
-        }
-        <span class="field-hint">Stored with your AI configuration and used to authenticate requests.</span>
+        <span class="field-hint">
+          @if (editingId()) {
+            @if (editingHasApiKey()) {
+              Leave blank to keep the existing key.
+            } @else {
+              Add an API key to enable this configuration.
+            }
+          } @else {
+            The key is encrypted before storage and is never returned by the API.
+          }
+        </span>
       </div>
 
       <div class="form-actions">
@@ -97,6 +104,10 @@
         </div>
         <span class="count-badge">{{ configurations().length }}</span>
       </div>
+
+      <p class="card-description">
+        The newest saved configuration with an API key is used for new chat responses.
+      </p>
 
       @if (isLoading()) {
         <p class="empty-state">Loading your configurations...</p>
