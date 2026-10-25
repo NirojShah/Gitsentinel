@@ -1,6 +1,7 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { defer, type Observable } from 'rxjs';
+import { API_BASE_URL } from '../api-base-url';
 
 export interface MessageRecord {
   id: string;
@@ -8,6 +9,13 @@ export interface MessageRecord {
   chatId: string;
   content: string;
   createdAt: string;
+  mcpToolsAvailable?: Array<{ name: string; description?: string }>;
+  mcpToolsExecuted?: number;
+  mcpWarning?: string;
+}
+
+export interface SentMessageRecord extends MessageRecord {
+  userMessage: MessageRecord;
 }
 
 interface MessageApiResponse<T> {
@@ -19,7 +27,7 @@ interface MessageApiResponse<T> {
   providedIn: 'root',
 })
 export class MessageService {
-  private readonly apiUrl = 'http://localhost:5000/app/v1/message';
+  private readonly apiUrl = `${API_BASE_URL}/message`;
   private readonly http = inject(HttpClient);
 
   fetchMessages(chatId: string): Observable<MessageApiResponse<MessageRecord[]>> {
@@ -31,13 +39,22 @@ export class MessageService {
     );
   }
 
-  sendMessage(chatId: string, content: string): Observable<MessageApiResponse<MessageRecord>> {
+  sendMessage(chatId: string, content: string): Observable<MessageApiResponse<SentMessageRecord>> {
     return defer(() =>
-      this.http.post<MessageApiResponse<MessageRecord>>(
+      this.http.post<MessageApiResponse<SentMessageRecord>>(
         this.apiUrl,
         { chatId, content },
         { headers: this.authorizationHeaders() },
       ),
+    );
+  }
+
+  deleteMessage(chatId: string, messageId: string): Observable<void> {
+    return defer(() =>
+      this.http.delete<void>(`${this.apiUrl}/${encodeURIComponent(chatId)}`, {
+        headers: this.authorizationHeaders(),
+        params: new HttpParams().set('messageId', messageId),
+      }),
     );
   }
 
