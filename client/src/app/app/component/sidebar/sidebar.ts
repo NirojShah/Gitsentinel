@@ -27,5 +27,7 @@ export class SidebarComponent {
   // Outputs to Parent
   newChatRequested = output<void>();
   threadSelected = output<string>();
+  renameThreadRequested = output<string>();
+  editRepositoryRequested = output<string>();
   openConfigRequested = output<void>();
 }
