@@ -2,23 +2,23 @@ import type { Request as ExpressRequest, Response as ExpressResponse } from "exp
 import { WebStandardStreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/webStandardStreamableHttp.js";
 import MCPUtility from "./mcp.utility.js";
 import { createMcpServer } from "./mcp.server.js";
+import type GitRepository from "../repository/git.repository.js";
 
-export async function handleConnection(req: ExpressRequest, res: ExpressResponse): Promise<void> {
+export async function handleConnection(
+    req: ExpressRequest,
+    res: ExpressResponse,
+    gitRepository: GitRepository,
+): Promise<void> {
+    let transport: WebStandardStreamableHTTPServerTransport | undefined;
     try {
         const webRequest = MCPUtility.createWebRequest(req);
-
-        // Create a NEW MCP server for this connection
-        const mcpServer = await createMcpServer();
-
-        // Create a NEW transport
-        const transport =
-            new WebStandardStreamableHTTPServerTransport();
-
-        // Connect this server to this transport
+        const mcpServer = createMcpServer(gitRepository);
+        transport = new WebStandardStreamableHTTPServerTransport({
+            sessionIdGenerator: undefined,
+            enableJsonResponse: true,
+        });
         await mcpServer.connect(transport);
-
-        // Handle request
-        const webResponse = await transport.handleRequest(webRequest,);
+        const webResponse = await transport.handleRequest(webRequest);
 
         // Copy status
         res.status(webResponse.status,);
@@ -60,6 +60,14 @@ export async function handleConnection(req: ExpressRequest, res: ExpressResponse
             res.status(500).json({ error: "Internal MCP Server Error", });
         } else {
             res.end();
+        }
+    } finally {
+        if (transport) {
+            try {
+                await transport.close();
+            } catch (error) {
+                console.error("Failed to close MCP HTTP transport:", error);
+            }
         }
     }
 }
