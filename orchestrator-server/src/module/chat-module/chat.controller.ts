@@ -75,6 +75,19 @@ class ChatController {
             message: response.message
         })
     }
+
+    async deleteChat(req: AuthenticatedRequest, res: Response): Promise<Response> {
+        const result = ChatModel.GetChatSchema.safeParse(req.params);
+        if (!result.success) {
+            throw new CustomError(StatusCode.BAD_REQUEST, result.error.message);
+        }
+
+        const response = await this.chatService.deleteChat(result.data.chatId, req.user.userId);
+
+        return res.status(response.statusCode).json({
+            message: response.message
+        });
+    }
 }
 
 export default ChatController;

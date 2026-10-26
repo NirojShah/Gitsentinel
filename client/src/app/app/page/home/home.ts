@@ -132,6 +132,46 @@ export class HomeComponent implements OnInit {
     });
   }
 
+  onDeleteChat(chatId: string) {
+    const thread = this.chatHistory().find((item) => item.id === chatId);
+    const title = thread?.title || 'this chat';
+    if (!window.confirm(`Delete "${title}"?`)) return;
+
+    this.chatService.deleteChat(chatId).subscribe({
+      next: () => {
+        this.chatHistory.update((threads) => threads.filter((item) => item.id !== chatId));
+        if (this.activeThreadId() === chatId) {
+          const remaining = this.chatHistory();
+          if (remaining.length > 0) {
+            this.onThreadSelected(remaining[0].id);
+          } else {
+            this.activeThreadId.set('');
+            this.messages.set([]);
+          }
+        }
+      },
+      error: (error: unknown) => this.messageError.set(this.getErrorMessage(error, 'Unable to delete chat.')),
+    });
+  }
+
+  onDeleteRepository(repositoryId: string) {
+    const repo = this.configuredRepos().find((item) => item.id === repositoryId);
+    const url = repo?.repoUrl || 'this repository';
+    if (!window.confirm(`Delete repository "${url}"?`)) return;
+
+    this.repoConfigService.deleteRepoConfig(repositoryId).subscribe({
+      next: () => {
+        this.configuredRepos.update((repos) => repos.filter((item) => item.id !== repositoryId));
+        if (this.selectedRepo() === repositoryId) {
+          const remaining = this.configuredRepos();
+          this.selectedRepo.set(remaining.length > 0 ? remaining[0].id : '');
+        }
+        this.loadChatHistory();
+      },
+      error: (error: unknown) => this.messageError.set(this.getErrorMessage(error, 'Unable to delete repository.')),
+    });
+  }
+
   onDeleteMessage(messageId: string) {
     const chatId = this.activeThreadId();
     if (!chatId || !window.confirm('Delete this message?')) return;

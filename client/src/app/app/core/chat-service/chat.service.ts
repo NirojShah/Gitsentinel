@@ -58,6 +58,24 @@ export class ChatService {
     );
   }
 
+  fetchChat(chatId: string): Observable<ChatApiResponse<ChatRecord>> {
+    return defer(() =>
+      this.http.get<ChatApiResponse<ChatRecord>>(
+        `${this.apiUrl}/${encodeURIComponent(chatId)}`,
+        { headers: this.authorizationHeaders() },
+      ),
+    );
+  }
+
+  deleteChat(chatId: string): Observable<ChatApiResponse<void>> {
+    return defer(() =>
+      this.http.delete<ChatApiResponse<void>>(
+        `${this.apiUrl}/${encodeURIComponent(chatId)}`,
+        { headers: this.authorizationHeaders() },
+      ),
+    );
+  }
+
   private authorizationHeaders(): HttpHeaders {
     const token = localStorage.getItem('token');
     if (!token) {

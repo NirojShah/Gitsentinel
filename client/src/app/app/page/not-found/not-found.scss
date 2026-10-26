@@ -1,0 +1,105 @@
+@use 'variable' as *;
+
+:host {
+  display: block;
+  min-height: 100vh;
+  background: $bg-dark;
+}
+
+.not-found-page {
+  position: relative;
+  isolation: isolate;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  box-sizing: border-box;
+  color: $text-main;
+  overflow: hidden;
+
+  .ambient {
+    position: absolute;
+    z-index: -1;
+    width: 420px;
+    height: 420px;
+    border-radius: 50%;
+    filter: blur(150px);
+    opacity: 0.2;
+    pointer-events: none;
+  }
+
+  .ambient-purple {
+    top: -120px;
+    left: -100px;
+    background: $secondary;
+  }
+
+  .ambient-cyan {
+    right: -120px;
+    bottom: -120px;
+    background: $primary;
+  }
+}
+
+.not-found-card {
+  max-width: 480px;
+  width: 100%;
+  text-align: center;
+  padding: 48px 32px;
+  background: $glass-bg;
+  backdrop-filter: $glass-blur;
+  border: $glass-border;
+  box-shadow: $glass-shadow;
+  border-radius: 20px;
+
+  .badge-icon {
+    font-size: 40px;
+    margin-bottom: 8px;
+  }
+
+  .error-code {
+    display: inline-block;
+    font-size: 56px;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.04em;
+    background: linear-gradient(135deg, $primary, $secondary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 12px;
+  }
+
+  h1 {
+    font-size: 22px;
+    margin: 0 0 10px;
+    font-weight: 600;
+  }
+
+  p {
+    color: $text-muted;
+    font-size: 14px;
+    line-height: 1.5;
+    margin: 0 0 28px;
+  }
+
+  .home-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 24px;
+    background: linear-gradient(135deg, $primary, #0891b2);
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 10px;
+    text-decoration: none;
+    box-shadow: 0 4px 16px rgba(6, 182, 212, 0.35);
+    transition: all 0.2s ease;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(6, 182, 212, 0.5);
+    }
+  }
+}
