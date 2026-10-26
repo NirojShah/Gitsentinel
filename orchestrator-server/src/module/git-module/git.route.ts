@@ -15,5 +15,6 @@ gitRouter.post("/", async (req: Request, res: Response) => await gitController.c
 gitRouter.get("/", async (req: Request, res: Response) => await gitController.getUsersGitrepoList(req as AuthenticatedRequest, res))
 gitRouter.get("/:repoId", async (req: Request, res: Response) => await gitController.getUserGitrepo(req as AuthenticatedRequest, res))
 gitRouter.put("/:repoId", async (req: Request, res: Response) => await gitController.updaeGitRepo(req as AuthenticatedRequest, res))
+gitRouter.delete("/:repoId", async (req: Request, res: Response) => await gitController.deleteGitRepo(req as AuthenticatedRequest, res))
 
 export default gitRouter;
