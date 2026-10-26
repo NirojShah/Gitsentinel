@@ -11,7 +11,7 @@
 
   <!-- MCP Status Component -->
   <div class="mcp-status-wrapper">
-    <app-mcp-status></app-mcp-status>
+    <app-mcp-status [repositoryId]="selectedRepo()"></app-mcp-status>
   </div>
 
   <!-- Main Content Layout Below Navbar -->
@@ -24,7 +24,9 @@
       (newChatRequested)="onNewChat()"
       (threadSelected)="onThreadSelected($event)"
       (renameThreadRequested)="onRenameChat($event)"
+      (deleteThreadRequested)="onDeleteChat($event)"
       (editRepositoryRequested)="onEditRepository($event)"
+      (deleteRepositoryRequested)="onDeleteRepository($event)"
       (openConfigRequested)="openRepoConfig()"
     ></app-sidebar>
 

@@ -78,6 +78,15 @@ class RepoConfigService {
             ),
         );
     }
+
+    deleteRepoConfig(repoId: string): Observable<{ message: string }> {
+        return defer(() =>
+            this.httpClient.delete<{ message: string }>(
+                `${this.apiUrl}/${encodeURIComponent(repoId)}`,
+                { headers: this.authorizationHeaders() },
+            ),
+        );
+    }
 }
 
 export default RepoConfigService;

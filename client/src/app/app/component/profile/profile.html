@@ -1,12 +1,79 @@
-<section class="profile-card" aria-label="User profile">
-  @if (isLoading()) {
-    <p role="status">Loading profile...</p>
-  } @else if (profileInfo(); as profile) {
-    <div class="profile-avatar" aria-hidden="true">{{ profileIcon?.initials }}</div>
-    <h2>{{ profile.name || profile.username }}</h2>
-    <p>{{ profile.email }}</p>
-    <p>Account status: {{ profile.isActive ? 'Active' : 'Inactive' }}</p>
-  } @else {
-    <p role="alert">{{ errorMessage() }}</p>
-  }
-</section>
+<main class="profile-page">
+  <div class="ambient ambient-purple"></div>
+  <div class="ambient ambient-cyan"></div>
+
+  <header class="page-header">
+    <a class="back-link" routerLink="/home">← Back to dashboard</a>
+    <span class="eyebrow">User account</span>
+    <h1>Profile Details</h1>
+    <p>Manage your account settings, credentials, and linked workspace preferences.</p>
+  </header>
+
+  <div class="profile-container">
+    @if (isLoading()) {
+      <div class="glass-panel state-card" role="status">
+        <span class="loader-spinner"></span>
+        <p>Loading profile information...</p>
+      </div>
+    } @else if (profileInfo(); as profile) {
+      <div class="glass-panel profile-card">
+        <div class="profile-card-header">
+          <div class="avatar-wrapper">
+            <div class="profile-avatar" aria-hidden="true">{{ profileIcon?.initials || 'U' }}</div>
+            <div class="online-indicator"></div>
+          </div>
+          <div class="header-details">
+            <h2>{{ profile.name || profile.username }}</h2>
+            <span class="username">&#64;{{ profile.username }}</span>
+            <div class="status-badge" [class.verified]="profile.isVerified">
+              <span class="badge-dot"></span>
+              {{ profile.isActive ? 'Active Account' : 'Inactive' }}
+              @if (profile.isVerified) {
+                <span>• Verified</span>
+              }
+            </div>
+          </div>
+        </div>
+
+        <div class="card-divider"></div>
+
+        <div class="profile-fields">
+          <div class="field-group">
+            <label>Full Name</label>
+            <div class="field-value">{{ profile.name || 'Not provided' }}</div>
+          </div>
+
+          <div class="field-group">
+            <label>Username</label>
+            <div class="field-value">&#64;{{ profile.username }}</div>
+          </div>
+
+          <div class="field-group">
+            <label>Email Address</label>
+            <div class="field-value">{{ profile.email }}</div>
+          </div>
+
+          <div class="field-group">
+            <label>Account Status</label>
+            <div class="field-value">{{ profile.isActive ? 'Active' : 'Inactive' }}</div>
+          </div>
+        </div>
+
+        <div class="card-actions">
+          <a class="action-btn secondary-btn" routerLink="/ai-configuration">
+            <span>⚙️</span> Manage AI Configuration
+          </a>
+          <button class="action-btn danger-btn" type="button" (click)="signOut()">
+            <span>🚪</span> Sign Out
+          </button>
+        </div>
+      </div>
+    } @else {
+      <div class="glass-panel state-card error-card" role="alert">
+        <span class="error-icon">⚠️</span>
+        <p>{{ errorMessage() || 'Failed to load user profile.' }}</p>
+        <button class="action-btn secondary-btn" type="button" (click)="ngOnInit()">Retry</button>
+      </div>
+    }
+  </div>
+</main>

@@ -6,6 +6,8 @@ import authGuardRedirection from './app/core/auth-guard/auth-guard';
 import { loginGuard } from './app/core/login-guard/login-guard';
 import { HomeComponent } from './app/page/home/home';
 import { AiConfiguration } from './app/component/ai-configuration/ai-configuration';
+import { Profile } from './app/component/profile/profile';
+import { NotFoundComponent } from './app/page/not-found/not-found';
 
 export const routes: Routes = [
     {
@@ -23,6 +25,11 @@ export const routes: Routes = [
         canActivate: [authGuardRedirection]
     },
     {
+        path: 'profile',
+        component: Profile,
+        canActivate: [authGuardRedirection]
+    },
+    {
         path: 'ai-configuration',
         component: AiConfiguration,
         canActivate: [authGuardRedirection]
@@ -31,5 +38,9 @@ export const routes: Routes = [
         path: "",
         redirectTo: "home",
         pathMatch: "full"
+    },
+    {
+        path: '**',
+        component: NotFoundComponent
     }
 ];

@@ -1,15 +1,16 @@
 import { Component, inject, signal, type OnInit } from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
 import { ProfileService, type ProfileIcon, type ProfileInfo } from './profile-service/profile-service';
 
 @Component({
-  imports: [],
+  imports: [RouterLink],
   selector: 'app-profile',
   styleUrl: './profile.scss',
   templateUrl: './profile.html',
 })
 export class Profile implements OnInit {
-
-  profileService = inject(ProfileService)
+  private readonly router = inject(Router);
+  profileService = inject(ProfileService);
   profileIcon: ProfileIcon | null = null;
   profileInfo = signal<ProfileInfo | null>(null);
   errorMessage = signal<string>('');
@@ -26,5 +27,10 @@ export class Profile implements OnInit {
     } finally {
       this.isLoading.set(false);
     }
+  }
+
+  signOut() {
+    localStorage.removeItem('token');
+    this.router.navigate(['/login']);
   }
 }

@@ -75,6 +75,15 @@
 
       <!-- Modal Footer Controls -->
       <footer class="modal-footer">
+        @if (repository()) {
+          <app-button
+            title="Delete"
+            type="secondary"
+            size="sm"
+            [disabled]="isSubmitting()"
+            (onClick)="handleDelete()"
+          ></app-button>
+        }
         <app-button
           title="Cancel"
           type="normal"

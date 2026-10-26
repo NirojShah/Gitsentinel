@@ -13,5 +13,6 @@ chatRouter.post("/", async (req: Request, res: Response) => chatController.creat
 chatRouter.patch("/:chatId", async (req: Request, res: Response) => chatController.updateChat(req as AuthenticatedRequest, res))
 chatRouter.get("/", async (req: Request, res: Response) => chatController.findMyChat(req as AuthenticatedRequest, res))
 chatRouter.get("/:chatId", async (req: Request, res: Response) => chatController.findChat(req as AuthenticatedRequest, res))
+chatRouter.delete("/:chatId", async (req: Request, res: Response) => chatController.deleteChat(req as AuthenticatedRequest, res))
 
 export default chatRouter;

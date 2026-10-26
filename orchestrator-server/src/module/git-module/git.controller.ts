@@ -47,6 +47,16 @@ class Gitcontroller {
         })
     }
 
+    async deleteGitRepo(req: AuthenticatedRequest, res: Response): Promise<Response> {
+        const userId = req.user.userId;
+        const repoId = req.params.repoId as string;
+        const response = await this.gitService.deleteGitRepository(repoId, userId);
+
+        return res.status(response.statusCode).json({
+            message: response.message
+        });
+    }
+
 }
 
 export default Gitcontroller;

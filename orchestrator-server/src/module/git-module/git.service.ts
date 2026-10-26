@@ -74,6 +74,21 @@ class GitrepoServiceImplementation {
         }
     }
 
+    async deleteGitRepository(repoId: string, userId: string): Promise<ResponseDto> {
+        try {
+            await this.gitRepo.deleteGitRepo(repoId, userId);
+            return {
+                statusCode: StatusCode.OK,
+                message: "Repository deleted successfully."
+            };
+        } catch (error) {
+            if (error instanceof CustomError) {
+                throw error;
+            }
+            throw new CustomError(StatusCode.INTERNAL_SERVER_ERROR, "Failed to delete the repository.");
+        }
+    }
+
 }
 
 export default GitrepoServiceImplementation

@@ -28,6 +28,8 @@ export class SidebarComponent {
   newChatRequested = output<void>();
   threadSelected = output<string>();
   renameThreadRequested = output<string>();
+  deleteThreadRequested = output<string>();
   editRepositoryRequested = output<string>();
+  deleteRepositoryRequested = output<string>();
   openConfigRequested = output<void>();
 }

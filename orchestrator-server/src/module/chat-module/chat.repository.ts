@@ -78,6 +78,22 @@ class ChatRepository {
         return false
     }
 
+    async delete(id: string, userId: string) {
+        return prisma.$transaction(async (tx) => {
+            await tx.message.deleteMany({
+                where: {
+                    chatId: id,
+                },
+            });
+            return tx.chat.delete({
+                where: {
+                    id,
+                    userId,
+                },
+            });
+        });
+    }
+
     async findChatByUserId(userId: string) {
         return await prisma.chat.findMany({
             where: {

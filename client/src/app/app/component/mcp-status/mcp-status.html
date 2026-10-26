@@ -44,9 +44,56 @@
         <div class="tools-list">
           @for (tool of mcpTools(); track tool.name) {
             <div class="tool-item">
-              <div class="tool-name">{{ tool.name }}</div>
-              @if (tool.description) {
-                <div class="tool-description">{{ tool.description }}</div>
+              <div class="tool-info-row">
+                <div>
+                  <div class="tool-name">{{ tool.name }}</div>
+                  @if (tool.description) {
+                    <div class="tool-description">{{ tool.description }}</div>
+                  }
+                </div>
+                <button
+                  type="button"
+                  class="run-tool-btn"
+                  (click)="toggleRunTool(tool.name)"
+                >
+                  {{ activeExecutionTool() === tool.name ? 'Close' : '▶ Test' }}
+                </button>
+              </div>
+
+              @if (activeExecutionTool() === tool.name) {
+                <div class="tool-runner-panel">
+                  <div class="runner-field">
+                    <label>File Path to Fetch:</label>
+                    <input
+                      type="text"
+                      class="runner-input"
+                      [ngModel]="pathInput()"
+                      (ngModelChange)="pathInput.set($event)"
+                      placeholder="e.g. package.json or README.md"
+                    />
+                  </div>
+                  <div class="runner-actions">
+                    <button
+                      type="button"
+                      class="execute-btn"
+                      [disabled]="isExecuting()"
+                      (click)="executeSelectedTool()"
+                    >
+                      {{ isExecuting() ? 'Executing...' : 'Run Tool' }}
+                    </button>
+                  </div>
+
+                  @if (executionError()) {
+                    <div class="runner-error">{{ executionError() }}</div>
+                  }
+
+                  @if (executionResult()) {
+                    <div class="runner-output">
+                      <div class="output-title">Result:</div>
+                      <pre><code>{{ executionResult() }}</code></pre>
+                    </div>
+                  }
+                </div>
               }
             </div>
           }

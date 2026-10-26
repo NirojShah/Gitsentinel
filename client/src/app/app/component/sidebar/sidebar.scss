@@ -105,6 +105,12 @@
         cursor: pointer;
 
         &:hover { color: $text-main; }
+
+        &.delete-action {
+          &:hover {
+            color: #ef4444;
+          }
+        }
       }
 
       .chat-info {
@@ -163,6 +169,12 @@
     gap: 12px;
     padding-top: 16px;
     border-top: $glass-border;
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+
+    &:hover {
+      opacity: 0.85;
+    }
 
     .user-avatar {
       width: 36px;
