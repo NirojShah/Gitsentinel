@@ -7,8 +7,9 @@ import ChatRepository from "./chat.repository.js";
 interface ChatService {
     createChat(data: ChatModel.CreateChat): Promise<ResponseDto>;
     findChatById(id: string, userId: string): Promise<ResponseDto>;
-    findChatByUserId(userId: string): Promise<ResponseDto>
+    findChatByUserId(userId: string): Promise<ResponseDto>;
     updateChat(data: ChatModel.UpdateChat, userId: string): Promise<ResponseDto>;
+    deleteChat(chatId: string, userId: string): Promise<ResponseDto>;
 }
 
 class ChatServiceImpl implements ChatService {
@@ -72,6 +73,24 @@ class ChatServiceImpl implements ChatService {
             statusCode: StatusCode.OK,
             data: chat
         }
+    }
+
+    async deleteChat(chatId: string, userId: string): Promise<ResponseDto> {
+        const chatExists: boolean = await this.chatRepository.chatExistsById(chatId, userId);
+
+        if (!chatExists) {
+            return {
+                statusCode: StatusCode.NOT_FOUND,
+                message: "No chat found by the provided id."
+            };
+        }
+
+        await this.chatRepository.delete(chatId, userId);
+
+        return {
+            statusCode: StatusCode.OK,
+            message: "Chat deleted successfully"
+        };
     }
 }
 
