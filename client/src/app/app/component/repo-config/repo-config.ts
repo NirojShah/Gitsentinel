@@ -80,6 +80,27 @@ export class RepoConfigModalComponent implements OnInit {
       });
   }
 
+  handleDelete(): void {
+    const repository = this.repository();
+    if (!repository || !window.confirm(`Are you sure you want to delete ${repository.repoUrl}?`)) return;
+
+    this.isSubmitting.set(true);
+    this.errorMessage.set('');
+
+    this.repoService
+      .deleteRepoConfig(repository.id)
+      .pipe(finalize(() => this.isSubmitting.set(false)))
+      .subscribe({
+        next: () => {
+          this.repoSaved.emit();
+          this.closeModal.emit();
+        },
+        error: (error: unknown) => {
+          this.errorMessage.set(this.getErrorMessage(error));
+        },
+      });
+  }
+
   handleClose() {
     this.closeModal.emit();
   }
