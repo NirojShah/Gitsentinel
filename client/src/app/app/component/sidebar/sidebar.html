@@ -24,6 +24,9 @@
                 <button class="history-action" type="button" title="Rename chat"
                     [attr.aria-label]="'Rename ' + thread.title"
                     (click)="renameThreadRequested.emit(thread.id)">Edit</button>
+                <button class="history-action delete-action" type="button" title="Delete chat"
+                    [attr.aria-label]="'Delete ' + thread.title"
+                    (click)="deleteThreadRequested.emit(thread.id)">✕</button>
             </div>
             }
         </div>
@@ -42,6 +45,9 @@
                 <button class="history-action" type="button" title="Edit repository"
                   [attr.aria-label]="'Edit ' + repo.repoUrl"
                   (click)="editRepositoryRequested.emit(repo.id)">Edit</button>
+                <button class="history-action delete-action" type="button" title="Delete repository"
+                  [attr.aria-label]="'Delete ' + repo.repoUrl"
+                  (click)="deleteRepositoryRequested.emit(repo.id)">✕</button>
             </div>
             }
         </div>
@@ -52,11 +58,11 @@
         <span>AI Configuration</span>
     </a>
 
-    <div class="sidebar-footer">
+    <a class="sidebar-footer profile-link" routerLink="/profile" title="View Profile">
         <div class="user-avatar">{{ userName()[0] }}</div>
         <div class="user-meta">
             <span class="name">{{ userName() }}</span>
             <span class="status">Online</span>
         </div>
-    </div>
+    </a>
 </aside>
