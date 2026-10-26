@@ -48,6 +48,9 @@
           @if (profileError()) {
             <span class="user-role" role="alert">{{ profileError() }}</span>
           }
+          <a class="menu-item" routerLink="/profile" (click)="isProfileMenuOpen.set(false)">
+            View Profile
+          </a>
           <a class="menu-item" routerLink="/ai-configuration" (click)="isProfileMenuOpen.set(false)">
             AI Configuration
           </a>
